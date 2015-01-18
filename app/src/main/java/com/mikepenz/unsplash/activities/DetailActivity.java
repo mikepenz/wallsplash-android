@@ -129,6 +129,8 @@ public class DetailActivity extends ActionBarActivity {
 
             // Add a listener to get noticed when the transition ends to animate the fab button
             getWindow().getSharedElementEnterTransition().addListener(sharedTransitionListener);
+        } else {
+            sharedTransitionListener.onTransitionEnd(null);
         }
 
         // Generate palette colors
