@@ -6,8 +6,15 @@ There are already over 600 high resolution images included, and there are 10 new
 
 This application was designed with the new Material Design principles in mind. It gives you a perfectly fluid user flow with simple and fresh animations. It also unleashes the full power of Android Lollipop by providing bright colors fetched out of each single wallpaper.
 
+
 #Download
 @[Google Play Store](https://play.google.com/store/apps/details?id=com.mikepenz.unsplash)
+
+
+#Screenshots
+![Image](https://raw.githubusercontent.com/mikepenz/unsplash-android/master/DEV/screenshots/screenshot1_small.png)
+![Image](https://raw.githubusercontent.com/mikepenz/unsplash-android/master/DEV/screenshots/screenshot2_small.png)
+
 
 #Preview
 A quick preview video can be found @[YouTube](https://www.youtube.com/watch?v=98-bArYkfAI)
