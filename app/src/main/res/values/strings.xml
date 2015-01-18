@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">unsplash</string>
+    <string name="action_open_source">Open Source</string>
+
+    <!-- Images fragments -->
+    <string name="loading_images">Loading images\nPlease wait&#8230;</string>
+
+    <string name="dialog_setting_title">Downloading</string>
+    <string name="dialog_setting_text">Please wait while the high-res version of your wallpaper is downloading. It will be ready shortly&#8230;</string>
+
+    <!-- about this app -->
+    <string name="aboutLibraries_description_showIcon">true</string>
+    <string name="aboutLibraries_description_showVersion">true</string>
+    <string name="aboutLibraries_description_text">
+        <![CDATA[
+        <b>unsplash</b> by <a href="mikepenz.com">Mike Penz</a>
+        is a (unofficial) client for the awesome
+        <a href="https://unsplash.com">unsplash</a>
+        "Free (do whatever you want) high-resolution photos." service by
+        <a href="https://pickcrew.com/">Crew</a>
+        <br/>
+        <br/>
+        The app is based on the awesome
+        <a href="https://github.com/saulmm/OpenLibra-Material">OpenLibra-Material</a>
+        GitHub repo by
+        <a href="https://plus.google.com/u/0/+SaulMolineroMalvido/posts">Saul MM</a>
+        <br/>
+        <br/>
+        Application and API created by <a href="mikepenz.com">Mike Penz</a>
+        ]]>
+    </string>
+</resources>
