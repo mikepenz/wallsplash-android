@@ -1,4 +1,7 @@
 <resources>
+    <style name="AboutTheme" parent="BaseTheme">
+        <item name="windowActionBar">true</item>
+    </style>
 
     <style name="AppTheme" parent="BaseTheme">
     </style>
@@ -14,6 +17,11 @@
         <item name="android:windowBackground">@color/background</item>
 
         <item name="android:alertDialogTheme">@style/BaseTheme.Dialog</item>
+    </style>
+
+    <style name="DetailActivityTheme" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
