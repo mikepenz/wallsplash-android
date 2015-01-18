@@ -9,6 +9,9 @@ This application was designed with the new Material Design principles in mind. I
 #Download
 @[Google Play Store](https://play.google.com/store/apps/details?id=com.mikepenz.unsplash)
 
+#Preview
+A quick preview video can be found @[YouTube](https://www.youtube.com/watch?v=98-bArYkfAI)
+
 
 #Credits
 
