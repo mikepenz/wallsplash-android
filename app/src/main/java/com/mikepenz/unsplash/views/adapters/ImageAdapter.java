@@ -31,6 +31,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
 
     private final ArrayList<Image> images;
     private Context context;
+    private int defaultTextColor;
     private int defaultBackgroundColor;
     private OnItemClickListener onItemClickListener;
 
@@ -50,6 +51,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
                 .inflate(R.layout.item_image, viewGroup, false);
 
         this.context = viewGroup.getContext();
+        defaultTextColor = context.getResources().getColor(R.color.text_without_palette);
         defaultBackgroundColor = context.getResources().getColor(R.color.image_without_palette);
 
         return new ImagesViewHolder(rowView, onItemClickListener);
@@ -62,6 +64,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         imagesViewHolder.imageAuthor.setText(currentImage.getAuthor());
         imagesViewHolder.imageDate.setText(currentImage.getReadableDate());
         imagesViewHolder.imageView.setDrawingCacheEnabled(true);
+
+        //reset colors so we prevent crazy flashes :D
+        imagesViewHolder.imageAuthor.setTextColor(defaultTextColor);
+        imagesViewHolder.imageDate.setTextColor(defaultTextColor);
+        imagesViewHolder.imageTextContainer.setBackgroundColor(defaultBackgroundColor);
 
         Picasso.with(context).load(images.get(position).getImage_src()).transform(PaletteTransformation.instance()).into(imagesViewHolder.imageView, new Callback.EmptyCallback() {
             @Override
