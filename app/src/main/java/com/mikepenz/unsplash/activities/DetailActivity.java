@@ -39,10 +39,10 @@ import java.io.InputStream;
 
 public class DetailActivity extends ActionBarActivity {
 
-    private ImageView fabButton;
-    private View titleContainer;
-    private View titlesContainer;
-    private Image selectedImage;
+    private ImageView mFabButton;
+    private View mTitleContainer;
+    private View mTitlesContainer;
+    private Image mSelectedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +52,16 @@ public class DetailActivity extends ActionBarActivity {
 
         // Recover items from the intent
         final int position = getIntent().getIntExtra("position", 0);
-        selectedImage = (Image) getIntent().getSerializableExtra("selected_image");
+        mSelectedImage = (Image) getIntent().getSerializableExtra("selected_image");
 
-        titlesContainer = findViewById(R.id.activity_detail_titles);
+        mTitlesContainer = findViewById(R.id.activity_detail_titles);
 
         // Fab button
-        fabButton = (ImageView) findViewById(R.id.activity_detail_fab);
-        fabButton.setScaleX(0);
-        fabButton.setScaleY(0);
-        fabButton.setImageDrawable(new IconicsDrawable(this, FontAwesome.Icon.faw_photo).color(Color.WHITE).sizeDp(24));
-        fabButton.setOnClickListener(new View.OnClickListener() {
+        mFabButton = (ImageView) findViewById(R.id.activity_detail_fab);
+        mFabButton.setScaleX(0);
+        mFabButton.setScaleY(0);
+        mFabButton.setImageDrawable(new IconicsDrawable(this, FontAwesome.Icon.faw_photo).color(Color.WHITE).sizeDp(24));
+        mFabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final ProgressDialog mProgressDialog = new ProgressDialog(DetailActivity.this);
@@ -69,7 +69,7 @@ public class DetailActivity extends ActionBarActivity {
                 //prepare the call
                 final ResponseFuture<InputStream> future =
                         Ion.with(DetailActivity.this)
-                                .load(selectedImage.getHighResImage())
+                                .load(mSelectedImage.getHighResImage())
                                 .progressDialog(mProgressDialog)
                                 .asInputStream();
 
@@ -116,8 +116,8 @@ public class DetailActivity extends ActionBarActivity {
         Utils.configuredHideYView(contentCard);
 
         // Title container
-        titleContainer = findViewById(R.id.activity_detail_title_container);
-        Utils.configuredHideYView(titleContainer);
+        mTitleContainer = findViewById(R.id.activity_detail_title_container);
+        Utils.configuredHideYView(mTitleContainer);
 
         // Define toolbar as the shared element
         final Toolbar toolbar = (Toolbar) findViewById(R.id.activity_detail_toolbar);
@@ -156,17 +156,17 @@ public class DetailActivity extends ActionBarActivity {
 
             super.onTransitionEnd(transition);
 
-            ViewPropertyAnimator showTitleAnimator = Utils.showViewByScale(titleContainer);
+            ViewPropertyAnimator showTitleAnimator = Utils.showViewByScale(mTitleContainer);
             showTitleAnimator.setListener(new CustomAnimatorListener() {
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
 
                     super.onAnimationEnd(animation);
-                    titlesContainer.startAnimation(AnimationUtils.loadAnimation(DetailActivity.this, R.anim.alpha_on));
-                    titlesContainer.setVisibility(View.VISIBLE);
+                    mTitlesContainer.startAnimation(AnimationUtils.loadAnimation(DetailActivity.this, R.anim.alpha_on));
+                    mTitlesContainer.setVisibility(View.VISIBLE);
 
-                    Utils.showViewByScale(fabButton).start();
+                    Utils.showViewByScale(mFabButton).start();
                     //Utils.showViewByScale(imageInfoLayout).start();
                 }
             });
@@ -178,10 +178,10 @@ public class DetailActivity extends ActionBarActivity {
     @Override
     public void onBackPressed() {
 
-        ViewPropertyAnimator hideTitleAnimator = Utils.hideViewByScaleXY(fabButton);
+        ViewPropertyAnimator hideTitleAnimator = Utils.hideViewByScaleXY(mFabButton);
 
-        titlesContainer.startAnimation(AnimationUtils.loadAnimation(DetailActivity.this, R.anim.alpha_off));
-        titlesContainer.setVisibility(View.INVISIBLE);
+        mTitlesContainer.startAnimation(AnimationUtils.loadAnimation(DetailActivity.this, R.anim.alpha_off));
+        mTitlesContainer.setVisibility(View.INVISIBLE);
 
         //Utils.hideViewByScaleY(imageInfoLayout);
 
@@ -190,7 +190,7 @@ public class DetailActivity extends ActionBarActivity {
             @Override
             public void onAnimationEnd(Animator animation) {
 
-                ViewPropertyAnimator hideFabAnimator = Utils.hideViewByScaleY(titleContainer);
+                ViewPropertyAnimator hideFabAnimator = Utils.hideViewByScaleY(mTitleContainer);
                 hideFabAnimator.setListener(new CustomAnimatorListener() {
 
                     @Override
@@ -217,7 +217,7 @@ public class DetailActivity extends ActionBarActivity {
             }
 
             if (s != null) {
-                titleContainer.setBackgroundColor(s.getRgb());
+                mTitleContainer.setBackgroundColor(s.getRgb());
 
                 if (Build.VERSION.SDK_INT >= 21) {
                     getWindow().setStatusBarColor(s.getRgb());
@@ -227,15 +227,15 @@ public class DetailActivity extends ActionBarActivity {
                 //TextView summaryTitle = (TextView) findViewById(R.id.activity_detail_summary_title);
                 //summaryTitle.setTextColor(vibrantSwatch.getRgb());
 
-                TextView titleTV = (TextView) titleContainer.findViewById(R.id.activity_detail_title);
+                TextView titleTV = (TextView) mTitleContainer.findViewById(R.id.activity_detail_title);
                 titleTV.setTextColor(s.getTitleTextColor());
-                titleTV.setText(selectedImage.getAuthor());
+                titleTV.setText(mSelectedImage.getAuthor());
 
-                TextView subtitleTV = (TextView) titleContainer.findViewById(R.id.activity_detail_subtitle);
+                TextView subtitleTV = (TextView) mTitleContainer.findViewById(R.id.activity_detail_subtitle);
                 subtitleTV.setTextColor(s.getTitleTextColor());
-                subtitleTV.setText(selectedImage.getReadableDate());
+                subtitleTV.setText(mSelectedImage.getReadableDate());
 
-                ((TextView) titleContainer.findViewById(R.id.activity_detail_subtitle))
+                ((TextView) mTitleContainer.findViewById(R.id.activity_detail_subtitle))
                         .setTextColor(s.getTitleTextColor());
             }
         }

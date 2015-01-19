@@ -36,7 +36,7 @@ public class ImagesFragment extends Fragment {
 
     public static SparseArray<Bitmap> photoCache = new SparseArray<Bitmap>(1);
 
-    private UnsplashApi api = new UnsplashApi();
+    private UnsplashApi mApi = new UnsplashApi();
 
     private ImageAdapter mImageAdapter;
     private ArrayList<Image> mImages;
@@ -63,7 +63,7 @@ public class ImagesFragment extends Fragment {
         mImageRecycler.setVisibility(View.GONE);
 
         // Load images from API
-        api.fetchImages().subscribeOn(Schedulers.newThread())
+        mApi.fetchImages().subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ImageList>() {
                     @Override
