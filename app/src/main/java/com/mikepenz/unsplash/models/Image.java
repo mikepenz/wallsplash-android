@@ -12,6 +12,9 @@ public class Image implements Serializable {
     private String image_src;
     private String author;
     private Date date;
+    private float ratio;
+    private int width;
+    private int height;
 
     public String getColor() {
         return color;
@@ -51,5 +54,29 @@ public class Image implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public float getRatio() {
+        return ratio;
+    }
+
+    public void setRatio(float ratio) {
+        this.ratio = ratio;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }
