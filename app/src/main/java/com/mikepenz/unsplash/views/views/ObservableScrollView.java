@@ -6,9 +6,6 @@ import android.widget.ScrollView;
 
 import com.mikepenz.unsplash.ScrollViewListener;
 
-/**
- * Created by saulmm on 19/11/14.
- */
 public class ObservableScrollView extends ScrollView {
 
     private ScrollViewListener scrollViewListener = null;
@@ -32,7 +29,7 @@ public class ObservableScrollView extends ScrollView {
     @Override
     protected void onScrollChanged(int x, int y, int oldx, int oldy) {
         super.onScrollChanged(x, y, oldx, oldy);
-        if(scrollViewListener != null) {
+        if (scrollViewListener != null) {
             scrollViewListener.onScrollChanged(this, x, y, oldx, oldy);
         }
     }

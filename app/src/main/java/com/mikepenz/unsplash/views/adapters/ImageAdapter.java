@@ -24,9 +24,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-/**
- * Created by saulmm on 08/12/14.
- */
 public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
 
     private final ArrayList<Image> images;
