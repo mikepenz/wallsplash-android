@@ -18,27 +18,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
 import com.mikepenz.unsplash.OnItemClickListener;
 import com.mikepenz.unsplash.R;
 import com.mikepenz.unsplash.activities.DetailActivity;
 import com.mikepenz.unsplash.models.Image;
 import com.mikepenz.unsplash.models.ImageList;
-import com.mikepenz.unsplash.network.Api;
+import com.mikepenz.unsplash.network.UnsplashApi;
 import com.mikepenz.unsplash.views.adapters.ImageAdapter;
 
 import java.util.ArrayList;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class ImagesFragment extends Fragment {
 
     public static SparseArray<Bitmap> photoCache = new SparseArray<Bitmap>(1);
 
+    private UnsplashApi api = new UnsplashApi();
+
     private ProgressDialog loadingDialog;
     private ImageAdapter imageAdapter;
-    private ArrayList<Image> images;
+    private ArrayList<Image> mImages;
     private RecyclerView imageRecycler;
 
     @Override
@@ -62,10 +64,30 @@ public class ImagesFragment extends Fragment {
         loadingDialog.show();
 
         // Load images from API
-        Ion.with(getActivity())
-                .load(Api.getLastImages())
-                .asString()
-                .setCallback(imagesCallback);
+        api.fetchImages().subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ImageList>() {
+                    @Override
+                    public void onNext(final ImageList images) {
+                        mImages = images.getData();
+                        imageAdapter = new ImageAdapter(mImages);
+                        imageAdapter.setOnItemClickListener(recyclerRowClickListener);
+
+                        // Update adapter
+                        imageRecycler.setAdapter(imageAdapter);
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        // Dismiss loading dialog
+                        loadingDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onError(final Throwable error) {
+                        Log.d("[DEBUG]", "ImagesFragment onCompleted - ERROR: " + error.getMessage());
+                    }
+                });
 
         return rootView;
     }
@@ -76,40 +98,12 @@ public class ImagesFragment extends Fragment {
     }
 
 
-    private FutureCallback<String> imagesCallback = new FutureCallback<String>() {
-
-
-        @Override
-        public void onCompleted(Exception e, String result) {
-
-            if (e == null) {
-                // Serialize reader into objects
-                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); //2015-01-18 15:48:56
-                ImageList imageList = gson.fromJson(result, ImageList.class);
-                images = imageList.getImages();
-
-                imageAdapter = new ImageAdapter(images);
-                imageAdapter.setOnItemClickListener(recyclerRowClickListener);
-
-                // Update adapter
-                imageRecycler.setAdapter(imageAdapter);
-
-                // Dismiss loading dialog
-                loadingDialog.dismiss();
-
-
-            } else {
-                Log.d("[DEBUG]", "ImagesFragment onCompleted - ERROR: " + e.getMessage());
-            }
-        }
-    };
-
     private OnItemClickListener recyclerRowClickListener = new OnItemClickListener() {
 
         @Override
         public void onClick(View v, int position) {
 
-            Image selectedImage = images.get(position);
+            Image selectedImage = mImages.get(position);
 
             Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
             detailIntent.putExtra("position", position);
@@ -125,12 +119,14 @@ public class ImagesFragment extends Fragment {
                     ((ViewGroup) coverImage.getParent()).setTransitionGroup(false);
                 }
             }
-            photoCache.put(position, coverImage.getDrawingCache());
+            if (coverImage.getDrawingCache() != null) {
+                photoCache.put(position, coverImage.getDrawingCache());
 
-            // Setup the transition to the detail activity
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), coverImage, "cover");
+                // Setup the transition to the detail activity
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), coverImage, "cover");
 
-            startActivity(detailIntent, options.toBundle());
+                startActivity(detailIntent, options.toBundle());
+            }
         }
     };
 }
