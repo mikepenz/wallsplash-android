@@ -63,7 +63,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         final Image currentImage = images.get(position);
         imagesViewHolder.imageAuthor.setText(currentImage.getAuthor());
         imagesViewHolder.imageDate.setText(currentImage.getReadableDate());
-        //imagesViewHolder.imageView.setDrawingCacheEnabled(true);
+        imagesViewHolder.imageView.setDrawingCacheEnabled(true);
 
         Picasso.with(context).load(images.get(position).getImage_src()).into(new Target() {
             @Override
