@@ -2,7 +2,7 @@ package com.mikepenz.unsplash.views.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +10,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,9 +17,10 @@ import android.widget.TextView;
 import com.mikepenz.unsplash.OnItemClickListener;
 import com.mikepenz.unsplash.R;
 import com.mikepenz.unsplash.models.Image;
+import com.mikepenz.unsplash.other.PaletteTransformation;
 import com.mikepenz.unsplash.views.Utils;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 
@@ -35,14 +34,13 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
     private int defaultBackgroundColor;
     private OnItemClickListener onItemClickListener;
 
+
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
     public ImageAdapter(ArrayList<Image> images) {
-
         this.images = images;
-
     }
 
     @Override
@@ -65,55 +63,35 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         imagesViewHolder.imageDate.setText(currentImage.getReadableDate());
         imagesViewHolder.imageView.setDrawingCacheEnabled(true);
 
-        Picasso.with(context).load(images.get(position).getImage_src()).into(new Target() {
+        Picasso.with(context).load(images.get(position).getImage_src()).transform(PaletteTransformation.instance()).into(imagesViewHolder.imageView, new Callback.EmptyCallback() {
             @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                imagesViewHolder.imageView.setImageBitmap(bitmap);
+            public void onSuccess() {
+                Bitmap bitmap = ((BitmapDrawable) imagesViewHolder.imageView.getDrawable()).getBitmap(); // Ew!
+                Palette palette = PaletteTransformation.getPalette(bitmap);
 
-                Animation myFadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.alpha_on);
-                imagesViewHolder.imageView.startAnimation(myFadeInAnimation);
-
-                if (bitmap != null) {
-                    Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
-                        @Override
-                        public void onGenerated(Palette palette) {
-
-                            Palette.Swatch s = palette.getVibrantSwatch();
-                            if (s == null) {
-                                s = palette.getMutedSwatch();
-                            }
-
-                            if (s != null) {
-                                imagesViewHolder.imageAuthor.setTextColor(s.getTitleTextColor());
-                                imagesViewHolder.imageDate.setTextColor(s.getTitleTextColor());
-                            }
-
-                            if (Build.VERSION.SDK_INT >= 21) {
-                                imagesViewHolder.imageView.setTransitionName("cover" + position);
-                            }
-                            imagesViewHolder.imageTextContainer.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    onItemClickListener.onClick(v, position);
-                                }
-                            });
-
-                            if (s != null) {
-                                Utils.animateViewColor(imagesViewHolder.imageTextContainer, defaultBackgroundColor, s.getRgb());
-                            }
-                        }
-                    });
+                Palette.Swatch s = palette.getVibrantSwatch();
+                if (s == null) {
+                    s = palette.getMutedSwatch();
                 }
-            }
 
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-                imagesViewHolder.imageView.setImageDrawable(errorDrawable);
-            }
+                if (s != null) {
+                    imagesViewHolder.imageAuthor.setTextColor(s.getTitleTextColor());
+                    imagesViewHolder.imageDate.setTextColor(s.getTitleTextColor());
+                }
 
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-                imagesViewHolder.imageView.setImageDrawable(null);
+                if (Build.VERSION.SDK_INT >= 21) {
+                    imagesViewHolder.imageView.setTransitionName("cover" + position);
+                }
+                imagesViewHolder.imageTextContainer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onItemClickListener.onClick(v, position);
+                    }
+                });
+
+                if (s != null) {
+                    Utils.animateViewColor(imagesViewHolder.imageTextContainer, defaultBackgroundColor, s.getRgb());
+                }
             }
         });
 
