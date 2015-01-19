@@ -2,7 +2,6 @@ package com.mikepenz.unsplash.fragments;
 
 
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -17,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.mikepenz.unsplash.OnItemClickListener;
 import com.mikepenz.unsplash.R;
@@ -38,30 +38,29 @@ public class ImagesFragment extends Fragment {
 
     private UnsplashApi api = new UnsplashApi();
 
-    private ProgressDialog loadingDialog;
-    private ImageAdapter imageAdapter;
+    private ImageAdapter mImageAdapter;
     private ArrayList<Image> mImages;
-    private RecyclerView imageRecycler;
+    private RecyclerView mImageRecycler;
+    private ProgressBar mImagesProgress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_images, container, false);
-        imageRecycler = (RecyclerView) rootView.findViewById(R.id.fragment_last_images_recycler);
+        mImageRecycler = (RecyclerView) rootView.findViewById(R.id.fragment_last_images_recycler);
+        mImagesProgress = (ProgressBar) rootView.findViewById(R.id.fragment_images_progress);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
-        imageRecycler.setLayoutManager(gridLayoutManager);
-        imageRecycler.setOnTouchListener(new View.OnTouchListener() {
+        mImageRecycler.setLayoutManager(gridLayoutManager);
+        mImageRecycler.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return false;
             }
         });
 
-        // Init and show progress dialog
-        loadingDialog = new ProgressDialog(getActivity());
-        loadingDialog.setMessage(getResources().getString(R.string.loading_images));
-        loadingDialog.show();
+        mImagesProgress.setVisibility(View.VISIBLE);
+        mImageRecycler.setVisibility(View.GONE);
 
         // Load images from API
         api.fetchImages().subscribeOn(Schedulers.newThread())
@@ -70,21 +69,23 @@ public class ImagesFragment extends Fragment {
                     @Override
                     public void onNext(final ImageList images) {
                         mImages = images.getData();
-                        imageAdapter = new ImageAdapter(mImages);
-                        imageAdapter.setOnItemClickListener(recyclerRowClickListener);
+                        mImageAdapter = new ImageAdapter(mImages);
+                        mImageAdapter.setOnItemClickListener(recyclerRowClickListener);
 
                         // Update adapter
-                        imageRecycler.setAdapter(imageAdapter);
+                        mImageRecycler.setAdapter(mImageAdapter);
                     }
 
                     @Override
                     public void onCompleted() {
                         // Dismiss loading dialog
-                        loadingDialog.dismiss();
+                        mImagesProgress.setVisibility(View.GONE);
+                        mImageRecycler.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onError(final Throwable error) {
+                        //TODO allow to retry if fetch fails
                         Log.d("[DEBUG]", "ImagesFragment onCompleted - ERROR: " + error.getMessage());
                     }
                 });
