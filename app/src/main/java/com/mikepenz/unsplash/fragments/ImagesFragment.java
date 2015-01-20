@@ -34,7 +34,7 @@ import rx.schedulers.Schedulers;
 
 public class ImagesFragment extends Fragment {
 
-    public static SparseArray<Bitmap> photoCache = new SparseArray<Bitmap>(1);
+    public static SparseArray<Bitmap> photoCache = new SparseArray<>(1);
 
     private UnsplashApi mApi = new UnsplashApi();
 

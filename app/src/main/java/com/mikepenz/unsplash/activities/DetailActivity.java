@@ -73,7 +73,7 @@ public class DetailActivity extends ActionBarActivity {
                                 .progressDialog(mProgressDialog)
                                 .asInputStream();
 
-                //setup the progressdialog
+                //setup the progressDialog
                 mProgressDialog.setTitle(R.string.dialog_setting_title);
                 mProgressDialog.setMessage(getString(R.string.dialog_setting_text));
                 mProgressDialog.setIndeterminate(false);
@@ -140,7 +140,7 @@ public class DetailActivity extends ActionBarActivity {
 
     /**
      * I use a listener to get notified when the enter transition ends, and with that notifications
-     * build my own coreography built with the elements of the UI
+     * build my own choreography built with the elements of the UI
      * <p/>
      * Animations order
      * <p/>
