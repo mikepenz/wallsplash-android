@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">unsplash</string>
+    <string name="app_name">wall:splash</string>
     <string name="action_open_source">Open Source</string>
 
     <!-- Images fragments -->
@@ -15,7 +15,7 @@
     <string name="aboutLibraries_description_showVersion">true</string>
     <string name="aboutLibraries_description_text">
         <![CDATA[
-        <b>unsplash</b> by <a href="mikepenz.com">Mike Penz</a>
+        <b>wall:splash</b> by <a href="mikepenz.com">Mike Penz</a>
         is a (unofficial) client for the awesome
         <a href="https://unsplash.com">unsplash</a>
         "Free (do whatever you want) high-resolution photos." service by
