@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -43,6 +44,7 @@ public class DetailActivity extends ActionBarActivity {
     private View mTitleContainer;
     private View mTitlesContainer;
     private Image mSelectedImage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +103,18 @@ public class DetailActivity extends ActionBarActivity {
                         if (e == null && result != null && result.getResult() != null) {
                             try {
                                 WallpaperManager.getInstance(DetailActivity.this).setStream(result.getResult());
+
+                                //some nice animations so the user knows the wallpaper was set properly
+                                mFabButton.animate().rotationBy(720).setDuration(700).start();
+                                mFabButton.setImageDrawable(new IconicsDrawable(DetailActivity.this, FontAwesome.Icon.faw_check).color(Color.WHITE).sizeDp(24));
+
+                                //animate the butotn to green. just do it the first time
+                                if (mFabButton.getTag() == null) {
+                                    TransitionDrawable transition = (TransitionDrawable) mFabButton.getBackground();
+                                    transition.startTransition(500);
+                                    mFabButton.setTag("");
+                                }
+
                             } catch (Exception ex) {
                                 Log.e("un:splash", ex.toString());
                             }
