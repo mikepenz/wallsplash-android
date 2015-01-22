@@ -75,12 +75,23 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
 
                 Palette.Swatch s = palette.getVibrantSwatch();
                 if (s == null) {
+                    s = palette.getDarkVibrantSwatch();
+                }
+                if (s == null) {
+                    s = palette.getLightVibrantSwatch();
+                }
+                if (s == null) {
                     s = palette.getMutedSwatch();
                 }
 
                 if (s != null) {
+                    if (images.get(position) != null) {
+                        images.get(position).setSwatch(s);
+                    }
+
                     imagesViewHolder.imageAuthor.setTextColor(s.getTitleTextColor());
                     imagesViewHolder.imageDate.setTextColor(s.getTitleTextColor());
+                    Utils.animateViewColor(imagesViewHolder.imageTextContainer, defaultBackgroundColor, s.getRgb());
                 }
 
                 if (Build.VERSION.SDK_INT >= 21) {
@@ -92,10 +103,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
                         onItemClickListener.onClick(v, position);
                     }
                 });
-
-                if (s != null) {
-                    Utils.animateViewColor(imagesViewHolder.imageTextContainer, defaultBackgroundColor, s.getRgb());
-                }
             }
         });
 
