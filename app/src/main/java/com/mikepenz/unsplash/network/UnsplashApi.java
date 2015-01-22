@@ -24,11 +24,18 @@ public class UnsplashApi {
 
 
     public interface UnsplashService {
-        @GET("/images")
+        @GET("/pictures/featured/1?by=date&order=desc")
+        Observable<ImageList> listFeaturedImages();
+
+        @GET("/pictures?by=modified_date&order=desc")
         Observable<ImageList> listImages();
     }
 
     public Observable<ImageList> fetchImages() {
         return mWebService.listImages();
+    }
+
+    public Observable<ImageList> fetchFeaturedImages() {
+        return mWebService.listFeaturedImages();
     }
 }
