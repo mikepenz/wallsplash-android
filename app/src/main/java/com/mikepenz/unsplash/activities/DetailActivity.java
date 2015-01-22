@@ -68,10 +68,14 @@ public class DetailActivity extends ActionBarActivity {
             public void onClick(View v) {
                 final ProgressDialog mProgressDialog = new ProgressDialog(DetailActivity.this);
 
+                //get the desired wallpaper size so older phones won't die :D
+                int wallpaperWidth = WallpaperManager.getInstance(DetailActivity.this).getDesiredMinimumWidth();
+                int wallpaperHeight = WallpaperManager.getInstance(DetailActivity.this).getDesiredMinimumHeight();
+
                 //prepare the call
                 final ResponseFuture<InputStream> future =
                         Ion.with(DetailActivity.this)
-                                .load(mSelectedImage.getHighResImage())
+                                .load(mSelectedImage.getHighResImage(wallpaperWidth, wallpaperHeight))
                                 .progressDialog(mProgressDialog)
                                 .asInputStream();
 
@@ -122,6 +126,13 @@ public class DetailActivity extends ActionBarActivity {
                         mProgressDialog.dismiss();
                     }
                 });
+            }
+        });
+        mFabButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Log.e("un:splash", "TODO");
+                return false;
             }
         });
 

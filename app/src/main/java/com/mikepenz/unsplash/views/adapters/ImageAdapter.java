@@ -26,19 +26,23 @@ import java.util.ArrayList;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
 
-    private final ArrayList<Image> images;
-    private Context context;
-    private int defaultTextColor;
-    private int defaultBackgroundColor;
-    private OnItemClickListener onItemClickListener;
+    private Context mContext;
 
+    private final ArrayList<Image> mImages;
+
+    private int mScreenWidth;
+
+    private int mDefaultTextColor;
+    private int mDefaultBackgroundColor;
+
+    private OnItemClickListener onItemClickListener;
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
     public ImageAdapter(ArrayList<Image> images) {
-        this.images = images;
+        this.mImages = images;
     }
 
     @Override
@@ -47,9 +51,15 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         View rowView = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.item_image, viewGroup, false);
 
-        this.context = viewGroup.getContext();
-        defaultTextColor = context.getResources().getColor(R.color.text_without_palette);
-        defaultBackgroundColor = context.getResources().getColor(R.color.image_without_palette);
+        //set the mContext
+        this.mContext = viewGroup.getContext();
+
+        //get the colors
+        mDefaultTextColor = mContext.getResources().getColor(R.color.text_without_palette);
+        mDefaultBackgroundColor = mContext.getResources().getColor(R.color.image_without_palette);
+
+        //get the screenWidth :D optimize everything :D
+        mScreenWidth = mContext.getResources().getDisplayMetrics().widthPixels;
 
         return new ImagesViewHolder(rowView, onItemClickListener);
     }
@@ -57,17 +67,18 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
     @Override
     public void onBindViewHolder(final ImagesViewHolder imagesViewHolder, final int position) {
 
-        final Image currentImage = images.get(position);
+        final Image currentImage = mImages.get(position);
         imagesViewHolder.imageAuthor.setText(currentImage.getAuthor());
         imagesViewHolder.imageDate.setText(currentImage.getReadableModified_Date());
         imagesViewHolder.imageView.setDrawingCacheEnabled(true);
 
         //reset colors so we prevent crazy flashes :D
-        imagesViewHolder.imageAuthor.setTextColor(defaultTextColor);
-        imagesViewHolder.imageDate.setTextColor(defaultTextColor);
-        imagesViewHolder.imageTextContainer.setBackgroundColor(defaultBackgroundColor);
+        imagesViewHolder.imageAuthor.setTextColor(mDefaultTextColor);
+        imagesViewHolder.imageDate.setTextColor(mDefaultTextColor);
+        imagesViewHolder.imageTextContainer.setBackgroundColor(mDefaultBackgroundColor);
 
-        Picasso.with(context).load(images.get(position).getImage_src()).transform(PaletteTransformation.instance()).into(imagesViewHolder.imageView, new Callback.EmptyCallback() {
+
+        Picasso.with(mContext).load(mImages.get(position).getImage_src(mScreenWidth)).transform(PaletteTransformation.instance()).into(imagesViewHolder.imageView, new Callback.EmptyCallback() {
             @Override
             public void onSuccess() {
                 Bitmap bitmap = ((BitmapDrawable) imagesViewHolder.imageView.getDrawable()).getBitmap(); // Ew!
@@ -85,13 +96,13 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
                 }
 
                 if (s != null) {
-                    if (images.get(position) != null) {
-                        images.get(position).setSwatch(s);
+                    if (mImages.get(position) != null) {
+                        mImages.get(position).setSwatch(s);
                     }
 
                     imagesViewHolder.imageAuthor.setTextColor(s.getTitleTextColor());
                     imagesViewHolder.imageDate.setTextColor(s.getTitleTextColor());
-                    Utils.animateViewColor(imagesViewHolder.imageTextContainer, defaultBackgroundColor, s.getRgb());
+                    Utils.animateViewColor(imagesViewHolder.imageTextContainer, mDefaultBackgroundColor, s.getRgb());
                 }
 
                 if (Build.VERSION.SDK_INT >= 21) {
@@ -107,13 +118,13 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         });
 
         //calculate height of the list-item so we don't have jumps in the view
-        DisplayMetrics displaymetrics = context.getResources().getDisplayMetrics();
-        imagesViewHolder.imageView.setMinimumHeight((int) (displaymetrics.widthPixels / images.get(position).getRatio()));
+        DisplayMetrics displaymetrics = mContext.getResources().getDisplayMetrics();
+        imagesViewHolder.imageView.setMinimumHeight((int) (displaymetrics.widthPixels / mImages.get(position).getRatio()));
     }
 
     @Override
     public int getItemCount() {
-        return images.size();
+        return mImages.size();
     }
 }
 

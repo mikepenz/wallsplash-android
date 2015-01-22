@@ -29,12 +29,35 @@ public class Image implements Serializable {
         this.color = color;
     }
 
-    public String getHighResImage() {
-        return image_src + "?q=100&fm=jpg";
+    public String getHighResImage(int minWidth, int minHeight) {
+        String url = image_src + "?q=100&fm=jpg";
+
+        if (minWidth > 0 && minHeight > 0) {
+            int phoneRatio = minWidth / minHeight;
+            if (phoneRatio < getRatio()) {
+                url = url + "&h=" + minHeight;
+            } else {
+                url = url + "&w=" + minWidth;
+            }
+        }
+
+        return url;
     }
 
-    public String getImage_src() {
+    public String getImage_src(int screenWidth) {
         return image_src + "?q=75&w=720&fit=max&fm=jpg";
+
+        /*
+        wait with this one for now. i don't want to bring up the generation quota of unsplash
+        String url = image_src + "?q=75&fit=max&fm=jpg";
+
+        if (screenWidth > 0) {
+            //it's enough if we load an image with 2/3 of the size
+            url = url + "&w=" + (screenWidth / 3 * 2);
+        }
+
+        return url;
+        */
     }
 
     public void setImage_src(String image_src) {
