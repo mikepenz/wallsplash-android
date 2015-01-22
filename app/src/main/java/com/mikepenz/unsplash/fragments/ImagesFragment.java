@@ -4,6 +4,7 @@ package com.mikepenz.unsplash.fragments;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -12,12 +13,15 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.typeface.FontAwesome;
 import com.mikepenz.unsplash.OnItemClickListener;
 import com.mikepenz.unsplash.R;
 import com.mikepenz.unsplash.activities.DetailActivity;
@@ -27,8 +31,9 @@ import com.mikepenz.unsplash.network.UnsplashApi;
 import com.mikepenz.unsplash.views.adapters.ImageAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-import rx.Subscriber;
+import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -42,6 +47,14 @@ public class ImagesFragment extends Fragment {
     private ArrayList<Image> mImages;
     private RecyclerView mImageRecycler;
     private ProgressBar mImagesProgress;
+
+    private boolean showFeatured = true;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,38 +72,29 @@ public class ImagesFragment extends Fragment {
             }
         });
 
+        fetchFeaturedImages();
+
+        return rootView;
+    }
+
+    private void fetchImages() {
         mImagesProgress.setVisibility(View.VISIBLE);
         mImageRecycler.setVisibility(View.GONE);
 
         // Load images from API
-        mApi.fetchImages().subscribeOn(Schedulers.newThread())
+        mApi.fetchImages().cache().subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ImageList>() {
-                    @Override
-                    public void onNext(final ImageList images) {
-                        mImages = images.getData();
-                        mImageAdapter = new ImageAdapter(mImages);
-                        mImageAdapter.setOnItemClickListener(recyclerRowClickListener);
+                .subscribe(observer);
+    }
 
-                        // Update adapter
-                        mImageRecycler.setAdapter(mImageAdapter);
-                    }
+    private void fetchFeaturedImages() {
+        mImagesProgress.setVisibility(View.VISIBLE);
+        mImageRecycler.setVisibility(View.GONE);
 
-                    @Override
-                    public void onCompleted() {
-                        // Dismiss loading dialog
-                        mImagesProgress.setVisibility(View.GONE);
-                        mImageRecycler.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onError(final Throwable error) {
-                        //TODO allow to retry if fetch fails
-                        Log.d("[DEBUG]", "ImagesFragment onCompleted - ERROR: " + error.getMessage());
-                    }
-                });
-
-        return rootView;
+        // Load images from API
+        mApi.fetchFeaturedImages().cache().subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
     }
 
     @Override
@@ -98,6 +102,30 @@ public class ImagesFragment extends Fragment {
         super.onResume();
     }
 
+    private Observer<ImageList> observer = new Observer<ImageList>() {
+        @Override
+        public void onNext(final ImageList images) {
+            mImages = images.getData();
+            mImageAdapter = new ImageAdapter(mImages);
+            mImageAdapter.setOnItemClickListener(recyclerRowClickListener);
+
+            // Update adapter
+            mImageRecycler.setAdapter(mImageAdapter);
+        }
+
+        @Override
+        public void onCompleted() {
+            // Dismiss loading dialog
+            mImagesProgress.setVisibility(View.GONE);
+            mImageRecycler.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onError(final Throwable error) {
+            //TODO allow to retry if fetch fails
+            Log.d("[DEBUG]", "ImagesFragment onCompleted - ERROR: " + error.getMessage());
+        }
+    };
 
     private OnItemClickListener recyclerRowClickListener = new OnItemClickListener() {
 
@@ -130,4 +158,24 @@ public class ImagesFragment extends Fragment {
             }
         }
     };
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_featured) {
+            if (showFeatured) {
+                item.setIcon(new IconicsDrawable(ImagesFragment.this.getActivity(), FontAwesome.Icon.faw_star_o).color(Color.WHITE).actionBarSize());
+                showFeatured = false;
+                fetchImages();
+            } else {
+                item.setIcon(new IconicsDrawable(ImagesFragment.this.getActivity(), FontAwesome.Icon.faw_star).color(Color.WHITE).actionBarSize());
+                showFeatured = true;
+                fetchFeaturedImages();
+            }
+        } else if (id == R.id.action_shuffle) {
+            Collections.shuffle(mImages);
+            mImageAdapter.notifyDataSetChanged();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
