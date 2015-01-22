@@ -233,7 +233,7 @@ public class DetailActivity extends ActionBarActivity {
 
                 TextView subtitleTV = (TextView) mTitleContainer.findViewById(R.id.activity_detail_subtitle);
                 subtitleTV.setTextColor(s.getTitleTextColor());
-                subtitleTV.setText(mSelectedImage.getReadableDate());
+                subtitleTV.setText(mSelectedImage.getReadableModified_Date());
 
                 ((TextView) mTitleContainer.findViewById(R.id.activity_detail_subtitle))
                         .setTextColor(s.getTitleTextColor());
