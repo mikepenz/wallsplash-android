@@ -1,5 +1,7 @@
 package com.mikepenz.unsplash.models;
 
+import android.support.v7.graphics.Palette;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,6 +18,8 @@ public class Image implements Serializable {
     private float ratio;
     private int width;
     private int height;
+
+    transient private Palette.Swatch swatch;
 
     public String getColor() {
         return color;
@@ -91,5 +95,13 @@ public class Image implements Serializable {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public Palette.Swatch getSwatch() {
+        return swatch;
+    }
+
+    public void setSwatch(Palette.Swatch swatch) {
+        this.swatch = swatch;
     }
 }
