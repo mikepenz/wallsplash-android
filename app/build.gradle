@@ -32,7 +32,14 @@ android {
             } catch (ex) {
             }
             zipAlignEnabled true
-            minifyEnabled false
+            minifyEnabled true
+
+            proguardFile 'proguard-gson.pro'
+            proguardFile 'proguard-square-picasso.pro'
+            proguardFile 'proguard-square-retrofit.pro'
+
+            proguardFile 'proguard-project.pro'
+            proguardFile getDefaultProguardFile('proguard-android.txt')
         }
 
         applicationVariants.all { variant ->
