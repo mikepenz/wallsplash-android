@@ -2,6 +2,7 @@
 <resources>
     <style name="AboutTheme" parent="AppTheme">
         <item name="windowActionBar">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
     </style>
 
     <style name="AppTheme" parent="BaseTheme">
