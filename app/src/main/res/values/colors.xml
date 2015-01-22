@@ -4,6 +4,7 @@
     <color name="image_without_palette">#1C1D23</color>
     <color name="text_without_palette">#ffeae1da</color>
 
+    <!-- default theme colors -->
     <color name="primary">#3F51B5</color>
     <color name="primary_dark">#303F9F</color>
     <color name="primary_light">#C5CAE9</color>
@@ -13,4 +14,9 @@
     <color name="secondary_text">#727272</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
+
+    <!-- green fab button -->
+    <color name="primary_green">#B2FF59</color>
+    <color name="primary_dark_green">#259B24</color>
+    <color name="accent_green">#8BC34A</color>
 </resources>
