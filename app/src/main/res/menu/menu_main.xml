@@ -7,7 +7,7 @@
           app:showAsAction="ifRoom"/>
     <item android:id="@+id/action_featured"
           android:title="@string/action_featured"
-          app:showAsAction="ifRoom"/>
+          app:showAsAction="always"/>
     <item android:id="@+id/action_open_source"
           android:title="@string/action_open_source"
           app:showAsAction="ifRoom"/>
