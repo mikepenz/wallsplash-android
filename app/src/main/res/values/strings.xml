@@ -2,7 +2,9 @@
 <resources>
 
     <string name="app_name">wall:splash</string>
+    <string name="action_featured">Featured</string>
     <string name="action_open_source">Open Source</string>
+    <string name="action_shuffle">Shuffle</string>
 
     <!-- Images fragments -->
     <string name="loading_images">Loading images\nPlease wait&#8230;</string>
