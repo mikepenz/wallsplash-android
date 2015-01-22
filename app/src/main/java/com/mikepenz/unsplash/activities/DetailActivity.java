@@ -130,11 +130,21 @@ public class DetailActivity extends ActionBarActivity {
             // Add a listener to get noticed when the transition ends to animate the fab button
             getWindow().getSharedElementEnterTransition().addListener(sharedTransitionListener);
         } else {
+            Utils.showViewByScale(toolbar).setDuration(1000).start();
             sharedTransitionListener.onTransitionEnd(null);
+
         }
 
-        // Generate palette colors
-        Palette.generateAsync(imageCoverBitmap, paletteListener);
+        //check if we already had the colors during click
+        int swatch_title_text_color = getIntent().getIntExtra("swatch_title_text_color", -1);
+        int swatch_rgb = getIntent().getIntExtra("swatch_rgb", -1);
+
+        if (swatch_rgb != -1 && swatch_title_text_color != -1) {
+            setColors(swatch_title_text_color, swatch_rgb);
+        } else {
+            // Generate palette colors
+            Palette.generateAsync(imageCoverBitmap, paletteListener);
+        }
     }
 
 
@@ -213,33 +223,43 @@ public class DetailActivity extends ActionBarActivity {
 
             Palette.Swatch s = palette.getVibrantSwatch();
             if (s == null) {
+                s = palette.getDarkVibrantSwatch();
+            }
+            if (s == null) {
+                s = palette.getLightVibrantSwatch();
+            }
+            if (s == null) {
                 s = palette.getMutedSwatch();
             }
 
             if (s != null) {
-                mTitleContainer.setBackgroundColor(s.getRgb());
-
-                if (Build.VERSION.SDK_INT >= 21) {
-                    getWindow().setStatusBarColor(s.getRgb());
-                }
-                //getWindow().setNavigationBarColor(vibrantSwatch.getRgb());
-
-                //TextView summaryTitle = (TextView) findViewById(R.id.activity_detail_summary_title);
-                //summaryTitle.setTextColor(vibrantSwatch.getRgb());
-
-                TextView titleTV = (TextView) mTitleContainer.findViewById(R.id.activity_detail_title);
-                titleTV.setTextColor(s.getTitleTextColor());
-                titleTV.setText(mSelectedImage.getAuthor());
-
-                TextView subtitleTV = (TextView) mTitleContainer.findViewById(R.id.activity_detail_subtitle);
-                subtitleTV.setTextColor(s.getTitleTextColor());
-                subtitleTV.setText(mSelectedImage.getReadableModified_Date());
-
-                ((TextView) mTitleContainer.findViewById(R.id.activity_detail_subtitle))
-                        .setTextColor(s.getTitleTextColor());
+                setColors(s.getTitleTextColor(), s.getRgb());
             }
         }
     };
+
+    private void setColors(int titleTextColor, int rgb) {
+        mTitleContainer.setBackgroundColor(rgb);
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(titleTextColor);
+        }
+        //getWindow().setNavigationBarColor(vibrantSwatch.getRgb());
+
+        //TextView summaryTitle = (TextView) findViewById(R.id.activity_detail_summary_title);
+        //summaryTitle.setTextColor(vibrantSwatch.getRgb());
+
+        TextView titleTV = (TextView) mTitleContainer.findViewById(R.id.activity_detail_title);
+        titleTV.setTextColor(titleTextColor);
+        titleTV.setText(mSelectedImage.getAuthor());
+
+        TextView subtitleTV = (TextView) mTitleContainer.findViewById(R.id.activity_detail_subtitle);
+        subtitleTV.setTextColor(titleTextColor);
+        subtitleTV.setText(mSelectedImage.getReadableModified_Date());
+
+        ((TextView) mTitleContainer.findViewById(R.id.activity_detail_subtitle))
+                .setTextColor(titleTextColor);
+    }
 
     private void coolBack() {
         try {
