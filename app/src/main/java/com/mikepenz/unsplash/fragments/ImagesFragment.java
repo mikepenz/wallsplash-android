@@ -137,8 +137,11 @@ public class ImagesFragment extends Fragment {
             Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
             detailIntent.putExtra("position", position);
             detailIntent.putExtra("selected_image", selectedImage);
-            detailIntent.putExtra("swatch_title_text_color", selectedImage.getSwatch().getTitleTextColor());
-            detailIntent.putExtra("swatch_rgb", selectedImage.getSwatch().getRgb());
+
+            if (selectedImage.getSwatch() != null) {
+                detailIntent.putExtra("swatch_title_text_color", selectedImage.getSwatch().getTitleTextColor());
+                detailIntent.putExtra("swatch_rgb", selectedImage.getSwatch().getRgb());
+            }
 
             ImageView coverImage = (ImageView) v.findViewById(R.id.item_image_img);
             if (coverImage == null) {
