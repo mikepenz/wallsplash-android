@@ -12,6 +12,7 @@ public class Image implements Serializable {
     private String image_src;
     private String author;
     private Date date;
+    private Date modified_date;
     private float ratio;
     private int width;
     private int height;
@@ -54,6 +55,18 @@ public class Image implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Date getModified_date() {
+        return modified_date;
+    }
+
+    public String getReadableModified_Date() {
+        return sdf.format(modified_date);
+    }
+
+    public void setModified_date(Date modified_date) {
+        this.modified_date = modified_date;
     }
 
     public float getRatio() {
