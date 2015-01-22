@@ -2,5 +2,5 @@
           android:exitFadeDuration="@android:integer/config_mediumAnimTime">
     <item android:drawable="@drawable/round_touch" android:state_selected="true"/>
     <item android:drawable="@drawable/round_touch" android:state_pressed="true"/>
-    <item android:drawable="@drawable/round"/>
+    <item android:drawable="@drawable/round_normal"/>
 </selector>
