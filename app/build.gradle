@@ -13,8 +13,8 @@ android {
         applicationId "com.mikepenz.unsplash"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 110
-        versionName "1.1.0"
+        versionCode 120
+        versionName "1.2.0"
     }
     buildTypes {
         debug {
@@ -65,7 +65,7 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.picasso:picasso:2.4.0'
     compile 'io.reactivex:rxandroid:0.24.0'
-    
+
     compile 'com.github.lzyzsd:circleprogress:1.0.1@aar'
 
     compile 'com.mikepenz.iconics:library:0.7.0@aar'
