@@ -74,6 +74,8 @@
 
 -keep class android.view.** { *; }
 
+-keep class com.github.** { *; }
+
 # Application classes that will be serialized/deserialized over Gson
 # or have been blown up by ProGuard in the past
 
