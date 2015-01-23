@@ -19,4 +19,7 @@
     <color name="primary_green">#B2FF59</color>
     <color name="primary_dark_green">#259B24</color>
     <color name="accent_green">#8BC34A</color>
+
+    <!-- transparent -->
+    <color name="transparent">#00FFFFFF</color>
 </resources>
