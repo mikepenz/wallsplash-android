@@ -1,7 +1,9 @@
 package com.mikepenz.unsplash.views;
 
 import android.animation.ArgbEvaluator;
+import android.animation.FloatEvaluator;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
@@ -23,6 +25,14 @@ public class Utils {
         }
         animator.setDuration(COLOR_ANIMATION_DURATION);
         animator.start();
+    }
+
+    public static void animateViewElevation(View v, float start, float end) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            ObjectAnimator animator = ObjectAnimator.ofObject(v, "elevation", new FloatEvaluator(), start, end);
+            animator.setDuration(500);
+            animator.start();
+        }
     }
 
     public static void configuredHideYView(View v) {
@@ -60,5 +70,13 @@ public class Utils {
                 .scaleX(1).scaleY(1);
 
         return propertyAnimator;
+    }
+
+    public static float dpFromPx(Context context, float px) {
+        return px / context.getResources().getDisplayMetrics().density;
+    }
+
+    public static float pxFromDp(Context context, float dp) {
+        return dp * context.getResources().getDisplayMetrics().density;
     }
 }
