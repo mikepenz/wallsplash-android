@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <com.mikepenz.unsplash.views.views.ObservableScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
     android:background="#AA000000"
     >
 
@@ -76,18 +77,33 @@
                     />
 
             </RelativeLayout>
-
-
         </FrameLayout>
+
+        <com.github.lzyzsd.circleprogress.DonutProgress
+            app:donut_progress="1"
+            app:donut_unfinished_color="@color/transparent"
+            app:donut_finished_color="@color/accent_green"
+            android:id="@+id/activity_detail_progress"
+            android:layout_width="@dimen/fab_progress_size"
+            android:layout_height="@dimen/fab_progress_size"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/activity_detail_toolbar"
+            android:layout_marginRight="11dp"
+            android:layout_marginTop="-33dp"
+            android:padding="8dp"
+            android:elevation="4dp"
+            />
 
         <ImageButton
             android:id="@+id/activity_detail_fab"
             android:layout_width="@dimen/fab_size"
             android:layout_height="@dimen/fab_size"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_below="@+id/activity_detail_toolbar"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="-26dp"
+            android:layout_marginTop="-28dp"
             android:padding="8dp"
             android:background="@drawable/animated_ripple"
             android:elevation="4dp"
