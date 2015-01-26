@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AboutTheme" parent="BaseTheme">
+        <!-- Enable the ActionBar because the AboutLibraries library still uses an ActionBar -->
         <item name="windowActionBar">true</item>
     </style>
 
@@ -9,8 +10,8 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">true</item>
 
+        <!-- improve animations -->
         <item name="android:windowContentTransitions">true</item>
-
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
         <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
