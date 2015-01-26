@@ -37,7 +37,6 @@ android {
             proguardFile 'proguard-gson.pro'
             proguardFile 'proguard-square-picasso.pro'
             proguardFile 'proguard-square-retrofit.pro'
-
             proguardFile 'proguard-project.pro'
             proguardFile getDefaultProguardFile('proguard-android.txt')
         }
@@ -55,7 +54,7 @@ android {
 }
 
 dependencies {
-    compile 'com.koushikdutta.ion:ion:2.+'
+    compile 'com.koushikdutta.ion:ion:2.0.5'
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.android.support:palette-v7:21.0.3'
     compile 'com.android.support:appcompat-v7:21.0.3'
@@ -68,7 +67,7 @@ dependencies {
 
     compile 'com.github.lzyzsd:circleprogress:1.0.1@aar'
 
-    compile 'com.mikepenz.iconics:library:0.7.0@aar'
+    compile 'com.mikepenz.iconics:library:0.7.1@aar'
     compile('com.mikepenz.aboutlibraries:library:4.5.0@aar') {
         transitive = true
     }
