@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AboutTheme" parent="AppTheme">
+        <!-- Enable the ActionBar because the AboutLibraries library still uses an ActionBar -->
         <item name="windowActionBar">true</item>
+        <!-- disable the translucent StatusBar so the application icon won't hide under the ActionBar -->
         <item name="android:windowTranslucentStatus">false</item>
     </style>
 
     <style name="AppTheme" parent="BaseTheme">
+        <!-- use the function to make the StatusBar translucent -->
         <item name="android:windowTranslucentStatus">true</item>
+        <!-- define a custom animation for the window to improve the pre lollipop experience -->
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
 </resources>
