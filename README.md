@@ -1,10 +1,20 @@
 #wall:splash for Android
-wall:splash for Android is a free open source android client for the awesome [unsplash.com](https://unsplash.com) service by [Crew](https://pickcrew.com/)
+**wall:splash** is the cutting edge wallpaper app for your device!
 
-There are already over 600 high resolution images included, and they add 10 new photos daily.
-(You can visit https://unsplash.com to download the originals and use them in your commercial projects too)
+**wall:splash** uses **Unsplash** as image source, which already features over **2000 images**.
+
+The current version includes following features:
+* over 2000 images
+* browse the images
+* material design
+* clean and minimalistic
+* many animations
+* set the wallpaper with a single click
+* set and crop the wallpaper with a long click
 
 This application was designed with the new Material Design principles in mind. It gives you a perfectly fluid user flow with simple and fresh animations. It also unleashes the full power of Android Lollipop by providing bright colors fetched out of each single wallpaper.
+
+[**Unsplash**](https://unsplash.com) (Free (do whatever you want) high-resolution photos) is a service by [crew](https://pickcrew.com/)
 
 
 #Download
