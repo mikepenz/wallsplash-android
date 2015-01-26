@@ -1,14 +1,18 @@
 package com.mikepenz.unsplash.activities;
 
 import android.animation.Animator;
+import android.annotation.TargetApi;
 import android.app.WallpaperManager;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
@@ -36,6 +40,7 @@ import com.mikepenz.unsplash.other.CustomAnimatorListener;
 import com.mikepenz.unsplash.other.CustomTransitionListener;
 import com.mikepenz.unsplash.views.Utils;
 
+import java.io.File;
 import java.io.InputStream;
 
 
@@ -100,6 +105,11 @@ public class DetailActivity extends ActionBarActivity {
         mFabButton.setScaleY(0);
         mFabButton.setImageDrawable(mDrawablePhoto);
         mFabButton.setOnClickListener(onFabButtonListener);
+
+        //just allow the longClickAction on Devices newer than api level v19
+        if (Build.VERSION.SDK_INT >= 19) {
+            mFabButton.setOnLongClickListener(onFabButtonLongListener);
+        }
 
         // Image summary card
         FrameLayout contentCard = (FrameLayout) findViewById(R.id.card_view);
@@ -176,6 +186,48 @@ public class DetailActivity extends ActionBarActivity {
         }
     };
 
+    private View.OnLongClickListener onFabButtonLongListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            if (future == null) {
+                //prepare the call
+                future = Ion.with(DetailActivity.this)
+                        .load(mSelectedImage.getHighResImage(mWallpaperWidth, mWallpaperHeight))
+                        .progressHandler(progressCallback)
+                        .asInputStream();
+
+                animateStart();
+
+                mFabButton.animate().rotationBy(360).setDuration(ANIMATION_DURATION_MEDIUM).setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        downloadAndSetImage();
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        downloadAndSetImage();
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).start();
+
+            } else {
+                animateReset();
+            }
+
+            return true;
+        }
+    };
+
     private ProgressCallback progressCallback = new ProgressCallback() {
         @Override
         public void onProgress(long downloaded, long total) {
@@ -218,6 +270,69 @@ public class DetailActivity extends ActionBarActivity {
             });
         }
     }
+
+    /**
+     *
+     */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void downloadAndSetImage() {
+        if (future != null) {
+            //set the callback and start downloading
+            future.withResponse().setCallback(new FutureCallback<Response<InputStream>>() {
+                @Override
+                public void onCompleted(Exception e, Response<InputStream> result) {
+                    boolean success = false;
+                    if (e == null && result != null && result.getResult() != null) {
+                        try {
+                            //create a temporary directory within the cache folder
+                            File dir = new File(DetailActivity.this.getCacheDir() + "/images");
+                            if (!dir.exists()) {
+                                dir.mkdirs();
+                            }
+
+                            //create the file
+                            File file = new File(dir, "unsplash.jpg");
+                            if (!file.exists()) {
+                                file.createNewFile();
+                            }
+
+                            //copy the image onto this file
+                            Utils.copyInputStreamToFile(result.getResult(), file);
+
+                            //get the contentUri for this file and start the intent
+                            Uri contentUri = FileProvider.getUriForFile(DetailActivity.this, "com.mikepenz.fileprovider", file);
+                            Intent intent = WallpaperManager.getInstance(DetailActivity.this).getCropAndSetWallpaperIntent(contentUri);
+                            //start activity for result so we can animate if we finish
+                            DetailActivity.this.startActivityForResult(intent, ACTIVITY_CROP);
+
+                            success = true;
+                        } catch (Exception ex) {
+                            Log.e("un:splash", ex.toString());
+                        }
+                    }
+
+                    //animate after complete
+                    animateComplete(success);
+                }
+            });
+        }
+    }
+
+    /**
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ACTIVITY_CROP) {
+            //animate the first elements
+            animateCompleteFirst();
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 
     /**
      * animate the start of the download
