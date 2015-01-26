@@ -1,130 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mikepenz.unsplash.views.views.ObservableScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/scroll"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clickable="true"
-    android:background="#AA000000"
-    >
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/activity_detail_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/tool_bar_top_padding"
-            android:minHeight="?attr/actionBarSize"
-            android:elevation="4dp"
-            >
-
-            <ImageView
-                android:id="@+id/activity_detail_cover"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                />
-        </android.support.v7.widget.Toolbar>
-
-        <FrameLayout
-            android:id="@+id/activity_detail_title_container"
+                android:gravity="center"
+                android:clickable="true"
+                android:background="#AA000000">
+    <com.mikepenz.unsplash.views.views.ObservableScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="128dp"
-            android:layout_below="@id/activity_detail_toolbar"
-            android:elevation="4dp"
-            android:background="#00FFFFFF"
-            >
-
-            <RelativeLayout
-                android:id="@+id/activity_detail_titles"
-                android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/activity_detail_toolbar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="48dp"
-                android:layout_marginRight="48dp"
-                android:visibility="invisible"
+                android:paddingTop="@dimen/tool_bar_top_padding"
+                android:minHeight="?attr/actionBarSize"
+                android:elevation="4dp">
+                <ImageView
+                    android:id="@+id/activity_detail_cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true"
+                    />
+            </android.support.v7.widget.Toolbar>
+
+            <FrameLayout
+                android:id="@+id/activity_detail_title_container"
+                android:layout_width="match_parent"
+                android:layout_height="128dp"
+                android:layout_below="@id/activity_detail_toolbar"
+                android:elevation="4dp"
+                android:background="#00FFFFFF"
                 >
 
-                <TextView
-                    android:id="@+id/activity_detail_title"
+                <RelativeLayout
+                    android:id="@+id/activity_detail_titles"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:ellipsize="end"
-                    android:textSize="24sp"
-                    android:maxLines="2"
-                    android:textColor="#FFF"
-                    />
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="48dp"
+                    android:layout_marginRight="48dp"
+                    android:visibility="invisible"
+                    >
 
-                <TextView
-                    android:id="@+id/activity_detail_subtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/activity_detail_title"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text=""
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:textColor="#FFF"
-                    />
+                    <TextView
+                        android:id="@+id/activity_detail_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:ellipsize="end"
+                        android:textSize="24sp"
+                        android:maxLines="2"
+                        android:textColor="#FFF"
+                        />
 
-            </RelativeLayout>
-        </FrameLayout>
+                    <TextView
+                        android:id="@+id/activity_detail_subtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/activity_detail_title"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text=""
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:textColor="#FFF"
+                        />
 
-        <com.github.lzyzsd.circleprogress.DonutProgress
-            app:donut_progress="1"
-            app:donut_unfinished_color="@color/transparent"
-            app:donut_finished_color="@color/accent_green"
-            android:id="@+id/activity_detail_progress"
-            android:layout_width="@dimen/fab_progress_size"
-            android:layout_height="@dimen/fab_progress_size"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/activity_detail_toolbar"
-            android:layout_marginRight="11dp"
-            android:layout_marginTop="-33dp"
-            android:padding="8dp"
-            android:elevation="4dp"
-            />
+                </RelativeLayout>
+            </FrameLayout>
 
-        <ImageButton
-            android:id="@+id/activity_detail_fab"
-            android:layout_width="@dimen/fab_size"
-            android:layout_height="@dimen/fab_size"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/activity_detail_toolbar"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="-28dp"
-            android:padding="8dp"
-            android:background="@drawable/animated_ripple"
-            android:elevation="4dp"
-            android:stateListAnimator="@anim/fab_animation"
-            android:transitionName="fab"
-            />
+            <com.github.lzyzsd.circleprogress.DonutProgress
+                app:donut_progress="1"
+                app:donut_unfinished_color="@color/transparent"
+                app:donut_finished_color="@color/accent_green"
+                android:id="@+id/activity_detail_progress"
+                android:layout_width="@dimen/fab_progress_size"
+                android:layout_height="@dimen/fab_progress_size"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/activity_detail_toolbar"
+                android:layout_marginRight="11dp"
+                android:layout_marginTop="-33dp"
+                android:padding="8dp"
+                android:elevation="4dp"
+                />
 
-        <FrameLayout
-            android:id="@+id/card_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_detail_toolbar"
-            android:layout_gravity="center"
-            android:layout_marginBottom="?attr/actionBarSize"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="8dp"
-            >
+            <ImageButton
+                android:id="@+id/activity_detail_fab"
+                android:layout_width="@dimen/fab_size"
+                android:layout_height="@dimen/fab_size"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/activity_detail_toolbar"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="-28dp"
+                android:padding="8dp"
+                android:background="@drawable/animated_ripple"
+                android:elevation="4dp"
+                android:stateListAnimator="@anim/fab_animation"
+                android:transitionName="fab"
+                />
 
-        </FrameLayout>
+            <FrameLayout
+                android:id="@+id/card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_detail_toolbar"
+                android:layout_gravity="center"
+                android:layout_marginBottom="?attr/actionBarSize"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="8dp"
+                >
 
-    </RelativeLayout>
-</com.mikepenz.unsplash.views.views.ObservableScrollView>
+            </FrameLayout>
 
+        </RelativeLayout>
+    </com.mikepenz.unsplash.views.views.ObservableScrollView>
+</RelativeLayout>
