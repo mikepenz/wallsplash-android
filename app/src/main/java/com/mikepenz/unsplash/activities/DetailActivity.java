@@ -59,10 +59,10 @@ public class DetailActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        findViewById(R.id.scroll).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.container).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                coolBack();
+                onBackPressed();
             }
         });
 
