@@ -40,6 +40,11 @@ import java.io.InputStream;
 
 
 public class DetailActivity extends ActionBarActivity {
+    private static final int ACTIVITY_CROP = 13451;
+
+    private static final int ANIMATION_DURATION_MEDIUM = 400;
+    private static final int ANIMATION_DURATION_LONG = 750;
+    private static final int ANIMATION_DURATION_EXTRA_LONG = 1000;
 
     private ImageView mFabButton;
     private DonutProgress mFabProgress;
@@ -53,6 +58,9 @@ public class DetailActivity extends ActionBarActivity {
 
     private ResponseFuture<InputStream> future = null;
 
+    private int mWallpaperWidth;
+    private int mWallpaperHeight;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -65,6 +73,10 @@ public class DetailActivity extends ActionBarActivity {
                 onBackPressed();
             }
         });
+
+        //get the desired wallpaper size so older phones won't die :D
+        mWallpaperWidth = WallpaperManager.getInstance(DetailActivity.this).getDesiredMinimumWidth();
+        mWallpaperHeight = WallpaperManager.getInstance(DetailActivity.this).getDesiredMinimumHeight();
 
         // Recover items from the intent
         final int position = getIntent().getIntExtra("position", 0);
@@ -88,13 +100,6 @@ public class DetailActivity extends ActionBarActivity {
         mFabButton.setScaleY(0);
         mFabButton.setImageDrawable(mDrawablePhoto);
         mFabButton.setOnClickListener(onFabButtonListener);
-        mFabButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Log.e("un:splash", "TODO");
-                return false;
-            }
-        });
 
         // Image summary card
         FrameLayout contentCard = (FrameLayout) findViewById(R.id.card_view);
@@ -111,11 +116,10 @@ public class DetailActivity extends ActionBarActivity {
 
         if (Build.VERSION.SDK_INT >= 21) {
             toolbar.setTransitionName("cover");
-
             // Add a listener to get noticed when the transition ends to animate the fab button
             getWindow().getSharedElementEnterTransition().addListener(sharedTransitionListener);
         } else {
-            Utils.showViewByScale(toolbar).setDuration(1000).start();
+            Utils.showViewByScale(toolbar).setDuration(ANIMATION_DURATION_LONG).start();
             sharedTransitionListener.onTransitionEnd(null);
 
         }
@@ -137,28 +141,15 @@ public class DetailActivity extends ActionBarActivity {
         @Override
         public void onClick(View v) {
             if (future == null) {
-                //reset progress to prevent jumping
-                mFabProgress.setProgress(0);
-
-                //get the desired wallpaper size so older phones won't die :D
-                int wallpaperWidth = WallpaperManager.getInstance(DetailActivity.this).getDesiredMinimumWidth();
-                int wallpaperHeight = WallpaperManager.getInstance(DetailActivity.this).getDesiredMinimumHeight();
-
                 //prepare the call
                 future = Ion.with(DetailActivity.this)
-                        .load(mSelectedImage.getHighResImage(wallpaperWidth, wallpaperHeight))
-                        .progressHandler(new ProgressCallback() {
-                            @Override
-                            public void onProgress(long downloaded, long total) {
-                                mFabProgress.setProgress((int) (downloaded * 100.0 / total));
-                            }
-                        })
+                        .load(mSelectedImage.getHighResImage(mWallpaperWidth, mWallpaperHeight))
+                        .progressHandler(progressCallback)
                         .asInputStream();
 
-                //some nice button animations
-                Utils.showViewByScale(mFabProgress).setDuration(500).start();
-                mFabButton.setImageDrawable(mDrawableClose);
-                mFabButton.animate().rotationBy(360).setDuration(400).setListener(new Animator.AnimatorListener() {
+                animateStart();
+
+                mFabButton.animate().rotationBy(360).setDuration(ANIMATION_DURATION_MEDIUM).setListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
 
@@ -166,12 +157,12 @@ public class DetailActivity extends ActionBarActivity {
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        downloadAndSetImage();
+                        streamAndSetImage();
                     }
 
                     @Override
                     public void onAnimationCancel(Animator animation) {
-                        downloadAndSetImage();
+                        streamAndSetImage();
                     }
 
                     @Override
@@ -179,22 +170,29 @@ public class DetailActivity extends ActionBarActivity {
 
                     }
                 }).start();
-
             } else {
-                future.cancel(true);
-                future = null;
-
-                //animating everything back to default :D
-                Utils.hideViewByScaleXY(mFabProgress).setDuration(500).start();
-                //Utils.animateViewElevation(mFabButton, 0, mElavationPx);
-                mFabButton.setImageDrawable(mDrawablePhoto);
-                mFabButton.animate().rotationBy(360).setDuration(400).start();
+                animateReset();
             }
         }
     };
 
+    private ProgressCallback progressCallback = new ProgressCallback() {
+        @Override
+        public void onProgress(long downloaded, long total) {
+            int progress = (int) (downloaded * 100.0 / total);
+            if (progress < 1) {
+                progress = progress + 1;
+            }
 
-    private void downloadAndSetImage() {
+            mFabProgress.setProgress(progress);
+        }
+    };
+
+    /**
+     * download an InputStream of the image and set as Wallpaper
+     * Animate
+     */
+    private void streamAndSetImage() {
         if (future != null) {
             //set the callback and start downloading
             future.withResponse().setCallback(new FutureCallback<Response<InputStream>>() {
@@ -205,38 +203,83 @@ public class DetailActivity extends ActionBarActivity {
                         try {
                             WallpaperManager.getInstance(DetailActivity.this).setStream(result.getResult());
 
-                            //some nice animations so the user knows the wallpaper was set properly
-                            mFabButton.animate().rotationBy(720).setDuration(700).start();
-                            mFabButton.setImageDrawable(mDrawableSuccess);
-
-                            //animate the butotn to green. just do it the first time
-                            if (mFabButton.getTag() == null) {
-                                TransitionDrawable transition = (TransitionDrawable) mFabButton.getBackground();
-                                transition.startTransition(500);
-                                mFabButton.setTag("");
-                            }
+                            //animate the first elements
+                            animateCompleteFirst();
 
                             success = true;
                         } catch (Exception ex) {
                             Log.e("un:splash", ex.toString());
                         }
-                    }
 
-                    //hide the progress again :D
-                    Utils.hideViewByScaleXY(mFabProgress).setDuration(500).start();
-
-                    // if we were not successful remove the x again :D
-                    if (!success) {
-                        //Utils.animateViewElevation(mFabButton, 0, mElavationPx);
-                        mFabButton.setImageDrawable(mDrawablePhoto);
-                        mFabButton.animate().rotationBy(360).setDuration(400).start();
+                        //animate after complete
+                        animateComplete(success);
                     }
-                    future = null;
                 }
             });
         }
     }
 
+    /**
+     * animate the start of the download
+     */
+    private void animateStart() {
+        //reset progress to prevent jumping
+        mFabProgress.setProgress(0);
+
+        //some nice button animations
+        Utils.showViewByScale(mFabProgress).setDuration(ANIMATION_DURATION_MEDIUM).start();
+        mFabProgress.setProgress(1);
+
+        mFabButton.setImageDrawable(mDrawableClose);
+    }
+
+    /**
+     * animate the reset of the view
+     */
+    private void animateReset() {
+        future.cancel(true);
+        future = null;
+
+        //animating everything back to default :D
+        Utils.hideViewByScaleXY(mFabProgress).setDuration(ANIMATION_DURATION_MEDIUM).start();
+        //Utils.animateViewElevation(mFabButton, 0, mElavationPx);
+        mFabButton.setImageDrawable(mDrawablePhoto);
+        mFabButton.animate().rotationBy(360).setDuration(ANIMATION_DURATION_MEDIUM).start();
+    }
+
+    /**
+     * animate the first parts of the UI after the download has successfully finished
+     */
+    private void animateCompleteFirst() {
+        //some nice animations so the user knows the wallpaper was set properly
+        mFabButton.animate().rotationBy(720).setDuration(ANIMATION_DURATION_EXTRA_LONG).start();
+        mFabButton.setImageDrawable(mDrawableSuccess);
+
+        //animate the butotn to green. just do it the first time
+        if (mFabButton.getTag() == null) {
+            TransitionDrawable transition = (TransitionDrawable) mFabButton.getBackground();
+            transition.startTransition(ANIMATION_DURATION_LONG);
+            mFabButton.setTag("");
+        }
+    }
+
+    /**
+     * finish the animations of the ui after the download is complete. reset the button to the start
+     *
+     * @param success
+     */
+    private void animateComplete(boolean success) {
+        //hide the progress again :D
+        Utils.hideViewByScaleXY(mFabProgress).setDuration(ANIMATION_DURATION_MEDIUM).start();
+
+        // if we were not successful remove the x again :D
+        if (!success) {
+            //Utils.animateViewElevation(mFabButton, 0, mElavationPx);
+            mFabButton.setImageDrawable(mDrawablePhoto);
+            mFabButton.animate().rotationBy(360).setDuration(ANIMATION_DURATION_MEDIUM).start();
+        }
+        future = null;
+    }
 
     /**
      * I use a listener to get notified when the enter transition ends, and with that notifications
@@ -275,12 +318,65 @@ public class DetailActivity extends ActionBarActivity {
         }
     };
 
+    /**
+     * @param titleTextColor
+     * @param rgb
+     */
+    private void setColors(int titleTextColor, int rgb) {
+        mTitleContainer.setBackgroundColor(rgb);
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(titleTextColor);
+        }
+        //getWindow().setNavigationBarColor(vibrantSwatch.getRgb());
+
+        //TextView summaryTitle = (TextView) findViewById(R.id.activity_detail_summary_title);
+        //summaryTitle.setTextColor(vibrantSwatch.getRgb());
+
+        TextView titleTV = (TextView) mTitleContainer.findViewById(R.id.activity_detail_title);
+        titleTV.setTextColor(titleTextColor);
+        titleTV.setText(mSelectedImage.getAuthor());
+
+        TextView subtitleTV = (TextView) mTitleContainer.findViewById(R.id.activity_detail_subtitle);
+        subtitleTV.setTextColor(titleTextColor);
+        subtitleTV.setText(mSelectedImage.getReadableModified_Date());
+
+        ((TextView) mTitleContainer.findViewById(R.id.activity_detail_subtitle))
+                .setTextColor(titleTextColor);
+    }
+
+    /**
+     *
+     */
+    private Palette.PaletteAsyncListener paletteListener = new Palette.PaletteAsyncListener() {
+
+        @Override
+        public void onGenerated(Palette palette) {
+
+            Palette.Swatch s = palette.getVibrantSwatch();
+            if (s == null) {
+                s = palette.getDarkVibrantSwatch();
+            }
+            if (s == null) {
+                s = palette.getLightVibrantSwatch();
+            }
+            if (s == null) {
+                s = palette.getMutedSwatch();
+            }
+
+            if (s != null) {
+                setColors(s.getTitleTextColor(), s.getRgb());
+            }
+        }
+    };
+
+
     @Override
     public void onBackPressed() {
 
         ViewPropertyAnimator hideTitleAnimator = Utils.hideViewByScaleXY(mFabButton);
-        hideTitleAnimator.setDuration(500);
-        Utils.hideViewByScaleXY(mFabProgress).setDuration(500).start();
+        hideTitleAnimator.setDuration(ANIMATION_DURATION_MEDIUM);
+        Utils.hideViewByScaleXY(mFabProgress).setDuration(ANIMATION_DURATION_MEDIUM).start();
 
         mTitlesContainer.startAnimation(AnimationUtils.loadAnimation(DetailActivity.this, R.anim.alpha_off));
         mTitlesContainer.setVisibility(View.INVISIBLE);
@@ -308,51 +404,9 @@ public class DetailActivity extends ActionBarActivity {
         hideTitleAnimator.start();
     }
 
-    private Palette.PaletteAsyncListener paletteListener = new Palette.PaletteAsyncListener() {
-
-        @Override
-        public void onGenerated(Palette palette) {
-
-            Palette.Swatch s = palette.getVibrantSwatch();
-            if (s == null) {
-                s = palette.getDarkVibrantSwatch();
-            }
-            if (s == null) {
-                s = palette.getLightVibrantSwatch();
-            }
-            if (s == null) {
-                s = palette.getMutedSwatch();
-            }
-
-            if (s != null) {
-                setColors(s.getTitleTextColor(), s.getRgb());
-            }
-        }
-    };
-
-    private void setColors(int titleTextColor, int rgb) {
-        mTitleContainer.setBackgroundColor(rgb);
-
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(titleTextColor);
-        }
-        //getWindow().setNavigationBarColor(vibrantSwatch.getRgb());
-
-        //TextView summaryTitle = (TextView) findViewById(R.id.activity_detail_summary_title);
-        //summaryTitle.setTextColor(vibrantSwatch.getRgb());
-
-        TextView titleTV = (TextView) mTitleContainer.findViewById(R.id.activity_detail_title);
-        titleTV.setTextColor(titleTextColor);
-        titleTV.setText(mSelectedImage.getAuthor());
-
-        TextView subtitleTV = (TextView) mTitleContainer.findViewById(R.id.activity_detail_subtitle);
-        subtitleTV.setTextColor(titleTextColor);
-        subtitleTV.setText(mSelectedImage.getReadableModified_Date());
-
-        ((TextView) mTitleContainer.findViewById(R.id.activity_detail_subtitle))
-                .setTextColor(titleTextColor);
-    }
-
+    /**
+     *
+     */
     private void coolBack() {
         try {
             super.onBackPressed();
