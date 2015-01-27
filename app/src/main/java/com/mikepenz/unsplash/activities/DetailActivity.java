@@ -162,7 +162,34 @@ public class DetailActivity extends ActionBarActivity {
     private View.OnClickListener onFabShareButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (future == null) {
+                //prepare the call
+                future = Ion.with(DetailActivity.this)
+                        .load(mSelectedImage.getHighResImage(mWallpaperWidth, mWallpaperHeight))
+                        .progressHandler(progressCallback)
+                        .asInputStream();
 
+                //hide the share fab
+                mFabShareButton.animate().translationY(0).setDuration(ANIMATION_DURATION_MEDIUM).start();
+
+                animateStart();
+
+                mFabButton.animate().rotationBy(360).setDuration(ANIMATION_DURATION_MEDIUM).setListener(new CustomAnimatorListener() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        downloadAndSetOrShareImage(false);
+                        super.onAnimationEnd(animation);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        downloadAndSetOrShareImage(false);
+                        super.onAnimationCancel(animation);
+                    }
+                }).start();
+            } else {
+                animateReset();
+            }
         }
     };
 
@@ -304,9 +331,21 @@ public class DetailActivity extends ActionBarActivity {
 
                             //get the contentUri for this file and start the intent
                             Uri contentUri = FileProvider.getUriForFile(DetailActivity.this, "com.mikepenz.fileprovider", file);
-                            Intent intent = WallpaperManager.getInstance(DetailActivity.this).getCropAndSetWallpaperIntent(contentUri);
-                            //start activity for result so we can animate if we finish
-                            DetailActivity.this.startActivityForResult(intent, ACTIVITY_CROP);
+
+                            if (set) {
+                                //get crop intent
+                                Intent intent = WallpaperManager.getInstance(DetailActivity.this).getCropAndSetWallpaperIntent(contentUri);
+                                //start activity for result so we can animate if we finish
+                                DetailActivity.this.startActivityForResult(intent, ACTIVITY_CROP);
+                            } else {
+                                //share :D
+                                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                                shareIntent.setData(contentUri);
+                                shareIntent.setType("image/jpg");
+                                shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+                                //start activity for result so we can animate if we finish
+                                DetailActivity.this.startActivityForResult(Intent.createChooser(shareIntent, "Share Via"), ACTIVITY_SHARE);
+                            }
 
                             success = true;
                         } catch (Exception ex) {
