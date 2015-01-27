@@ -178,8 +178,10 @@ public class ImagesFragment extends Fragment {
                 fetchFeaturedImages();
             }
         } else if (id == R.id.action_shuffle) {
-            Collections.shuffle(mImages);
-            mImageAdapter.notifyDataSetChanged();
+            if (mImages != null) {
+                Collections.shuffle(mImages);
+                mImageAdapter.notifyDataSetChanged();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
