@@ -5,7 +5,7 @@
     <dimen name="grid_column_width">200dp</dimen>
 
     <dimen name="fab_size">56dp</dimen>
-    <dimen name="fab_progress_size">66dp</dimen>
+    <dimen name="fab_progress_size">68dp</dimen>
 
     <!-- Toolbar Padding -->
     <dimen name="tool_bar_top_padding">0dp</dimen>

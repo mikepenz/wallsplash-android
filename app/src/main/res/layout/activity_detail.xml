@@ -79,7 +79,7 @@
 
             <com.github.lzyzsd.circleprogress.DonutProgress
                 app:donut_progress="1"
-                app:donut_unfinished_color="@color/transparent"
+                app:donut_unfinished_color="@color/unfinished_progress"
                 app:donut_finished_color="@color/accent_green"
                 android:id="@+id/activity_detail_progress"
                 android:layout_width="@dimen/fab_progress_size"
@@ -87,8 +87,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/activity_detail_toolbar"
-                android:layout_marginRight="11dp"
-                android:layout_marginTop="-33dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="-34dp"
                 android:padding="8dp"
                 android:elevation="4dp"
                 />
