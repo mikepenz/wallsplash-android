@@ -370,6 +370,8 @@ public class DetailActivity extends ActionBarActivity {
         //Utils.animateViewElevation(mFabButton, 0, mElavationPx);
         mFabButton.setImageDrawable(mDrawablePhoto);
         mFabButton.animate().rotationBy(360).setDuration(ANIMATION_DURATION_MEDIUM).start();
+
+        mFabShareButton.animate().translationY(Utils.pxFromDp(DetailActivity.this, 64)).setDuration(ANIMATION_DURATION_MEDIUM).start();
     }
 
     /**
@@ -397,6 +399,9 @@ public class DetailActivity extends ActionBarActivity {
         //hide the progress again :D
         Utils.hideViewByScaleXY(mFabProgress).setDuration(ANIMATION_DURATION_MEDIUM).start();
         mProgressFabAnimation.cancel();
+
+        //show the fab again ;)
+        mFabShareButton.animate().translationY(Utils.pxFromDp(DetailActivity.this, 64)).setDuration(ANIMATION_DURATION_MEDIUM).start();
 
         // if we were not successful remove the x again :D
         if (!success) {
@@ -443,7 +448,7 @@ public class DetailActivity extends ActionBarActivity {
                             .setDuration(ANIMATION_DURATION_MEDIUM * 2)
                             .start();
                     mFabShareButton.animate()
-                            .translationYBy(Utils.pxFromDp(DetailActivity.this, 64))
+                            .translationY(Utils.pxFromDp(DetailActivity.this, 64))
                             .setStartDelay(ANIMATION_DURATION_MEDIUM)
                             .setDuration(ANIMATION_DURATION_MEDIUM)
                             .start();
@@ -511,7 +516,7 @@ public class DetailActivity extends ActionBarActivity {
     public void onBackPressed() {
         //move the share fab below the normal fab (64 because this is the margin top + the half
         mFabShareButton.animate()
-                .translationYBy((-1) * Utils.pxFromDp(this, 64))
+                .translationY(0)
                 .setDuration(ANIMATION_DURATION_MEDIUM)
                 .setListener(new CustomAnimatorListener() {
                     @Override
