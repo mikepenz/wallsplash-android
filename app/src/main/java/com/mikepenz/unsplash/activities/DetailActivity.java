@@ -129,6 +129,10 @@ public class DetailActivity extends ActionBarActivity {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.activity_detail_toolbar);
         Bitmap imageCoverBitmap = ImagesFragment.photoCache.get(position);
         toolbar.setBackground(new BitmapDrawable(getResources(), imageCoverBitmap));
+        setSupportActionBar(toolbar);
+
+        //override text
+        setTitle("");
 
         if (Build.VERSION.SDK_INT >= 21) {
             toolbar.setTransitionName("cover");
