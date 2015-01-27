@@ -3,6 +3,7 @@ package com.mikepenz.unsplash.views;
 import android.animation.ArgbEvaluator;
 import android.animation.FloatEvaluator;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
@@ -76,12 +77,22 @@ public class Utils {
         return propertyAnimator;
     }
 
+    public static float dpFromPx(Context context, float px) {
+        return px / context.getResources().getDisplayMetrics().density;
+    }
+
+    public static float pxFromDp(Context context, float dp) {
+        return dp * context.getResources().getDisplayMetrics().density;
+    }
+
+
     /**
      * http://stackoverflow.com/questions/10854211/android-store-inputstream-in-file
      *
      * @param in
      * @param file
      */
+
     public static void copyInputStreamToFile(InputStream in, File file) {
         try {
             OutputStream out = new FileOutputStream(file);
