@@ -20,7 +20,10 @@ import android.transition.Transition;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -65,6 +68,9 @@ public class DetailActivity extends ActionBarActivity {
 
     private int mWallpaperWidth;
     private int mWallpaperHeight;
+
+    private Animation mProgressFabAnimation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -345,6 +351,13 @@ public class DetailActivity extends ActionBarActivity {
         Utils.showViewByScale(mFabProgress).setDuration(ANIMATION_DURATION_MEDIUM).start();
         mFabProgress.setProgress(1);
 
+        mProgressFabAnimation = new RotateAnimation(0.0f, 360.0f, mFabProgress.getWidth() / 2, mFabProgress.getHeight() / 2);
+        mProgressFabAnimation.setDuration(ANIMATION_DURATION_EXTRA_LONG * 2);
+        mProgressFabAnimation.setInterpolator(new LinearInterpolator());
+        mProgressFabAnimation.setRepeatCount(Animation.INFINITE);
+        mProgressFabAnimation.setRepeatMode(-1);
+        mFabProgress.startAnimation(mProgressFabAnimation);
+
         mFabButton.setImageDrawable(mDrawableClose);
     }
 
@@ -357,6 +370,7 @@ public class DetailActivity extends ActionBarActivity {
 
         //animating everything back to default :D
         Utils.hideViewByScaleXY(mFabProgress).setDuration(ANIMATION_DURATION_MEDIUM).start();
+        mProgressFabAnimation.cancel();
         //Utils.animateViewElevation(mFabButton, 0, mElavationPx);
         mFabButton.setImageDrawable(mDrawablePhoto);
         mFabButton.animate().rotationBy(360).setDuration(ANIMATION_DURATION_MEDIUM).start();
@@ -386,6 +400,7 @@ public class DetailActivity extends ActionBarActivity {
     private void animateComplete(boolean success) {
         //hide the progress again :D
         Utils.hideViewByScaleXY(mFabProgress).setDuration(ANIMATION_DURATION_MEDIUM).start();
+        mProgressFabAnimation.cancel();
 
         // if we were not successful remove the x again :D
         if (!success) {
