@@ -355,6 +355,20 @@ public class DetailActivity extends ActionBarActivity {
         mFabProgress.startAnimation(mProgressFabAnimation);
 
         mFabButton.setImageDrawable(mDrawableClose);
+
+
+        //animate the button back to blue. just do it the first time
+        if (mFabButton.getTag() != null) {
+            TransitionDrawable transition = (TransitionDrawable) mFabButton.getBackground();
+            transition.reverseTransition(ANIMATION_DURATION_LONG);
+            mFabButton.setTag(null);
+        }
+
+        if (mFabShareButton.getTag() != null) {
+            TransitionDrawable transition = (TransitionDrawable) mFabShareButton.getBackground();
+            transition.reverseTransition(ANIMATION_DURATION_LONG);
+            mFabShareButton.setTag(null);
+        }
     }
 
     /**
@@ -387,6 +401,12 @@ public class DetailActivity extends ActionBarActivity {
             TransitionDrawable transition = (TransitionDrawable) mFabButton.getBackground();
             transition.startTransition(ANIMATION_DURATION_LONG);
             mFabButton.setTag("");
+        }
+
+        if (mFabShareButton.getTag() == null) {
+            TransitionDrawable transition = (TransitionDrawable) mFabShareButton.getBackground();
+            transition.startTransition(ANIMATION_DURATION_LONG);
+            mFabShareButton.setTag("");
         }
     }
 
