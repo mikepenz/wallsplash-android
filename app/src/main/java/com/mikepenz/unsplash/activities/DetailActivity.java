@@ -24,7 +24,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,11 +49,12 @@ import java.io.InputStream;
 public class DetailActivity extends ActionBarActivity {
     private static final int ACTIVITY_CROP = 13451;
 
-    private static final int ANIMATION_DURATION_MEDIUM = 400;
-    private static final int ANIMATION_DURATION_LONG = 750;
-    private static final int ANIMATION_DURATION_EXTRA_LONG = 1000;
+    private static final int ANIMATION_DURATION_MEDIUM = 300;
+    private static final int ANIMATION_DURATION_LONG = 450;
+    private static final int ANIMATION_DURATION_EXTRA_LONG = 850;
 
     private ImageView mFabButton;
+    private ImageView mFabShareButton;
     private DonutProgress mFabProgress;
     private View mTitleContainer;
     private View mTitlesContainer;
@@ -111,15 +111,17 @@ public class DetailActivity extends ActionBarActivity {
         mFabButton.setScaleY(0);
         mFabButton.setImageDrawable(mDrawablePhoto);
         mFabButton.setOnClickListener(onFabButtonListener);
-
         //just allow the longClickAction on Devices newer than api level v19
         if (Build.VERSION.SDK_INT >= 19) {
             mFabButton.setOnLongClickListener(onFabButtonLongListener);
         }
 
-        // Image summary card
-        FrameLayout contentCard = (FrameLayout) findViewById(R.id.card_view);
-        Utils.configuredHideYView(contentCard);
+        // Fab share button
+        mFabShareButton = (ImageView) findViewById(R.id.activity_detail_fab_share);
+        mFabShareButton.setScaleX(0);
+        mFabShareButton.setScaleY(0);
+        mFabShareButton.setImageDrawable(new IconicsDrawable(this, FontAwesome.Icon.faw_share).color(Color.WHITE).sizeDp(16));
+        mFabShareButton.setOnClickListener(onFabShareButtonListener);
 
         // Title container
         mTitleContainer = findViewById(R.id.activity_detail_title_container);
@@ -156,6 +158,12 @@ public class DetailActivity extends ActionBarActivity {
         }
     }
 
+    private View.OnClickListener onFabShareButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
 
     private View.OnClickListener onFabButtonListener = new View.OnClickListener() {
         @Override
@@ -169,25 +177,17 @@ public class DetailActivity extends ActionBarActivity {
 
                 animateStart();
 
-                mFabButton.animate().rotationBy(360).setDuration(ANIMATION_DURATION_MEDIUM).setListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-
-                    }
-
+                mFabButton.animate().rotationBy(360).setDuration(ANIMATION_DURATION_MEDIUM).setListener(new CustomAnimatorListener() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         streamAndSetImage();
+                        super.onAnimationEnd(animation);
                     }
 
                     @Override
                     public void onAnimationCancel(Animator animation) {
                         streamAndSetImage();
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-
+                        super.onAnimationCancel(animation);
                     }
                 }).start();
             } else {
@@ -208,25 +208,17 @@ public class DetailActivity extends ActionBarActivity {
 
                 animateStart();
 
-                mFabButton.animate().rotationBy(360).setDuration(ANIMATION_DURATION_MEDIUM).setListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-
-                    }
-
+                mFabButton.animate().rotationBy(360).setDuration(ANIMATION_DURATION_MEDIUM).setListener(new CustomAnimatorListener() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         downloadAndSetImage();
+                        super.onAnimationEnd(animation);
                     }
 
                     @Override
                     public void onAnimationCancel(Animator animation) {
                         downloadAndSetImage();
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-
+                        super.onAnimationCancel(animation);
                     }
                 }).start();
 
@@ -443,8 +435,18 @@ public class DetailActivity extends ActionBarActivity {
                     mTitlesContainer.startAnimation(AnimationUtils.loadAnimation(DetailActivity.this, R.anim.alpha_on));
                     mTitlesContainer.setVisibility(View.VISIBLE);
 
-                    Utils.showViewByScale(mFabButton).start();
-                    //Utils.showViewByScale(imageInfoLayout).start();
+                    //animate the fab
+                    Utils.showViewByScale(mFabButton).setDuration(ANIMATION_DURATION_MEDIUM).start();
+
+                    //animate the share fab
+                    Utils.showViewByScale(mFabShareButton)
+                            .setDuration(ANIMATION_DURATION_MEDIUM * 2)
+                            .start();
+                    mFabShareButton.animate()
+                            .translationYBy(Utils.pxFromDp(DetailActivity.this, 64))
+                            .setStartDelay(ANIMATION_DURATION_MEDIUM)
+                            .setDuration(ANIMATION_DURATION_MEDIUM)
+                            .start();
                 }
             });
 
@@ -507,35 +509,54 @@ public class DetailActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-
-        ViewPropertyAnimator hideTitleAnimator = Utils.hideViewByScaleXY(mFabButton);
-        hideTitleAnimator.setDuration(ANIMATION_DURATION_MEDIUM);
-        Utils.hideViewByScaleXY(mFabProgress).setDuration(ANIMATION_DURATION_MEDIUM).start();
-
-        mTitlesContainer.startAnimation(AnimationUtils.loadAnimation(DetailActivity.this, R.anim.alpha_off));
-        mTitlesContainer.setVisibility(View.INVISIBLE);
-
-        //Utils.hideViewByScaleY(imageInfoLayout);
-
-        hideTitleAnimator.setListener(new CustomAnimatorListener() {
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-
-                ViewPropertyAnimator hideFabAnimator = Utils.hideViewByScaleY(mTitleContainer);
-                hideFabAnimator.setListener(new CustomAnimatorListener() {
-
+        //move the share fab below the normal fab (64 because this is the margin top + the half
+        mFabShareButton.animate()
+                .translationYBy((-1) * Utils.pxFromDp(this, 64))
+                .setDuration(ANIMATION_DURATION_MEDIUM)
+                .setListener(new CustomAnimatorListener() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
+                        //create the fab animation and hide fabProgress animation, set an delay so those will hide after the shareFab is below the main fab
+                        ViewPropertyAnimator hideFabAnimator = Utils.hideViewByScaleXY(mFabButton)
+                                .setDuration(ANIMATION_DURATION_MEDIUM);
+
+                        Utils.hideViewByScaleXY(mFabShareButton)
+                                .setDuration(ANIMATION_DURATION_MEDIUM)
+                                .start();
+                        Utils.hideViewByScaleXY(mFabProgress)
+                                .setDuration(ANIMATION_DURATION_MEDIUM)
+                                .start();
+
+                        /*
+                        mTitlesContainer.startAnimation(AnimationUtils.loadAnimation(DetailActivity.this, R.anim.alpha_off));
+                        mTitlesContainer.setVisibility(View.INVISIBLE);
+                        */
+
+                        //add listener so we can react after the animation is finished
+                        hideFabAnimator.setListener(new CustomAnimatorListener() {
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+
+                                ViewPropertyAnimator hideFabAnimator = Utils.hideViewByScaleY(mTitleContainer);
+                                hideFabAnimator.setListener(new CustomAnimatorListener() {
+
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+
+                                        super.onAnimationEnd(animation);
+                                        coolBack();
+                                    }
+                                });
+                            }
+                        });
+
+                        hideFabAnimator.start();
 
                         super.onAnimationEnd(animation);
-                        coolBack();
                     }
-                });
-            }
-        });
-
-        hideTitleAnimator.start();
+                })
+                .start();
     }
 
     /**
