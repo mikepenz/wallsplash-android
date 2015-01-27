@@ -174,7 +174,7 @@ public class DetailActivity extends ActionBarActivity {
 
                 animateStart();
 
-                mFabButton.animate().rotationBy(360).setDuration(ANIMATION_DURATION_MEDIUM).setListener(new CustomAnimatorListener() {
+                mFabButton.animate().rotation(360).setDuration(ANIMATION_DURATION_LONG).setListener(new CustomAnimatorListener() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         downloadAndSetOrShareImage(false);
@@ -205,7 +205,7 @@ public class DetailActivity extends ActionBarActivity {
 
                 animateStart();
 
-                mFabButton.animate().rotationBy(360).setDuration(ANIMATION_DURATION_MEDIUM).setListener(new CustomAnimatorListener() {
+                mFabButton.animate().rotation(360).setDuration(ANIMATION_DURATION_LONG).setListener(new CustomAnimatorListener() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         streamAndSetImage();
@@ -236,7 +236,7 @@ public class DetailActivity extends ActionBarActivity {
 
                 animateStart();
 
-                mFabButton.animate().rotationBy(360).setDuration(ANIMATION_DURATION_MEDIUM).setListener(new CustomAnimatorListener() {
+                mFabButton.animate().rotation(360).setDuration(ANIMATION_DURATION_LONG).setListener(new CustomAnimatorListener() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         downloadAndSetOrShareImage(true);
@@ -401,7 +401,6 @@ public class DetailActivity extends ActionBarActivity {
 
         mFabButton.setImageDrawable(mDrawableClose);
 
-
         //animate the button back to blue. just do it the first time
         if (mFabButton.getTag() != null) {
             TransitionDrawable transition = (TransitionDrawable) mFabButton.getBackground();
@@ -428,7 +427,7 @@ public class DetailActivity extends ActionBarActivity {
         mProgressFabAnimation.cancel();
         //Utils.animateViewElevation(mFabButton, 0, mElavationPx);
         mFabButton.setImageDrawable(mDrawablePhoto);
-        mFabButton.animate().rotationBy(360).setDuration(ANIMATION_DURATION_MEDIUM).start();
+        mFabButton.animate().rotation(360).setDuration(ANIMATION_DURATION_MEDIUM).start();
 
         mFabShareButton.animate().translationY(Utils.pxFromDp(DetailActivity.this, 64)).setDuration(ANIMATION_DURATION_MEDIUM).start();
     }
@@ -438,7 +437,7 @@ public class DetailActivity extends ActionBarActivity {
      */
     private void animateCompleteFirst(boolean success) {
         //some nice animations so the user knows the wallpaper was set properly
-        mFabButton.animate().rotationBy(720).setDuration(ANIMATION_DURATION_EXTRA_LONG).start();
+        mFabButton.animate().rotation(720).setDuration(ANIMATION_DURATION_EXTRA_LONG).start();
         mFabButton.setImageDrawable(mDrawableSuccess);
 
         //animate the button to green. just do it the first time
@@ -472,7 +471,7 @@ public class DetailActivity extends ActionBarActivity {
         if (!success) {
             //Utils.animateViewElevation(mFabButton, 0, mElavationPx);
             mFabButton.setImageDrawable(mDrawablePhoto);
-            mFabButton.animate().rotationBy(360).setDuration(ANIMATION_DURATION_MEDIUM).start();
+            mFabButton.animate().rotation(360).setDuration(ANIMATION_DURATION_MEDIUM).start();
         }
         future = null;
     }
