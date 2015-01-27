@@ -48,6 +48,7 @@ import java.io.InputStream;
 
 public class DetailActivity extends ActionBarActivity {
     private static final int ACTIVITY_CROP = 13451;
+    private static final int ACTIVITY_SHARE = 13452;
 
     private static final int ANIMATION_DURATION_MEDIUM = 300;
     private static final int ANIMATION_DURATION_LONG = 450;
@@ -211,13 +212,13 @@ public class DetailActivity extends ActionBarActivity {
                 mFabButton.animate().rotationBy(360).setDuration(ANIMATION_DURATION_MEDIUM).setListener(new CustomAnimatorListener() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        downloadAndSetImage();
+                        downloadAndSetOrShareImage(true);
                         super.onAnimationEnd(animation);
                     }
 
                     @Override
                     public void onAnimationCancel(Animator animation) {
-                        downloadAndSetImage();
+                        downloadAndSetOrShareImage(true);
                         super.onAnimationCancel(animation);
                     }
                 }).start();
@@ -258,7 +259,7 @@ public class DetailActivity extends ActionBarActivity {
                             WallpaperManager.getInstance(DetailActivity.this).setStream(result.getResult());
 
                             //animate the first elements
-                            animateCompleteFirst();
+                            animateCompleteFirst(true);
 
                             success = true;
                         } catch (Exception ex) {
@@ -277,7 +278,7 @@ public class DetailActivity extends ActionBarActivity {
      *
      */
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    private void downloadAndSetImage() {
+    private void downloadAndSetOrShareImage(final boolean set) {
         if (future != null) {
             //set the callback and start downloading
             future.withResponse().setCallback(new FutureCallback<Response<InputStream>>() {
@@ -327,9 +328,14 @@ public class DetailActivity extends ActionBarActivity {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        boolean success = resultCode == -1;
+
         if (requestCode == ACTIVITY_CROP) {
             //animate the first elements
-            animateCompleteFirst();
+            animateCompleteFirst(success);
+        } else if (requestCode == ACTIVITY_SHARE) {
+            //animate the first elements
+            animateCompleteFirst(success);
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -391,12 +397,12 @@ public class DetailActivity extends ActionBarActivity {
     /**
      * animate the first parts of the UI after the download has successfully finished
      */
-    private void animateCompleteFirst() {
+    private void animateCompleteFirst(boolean success) {
         //some nice animations so the user knows the wallpaper was set properly
         mFabButton.animate().rotationBy(720).setDuration(ANIMATION_DURATION_EXTRA_LONG).start();
         mFabButton.setImageDrawable(mDrawableSuccess);
 
-        //animate the butotn to green. just do it the first time
+        //animate the button to green. just do it the first time
         if (mFabButton.getTag() == null) {
             TransitionDrawable transition = (TransitionDrawable) mFabButton.getBackground();
             transition.startTransition(ANIMATION_DURATION_LONG);
