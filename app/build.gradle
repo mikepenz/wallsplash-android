@@ -68,7 +68,7 @@ dependencies {
     compile 'com.github.lzyzsd:circleprogress:1.0.1@aar'
 
     compile 'com.mikepenz.iconics:library:0.7.1@aar'
-    compile('com.mikepenz.aboutlibraries:library:4.5.0@aar') {
+    compile('com.mikepenz.aboutlibraries:library:4.5.1@aar') {
         transitive = true
     }
 }
