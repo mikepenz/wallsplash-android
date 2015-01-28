@@ -64,6 +64,7 @@ public class DetailActivity extends ActionBarActivity {
     private Drawable mDrawablePhoto;
     private Drawable mDrawableClose;
     private Drawable mDrawableSuccess;
+    private Drawable mDrawableError;
 
     private ResponseFuture<InputStream> future = null;
 
@@ -97,6 +98,7 @@ public class DetailActivity extends ActionBarActivity {
         mDrawablePhoto = new IconicsDrawable(this, FontAwesome.Icon.faw_photo).color(Color.WHITE).sizeDp(24);
         mDrawableClose = new IconicsDrawable(this, FontAwesome.Icon.faw_close).color(Color.WHITE).sizeDp(24);
         mDrawableSuccess = new IconicsDrawable(this, FontAwesome.Icon.faw_check).color(Color.WHITE).sizeDp(24);
+        mDrawableError = new IconicsDrawable(this, FontAwesome.Icon.faw_exclamation).color(Color.WHITE).sizeDp(24);
 
         mTitlesContainer = findViewById(R.id.activity_detail_titles);
 
@@ -188,7 +190,7 @@ public class DetailActivity extends ActionBarActivity {
                     }
                 }).start();
             } else {
-                animateReset();
+                animateReset(false);
             }
         }
     };
@@ -219,7 +221,7 @@ public class DetailActivity extends ActionBarActivity {
                     }
                 }).start();
             } else {
-                animateReset();
+                animateReset(false);
             }
         }
     };
@@ -251,7 +253,7 @@ public class DetailActivity extends ActionBarActivity {
                 }).start();
 
             } else {
-                animateReset();
+                animateReset(false);
             }
 
             return true;
@@ -295,6 +297,8 @@ public class DetailActivity extends ActionBarActivity {
 
                         //animate after complete
                         animateComplete(success);
+                    } else {
+                        animateReset(true);
                     }
                 }
             });
@@ -351,10 +355,12 @@ public class DetailActivity extends ActionBarActivity {
                         } catch (Exception ex) {
                             Log.e("un:splash", ex.toString());
                         }
-                    }
 
-                    //animate after complete
-                    animateComplete(success);
+                        //animate after complete
+                        animateComplete(success);
+                    } else {
+                        animateReset(true);
+                    }
                 }
             });
         }
@@ -418,7 +424,7 @@ public class DetailActivity extends ActionBarActivity {
     /**
      * animate the reset of the view
      */
-    private void animateReset() {
+    private void animateReset(boolean error) {
         future.cancel(true);
         future = null;
 
@@ -426,7 +432,13 @@ public class DetailActivity extends ActionBarActivity {
         Utils.hideViewByScaleXY(mFabProgress).setDuration(ANIMATION_DURATION_MEDIUM).start();
         mProgressFabAnimation.cancel();
         //Utils.animateViewElevation(mFabButton, 0, mElavationPx);
-        mFabButton.setImageDrawable(mDrawablePhoto);
+
+        if (error) {
+            mFabButton.setImageDrawable(mDrawableError);
+        } else {
+            mFabButton.setImageDrawable(mDrawablePhoto);
+        }
+
         mFabButton.animate().rotation(360).setDuration(ANIMATION_DURATION_MEDIUM).start();
 
         mFabShareButton.animate().translationY(Utils.pxFromDp(DetailActivity.this, 64)).setDuration(ANIMATION_DURATION_MEDIUM).start();
