@@ -12,6 +12,16 @@
     <string name="dialog_setting_title">Downloading</string>
     <string name="dialog_setting_text">Please wait while the high-res version of your wallpaper is downloading. It will be ready shortly&#8230;</string>
 
+
+    <!-- network exceptions -->
+    <string name="error_network">No connection</string>
+    <string name="error_network_subtitle">It seems you have no network connection.</string>
+    <string name="error_server">Server Exception</string>
+    <string name="error_server_subtitle">The server returned an exception.</string>
+    <string name="error_uncommon">WTF?!</string>
+    <string name="error_uncommon_subtitle">There was an exception which should not happen!</string>
+
+
     <!-- about this app -->
     <string name="aboutLibraries_description_showIcon">true</string>
     <string name="aboutLibraries_description_showVersion">true</string>

@@ -23,6 +23,12 @@
 
     <!-- transparent -->
     <color name="transparent">#00FFFFFF</color>
+    <color name="material_red">#E51C23</color>
+
+    <!-- error view -->
+    <color name="error_view_text">#ffffffff</color>
+    <color name="error_view_text_light">#ffffffff</color>
+    <color name="error_view_text_dark">#DEDEDE</color>
 
     <!-- AboutLibraries DARK colors -->
     <color name="theme_window_background">#303030</color>
