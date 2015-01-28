@@ -33,9 +33,12 @@ import com.mikepenz.unsplash.views.adapters.ImageAdapter;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import retrofit.RetrofitError;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import tr.xip.errorview.ErrorView;
+import tr.xip.errorview.RetryListener;
 
 public class ImagesFragment extends Fragment {
 
@@ -47,6 +50,7 @@ public class ImagesFragment extends Fragment {
     private ArrayList<Image> mImages;
     private RecyclerView mImageRecycler;
     private ProgressBar mImagesProgress;
+    private ErrorView mImagesErrorView;
 
     private boolean showFeatured = true;
 
@@ -62,6 +66,7 @@ public class ImagesFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_images, container, false);
         mImageRecycler = (RecyclerView) rootView.findViewById(R.id.fragment_last_images_recycler);
         mImagesProgress = (ProgressBar) rootView.findViewById(R.id.fragment_images_progress);
+        mImagesErrorView = (ErrorView) rootView.findViewById(R.id.fragment_images_error_view);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
         mImageRecycler.setLayoutManager(gridLayoutManager);
@@ -80,6 +85,7 @@ public class ImagesFragment extends Fragment {
     private void fetchImages() {
         mImagesProgress.setVisibility(View.VISIBLE);
         mImageRecycler.setVisibility(View.GONE);
+        mImagesErrorView.setVisibility(View.GONE);
 
         // Load images from API
         mApi.fetchImages().cache().subscribeOn(Schedulers.newThread())
@@ -90,6 +96,7 @@ public class ImagesFragment extends Fragment {
     private void fetchFeaturedImages() {
         mImagesProgress.setVisibility(View.VISIBLE);
         mImageRecycler.setVisibility(View.GONE);
+        mImagesErrorView.setVisibility(View.GONE);
 
         // Load images from API
         mApi.fetchFeaturedImages().cache().subscribeOn(Schedulers.newThread())
@@ -118,10 +125,36 @@ public class ImagesFragment extends Fragment {
             // Dismiss loading dialog
             mImagesProgress.setVisibility(View.GONE);
             mImageRecycler.setVisibility(View.VISIBLE);
+            mImagesErrorView.setVisibility(View.GONE);
         }
 
         @Override
         public void onError(final Throwable error) {
+            if (error instanceof RetrofitError) {
+                RetrofitError e = (RetrofitError) error;
+                if (e.getKind() == RetrofitError.Kind.NETWORK) {
+                    mImagesErrorView.setErrorTitle(R.string.error_network);
+                    mImagesErrorView.setErrorSubtitle(R.string.error_network_subtitle);
+                } else if (e.getKind() == RetrofitError.Kind.HTTP) {
+                    mImagesErrorView.setErrorTitle(R.string.error_server);
+                    mImagesErrorView.setErrorSubtitle(R.string.error_server_subtitle);
+                } else {
+                    mImagesErrorView.setErrorTitle(R.string.error_uncommon);
+                    mImagesErrorView.setErrorSubtitle(R.string.error_uncommon_subtitle);
+                }
+            }
+
+            mImagesProgress.setVisibility(View.GONE);
+            mImageRecycler.setVisibility(View.GONE);
+            mImagesErrorView.setVisibility(View.VISIBLE);
+
+            mImagesErrorView.setOnRetryListener(new RetryListener() {
+                @Override
+                public void onRetry() {
+                    fetchFeaturedImages();
+                }
+            });
+
             //TODO allow to retry if fetch fails
             Log.d("[DEBUG]", "ImagesFragment onCompleted - ERROR: " + error.getMessage());
         }

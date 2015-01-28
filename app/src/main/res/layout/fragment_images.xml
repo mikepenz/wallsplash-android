@@ -11,6 +11,12 @@
         android:layout_gravity="center"
         style="?android:progressBarStyleLarge"/>
 
+    <tr.xip.errorview.ErrorView
+        android:id="@+id/fragment_images_error_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fragment_last_images_recycler"
         android:layout_width="match_parent"
