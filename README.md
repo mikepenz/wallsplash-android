@@ -27,12 +27,19 @@ This application was designed with the new Material Design principles in mind. I
 
 
 #Preview
+
 A quick preview video can be found @[YouTube](https://www.youtube.com/watch?v=98-bArYkfAI)
 
+#Restrictions
+
+You can use this project for any app you like, with the following restrictions:
+* It has to be free
+* You have to give credits
+* You are not allowed to use the included API as image source
 
 #Credits
 
-Thanks [Saul MM](https://github.com/saulmm) for the source of [OpenLibra-Material](https://github.com/saulmm/OpenLibra-Material) which is the base for this project.
+Thanks [Saul MM](https://github.com/saulmm) for the basic structure of [OpenLibra-Material](https://github.com/saulmm/OpenLibra-Material) which is the base (i think just 10% are of the original code is in tact :D) for this project.
 
 
 #Developed By
