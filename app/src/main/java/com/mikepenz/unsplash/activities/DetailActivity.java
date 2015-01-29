@@ -56,6 +56,7 @@ public class DetailActivity extends ActionBarActivity {
 
     private ImageView mFabButton;
     private ImageView mFabShareButton;
+    private ImageView mFabDownloadButton;
     private DonutProgress mFabProgress;
     private View mTitleContainer;
     private View mTitlesContainer;
@@ -126,6 +127,14 @@ public class DetailActivity extends ActionBarActivity {
         mFabShareButton.setImageDrawable(new IconicsDrawable(this, FontAwesome.Icon.faw_share).color(Color.WHITE).sizeDp(16));
         mFabShareButton.setOnClickListener(onFabShareButtonListener);
 
+        // Fab share button
+        mFabDownloadButton = (ImageView) findViewById(R.id.activity_detail_fab_download);
+        mFabDownloadButton.setScaleX(0);
+        mFabDownloadButton.setScaleY(0);
+        mFabDownloadButton.setImageDrawable(new IconicsDrawable(this, FontAwesome.Icon.faw_download).color(Color.WHITE).sizeDp(16));
+        mFabDownloadButton.setOnClickListener(onFabShareButtonListener);
+
+
         // Title container
         mTitleContainer = findViewById(R.id.activity_detail_title_container);
         Utils.configuredHideYView(mTitleContainer);
@@ -175,9 +184,6 @@ public class DetailActivity extends ActionBarActivity {
                         .load(mSelectedImage.getHighResImage(mWallpaperWidth, mWallpaperHeight))
                         .progressHandler(progressCallback)
                         .asInputStream();
-
-                //hide the share fab
-                mFabShareButton.animate().translationY(0).setDuration(ANIMATION_DURATION_MEDIUM).start();
 
                 animateStart();
 
@@ -413,7 +419,17 @@ public class DetailActivity extends ActionBarActivity {
                         .setDuration(ANIMATION_DURATION_MEDIUM * 2)
                         .start();
                 mFabShareButton.animate()
-                        .translationY(Utils.pxFromDp(DetailActivity.this, 64))
+                        .translationX((-1) * Utils.pxFromDp(DetailActivity.this, 58))
+                        .setStartDelay(ANIMATION_DURATION_MEDIUM)
+                        .setDuration(ANIMATION_DURATION_MEDIUM)
+                        .start();
+
+                //animate the download fab
+                Utils.showViewByScale(mFabDownloadButton)
+                        .setDuration(ANIMATION_DURATION_MEDIUM * 2)
+                        .start();
+                mFabDownloadButton.animate()
+                        .translationX((-1) * Utils.pxFromDp(DetailActivity.this, 108))
                         .setStartDelay(ANIMATION_DURATION_MEDIUM)
                         .setDuration(ANIMATION_DURATION_MEDIUM)
                         .start();
@@ -430,6 +446,10 @@ public class DetailActivity extends ActionBarActivity {
     private void animateStart() {
         //reset progress to prevent jumping
         mFabProgress.setProgress(0);
+
+        //hide the share fab
+        mFabShareButton.animate().translationX(0).setDuration(ANIMATION_DURATION_MEDIUM).start();
+        mFabDownloadButton.animate().translationX(0).setDuration(ANIMATION_DURATION_MEDIUM).start();
 
         //some nice button animations
         Utils.showViewByScale(mFabProgress).setDuration(ANIMATION_DURATION_MEDIUM).start();
@@ -478,7 +498,8 @@ public class DetailActivity extends ActionBarActivity {
 
         mFabButton.animate().rotation(360).setDuration(ANIMATION_DURATION_MEDIUM).start();
 
-        mFabShareButton.animate().translationY(Utils.pxFromDp(DetailActivity.this, 64)).setDuration(ANIMATION_DURATION_MEDIUM).start();
+        mFabShareButton.animate().translationX((-1) * Utils.pxFromDp(DetailActivity.this, 58)).setDuration(ANIMATION_DURATION_MEDIUM).start();
+        mFabDownloadButton.animate().translationX((-1) * Utils.pxFromDp(DetailActivity.this, 108)).setDuration(ANIMATION_DURATION_MEDIUM).start();
     }
 
     /**
@@ -501,6 +522,12 @@ public class DetailActivity extends ActionBarActivity {
             transition.startTransition(ANIMATION_DURATION_LONG);
             mFabShareButton.setTag("");
         }
+
+        if (mFabDownloadButton.getTag() == null) {
+            TransitionDrawable transition = (TransitionDrawable) mFabDownloadButton.getBackground();
+            transition.startTransition(ANIMATION_DURATION_LONG);
+            mFabDownloadButton.setTag("");
+        }
     }
 
     /**
@@ -514,7 +541,8 @@ public class DetailActivity extends ActionBarActivity {
         mProgressFabAnimation.cancel();
 
         //show the fab again ;)
-        mFabShareButton.animate().translationY(Utils.pxFromDp(DetailActivity.this, 64)).setDuration(ANIMATION_DURATION_MEDIUM).start();
+        mFabShareButton.animate().translationX((-1) * Utils.pxFromDp(DetailActivity.this, 58)).setDuration(ANIMATION_DURATION_MEDIUM).start();
+        mFabDownloadButton.animate().translationX((-1) * Utils.pxFromDp(DetailActivity.this, 108)).setDuration(ANIMATION_DURATION_MEDIUM).start();
 
         // if we were not successful remove the x again :D
         if (!success) {
@@ -580,9 +608,15 @@ public class DetailActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        //move the share fab below the normal fab (64 because this is the margin top + the half
+
+        mFabDownloadButton.animate()
+                .translationX(0)
+                .setDuration(ANIMATION_DURATION_MEDIUM)
+                .start();
+
+        //move the share fab below the normal fab (58 because this is the margin top + the half
         mFabShareButton.animate()
-                .translationY(0)
+                .translationX(0)
                 .setDuration(ANIMATION_DURATION_MEDIUM)
                 .setListener(new CustomAnimatorListener() {
                     @Override
@@ -591,6 +625,9 @@ public class DetailActivity extends ActionBarActivity {
                         ViewPropertyAnimator hideFabAnimator = Utils.hideViewByScaleXY(mFabButton)
                                 .setDuration(ANIMATION_DURATION_MEDIUM);
 
+                        Utils.hideViewByScaleXY(mFabDownloadButton)
+                                .setDuration(ANIMATION_DURATION_MEDIUM)
+                                .start();
                         Utils.hideViewByScaleXY(mFabShareButton)
                                 .setDuration(ANIMATION_DURATION_MEDIUM)
                                 .start();

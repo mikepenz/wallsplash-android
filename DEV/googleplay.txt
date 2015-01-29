@@ -1,0 +1,21 @@
+*wall:splash* is the cutting edge *open source* wallpaper app for your device!
+
+*GooglePlay* https://play.google.com/store/apps/details?id=com.mikepenz.unsplash
+
+*wall:splash* uses *Unsplash* as image source, which already features over *2000* images.
+
+The current version includes following features:
+* over 2000 images
+* browse the images
+* material design
+* clean and minimalistic
+* many animations
+* set the wallpaper with a single click
+* set and crop the wallpaper with a long click
+
+This application was designed with the new Material Design principles in mind. It gives you a perfectly fluid user flow with simple and fresh animations. It also unleashes the full power of Android Lollipop by providing bright colors fetched out of each single wallpaper.
+
+*Unsplash* (http://unsplash.com/) (Free (do whatever you want) high-resolution photos) is a service by *crew* (https://pickcrew.com/)
+
+
+*GitHub* https://github.com/mikepenz/wall-splash-android
