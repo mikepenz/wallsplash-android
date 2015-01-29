@@ -18,7 +18,6 @@
             android:layout_weight="1"
             android:transitionName="imageCover"
             android:scaleType="fitXY"
-            android:adjustViewBounds="true"
             android:background="@color/image_without_palette"/>
 
         <FrameLayout
