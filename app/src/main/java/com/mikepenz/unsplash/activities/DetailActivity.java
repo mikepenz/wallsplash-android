@@ -142,11 +142,16 @@ public class DetailActivity extends ActionBarActivity {
         if (Build.VERSION.SDK_INT >= 21) {
             toolbar.setTransitionName("cover");
             // Add a listener to get noticed when the transition ends to animate the fab button
-            getWindow().getSharedElementEnterTransition().addListener(sharedTransitionListener);
+            getWindow().getSharedElementEnterTransition().addListener(new CustomTransitionListener() {
+                @Override
+                public void onTransitionEnd(Transition transition) {
+                    super.onTransitionEnd(transition);
+                    animateActivityStart();
+                }
+            });
         } else {
             Utils.showViewByScale(toolbar).setDuration(ANIMATION_DURATION_LONG).start();
-            sharedTransitionListener.onTransitionEnd(null);
-
+            animateActivityStart();
         }
 
         //check if we already had the colors during click
@@ -386,6 +391,38 @@ public class DetailActivity extends ActionBarActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    /**
+     * animate the start of the activity
+     */
+    private void animateActivityStart() {
+        ViewPropertyAnimator showTitleAnimator = Utils.showViewByScale(mTitleContainer);
+        showTitleAnimator.setListener(new CustomAnimatorListener() {
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+
+                super.onAnimationEnd(animation);
+                mTitlesContainer.startAnimation(AnimationUtils.loadAnimation(DetailActivity.this, R.anim.alpha_on));
+                mTitlesContainer.setVisibility(View.VISIBLE);
+
+                //animate the fab
+                Utils.showViewByScale(mFabButton).setDuration(ANIMATION_DURATION_MEDIUM).start();
+
+                //animate the share fab
+                Utils.showViewByScale(mFabShareButton)
+                        .setDuration(ANIMATION_DURATION_MEDIUM * 2)
+                        .start();
+                mFabShareButton.animate()
+                        .translationY(Utils.pxFromDp(DetailActivity.this, 64))
+                        .setStartDelay(ANIMATION_DURATION_MEDIUM)
+                        .setDuration(ANIMATION_DURATION_MEDIUM)
+                        .start();
+            }
+        });
+
+        showTitleAnimator.start();
+    }
+
 
     /**
      * animate the start of the download
@@ -487,53 +524,6 @@ public class DetailActivity extends ActionBarActivity {
         }
         future = null;
     }
-
-    /**
-     * I use a listener to get notified when the enter transition ends, and with that notifications
-     * build my own choreography built with the elements of the UI
-     * <p/>
-     * Animations order
-     * <p/>
-     * 1. The image is animated automatically by the SharedElementTransition
-     * 2. The layout that contains the titles
-     * 3. An alpha transition to show the text of the titles
-     * 3. A scale animation to show the image info
-     */
-    private CustomTransitionListener sharedTransitionListener = new CustomTransitionListener() {
-
-        @Override
-        public void onTransitionEnd(Transition transition) {
-
-            super.onTransitionEnd(transition);
-
-            ViewPropertyAnimator showTitleAnimator = Utils.showViewByScale(mTitleContainer);
-            showTitleAnimator.setListener(new CustomAnimatorListener() {
-
-                @Override
-                public void onAnimationEnd(Animator animation) {
-
-                    super.onAnimationEnd(animation);
-                    mTitlesContainer.startAnimation(AnimationUtils.loadAnimation(DetailActivity.this, R.anim.alpha_on));
-                    mTitlesContainer.setVisibility(View.VISIBLE);
-
-                    //animate the fab
-                    Utils.showViewByScale(mFabButton).setDuration(ANIMATION_DURATION_MEDIUM).start();
-
-                    //animate the share fab
-                    Utils.showViewByScale(mFabShareButton)
-                            .setDuration(ANIMATION_DURATION_MEDIUM * 2)
-                            .start();
-                    mFabShareButton.animate()
-                            .translationY(Utils.pxFromDp(DetailActivity.this, 64))
-                            .setStartDelay(ANIMATION_DURATION_MEDIUM)
-                            .setDuration(ANIMATION_DURATION_MEDIUM)
-                            .start();
-                }
-            });
-
-            showTitleAnimator.start();
-        }
-    };
 
     /**
      * @param titleTextColor
