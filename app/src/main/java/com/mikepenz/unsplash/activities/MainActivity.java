@@ -45,6 +45,7 @@ public class MainActivity extends ActionBarActivity {
                     .withFields(R.string.class.getFields())
                     .withActivityTitle(getString(R.string.action_open_source))
                     .withActivityTheme(R.style.AboutTheme)
+                    .withLibraries("rxJava", "rxAndroid")
                     .start(this);
 
             return true;
