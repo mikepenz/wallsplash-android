@@ -133,6 +133,11 @@ public class DetailActivity extends ActionBarActivity {
         // Define toolbar as the shared element
         final Toolbar toolbar = (Toolbar) findViewById(R.id.activity_detail_toolbar);
         Bitmap imageCoverBitmap = ImagesFragment.photoCache.get(position);
+        //safety check to prevent nullPointer in the palette if the detailActivity was in the background for too long
+        if (imageCoverBitmap == null) {
+            this.finish();
+            return;
+        }
         toolbar.setBackground(new BitmapDrawable(getResources(), imageCoverBitmap));
         setSupportActionBar(toolbar);
 
