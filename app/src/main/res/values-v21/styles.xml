@@ -3,12 +3,11 @@
     <style name="AboutTheme" parent="BaseTheme">
         <!-- Enable the ActionBar because the AboutLibraries library still uses an ActionBar -->
         <item name="windowActionBar">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
     </style>
 
     <style name="AppTheme" parent="BaseTheme">
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowTranslucentStatus">true</item>
 
         <!-- improve animations -->
         <item name="android:windowContentTransitions">true</item>
@@ -19,6 +18,9 @@
     </style>
 
     <style name="DetailActivityTheme" parent="AppTheme">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>

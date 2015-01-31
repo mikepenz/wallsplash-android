@@ -10,8 +10,11 @@
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
 
-    <style name="BaseTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="BaseTheme" parent="MaterialNavigationDrawerTheme.Light.DarkActionBar">
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+
+        <!-- define the drawer layout -->
+        <item name="drawerType">@integer/DRAWERTYPE_NO_HEADER</item>
 
         <!-- ...and here we setting appcompat’s color theming attrs -->
         <item name="colorPrimary">@color/primary</item>

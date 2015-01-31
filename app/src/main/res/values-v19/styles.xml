@@ -8,9 +8,15 @@
     </style>
 
     <style name="AppTheme" parent="BaseTheme">
-        <!-- use the function to make the StatusBar translucent -->
-        <item name="android:windowTranslucentStatus">true</item>
         <!-- define a custom animation for the window to improve the pre lollipop experience -->
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+    </style>
+
+    <style name="DetailActivityTheme" parent="AppTheme">
+        <!-- use the function to make the StatusBar translucent -->
+        <item name="android:windowTranslucentStatus">true</item>
+
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 </resources>
