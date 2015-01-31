@@ -4,7 +4,6 @@ package com.mikepenz.unsplash.fragments;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -20,8 +19,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.typeface.FontAwesome;
 import com.mikepenz.unsplash.OnItemClickListener;
 import com.mikepenz.unsplash.R;
 import com.mikepenz.unsplash.activities.DetailActivity;
@@ -41,6 +38,10 @@ import tr.xip.errorview.ErrorView;
 import tr.xip.errorview.RetryListener;
 
 public class ImagesFragment extends Fragment {
+    public static final int FEATURED = 1;
+    public static final int ALL = 2;
+
+    public int type = FEATURED;
 
     public static SparseArray<Bitmap> photoCache = new SparseArray<>(1);
 
@@ -54,15 +55,25 @@ public class ImagesFragment extends Fragment {
 
     private boolean showFeatured = true;
 
+    public ImagesFragment() {
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+
+        Bundle b = getArguments();
+        if (b != null) {
+            if (b.containsKey("type")) {
+                type = b.getInt("type", type);
+            }
+        }
+
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_images, container, false);
         mImageRecycler = (RecyclerView) rootView.findViewById(R.id.fragment_last_images_recycler);
         mImagesProgress = (ProgressBar) rootView.findViewById(R.id.fragment_images_progress);
@@ -77,9 +88,17 @@ public class ImagesFragment extends Fragment {
             }
         });
 
-        fetchFeaturedImages();
-
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        if (type == FEATURED) {
+            fetchFeaturedImages();
+        } else {
+            fetchImages();
+        }
+        super.onViewCreated(view, savedInstanceState);
     }
 
     private void fetchImages() {
@@ -200,17 +219,7 @@ public class ImagesFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_featured) {
-            if (showFeatured) {
-                item.setIcon(new IconicsDrawable(ImagesFragment.this.getActivity(), FontAwesome.Icon.faw_star_o).color(Color.WHITE).actionBarSize());
-                showFeatured = false;
-                fetchImages();
-            } else {
-                item.setIcon(new IconicsDrawable(ImagesFragment.this.getActivity(), FontAwesome.Icon.faw_star).color(Color.WHITE).actionBarSize());
-                showFeatured = true;
-                fetchFeaturedImages();
-            }
-        } else if (id == R.id.action_shuffle) {
+        if (id == R.id.action_shuffle) {
             if (mImages != null) {
                 Collections.shuffle(mImages);
                 mImageAdapter.notifyDataSetChanged();

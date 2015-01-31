@@ -1,20 +1,55 @@
 package com.mikepenz.unsplash.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.typeface.FontAwesome;
 import com.mikepenz.unsplash.R;
+import com.mikepenz.unsplash.fragments.ImagesFragment;
+
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
+import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends MaterialNavigationDrawer {
 
+
+    @Override
+    public void init(Bundle bundle) {
+        // create sections
+        ImagesFragment featured = new ImagesFragment();
+        Bundle b = new Bundle();
+        b.putInt("type", ImagesFragment.FEATURED);
+        featured.setArguments(b);
+        this.addSection(newSection("Featured", featured));
+
+        // create sections
+        ImagesFragment all = new ImagesFragment();
+        b = new Bundle();
+        b.putInt("type", ImagesFragment.ALL);
+        all.setArguments(b);
+        this.addSection(newSection("All", all));
+
+        // aboutLibraries
+        Intent aboutLibraries = new Libs.Builder()
+                .withFields(R.string.class.getFields())
+                .withActivityTitle(getString(R.string.action_open_source))
+                .withActivityTheme(R.style.AboutTheme)
+                .withLibraries("rxJava", "rxAndroid")
+                .intent(this);
+        this.addBottomSection(newSection("Open Source", new IconicsDrawable(this, FontAwesome.Icon.faw_github), aboutLibraries));
+    }
+
+    @Override
+    public void onClick(MaterialSection section) {
+        super.onClick(section);
+    }
+
+    /*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,32 +59,15 @@ public class MainActivity extends ActionBarActivity {
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
     }
+    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        menu.findItem(R.id.action_open_source).setIcon(new IconicsDrawable(this, FontAwesome.Icon.faw_github).color(Color.WHITE).actionBarSize());
-        menu.findItem(R.id.action_featured).setIcon(new IconicsDrawable(this, FontAwesome.Icon.faw_star).color(Color.WHITE).actionBarSize());
         menu.findItem(R.id.action_shuffle).setIcon(new IconicsDrawable(this, FontAwesome.Icon.faw_random).color(Color.WHITE).actionBarSize());
 
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_open_source) {
-            new Libs.Builder()
-                    .withFields(R.string.class.getFields())
-                    .withActivityTitle(getString(R.string.action_open_source))
-                    .withActivityTheme(R.style.AboutTheme)
-                    .withLibraries("rxJava", "rxAndroid")
-                    .start(this);
-
-            return true;
-        }
-        return false; //super.onOptionsItemSelected(item);
     }
 }
