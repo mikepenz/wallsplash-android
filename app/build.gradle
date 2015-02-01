@@ -13,8 +13,8 @@ android {
         applicationId "com.mikepenz.unsplash"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 151
-        versionName "1.5.1"
+        versionCode 152
+        versionName "1.5.2"
     }
     buildTypes {
         debug {
