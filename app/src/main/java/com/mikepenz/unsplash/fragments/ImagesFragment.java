@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -25,6 +26,7 @@ import com.mikepenz.iconics.typeface.FontAwesome;
 import com.mikepenz.unsplash.OnItemClickListener;
 import com.mikepenz.unsplash.R;
 import com.mikepenz.unsplash.activities.DetailActivity;
+import com.mikepenz.unsplash.activities.MainActivity;
 import com.mikepenz.unsplash.models.Image;
 import com.mikepenz.unsplash.models.ImageList;
 import com.mikepenz.unsplash.network.UnsplashApi;
@@ -53,10 +55,16 @@ public class ImagesFragment extends Fragment {
     private ErrorView mImagesErrorView;
 
     private boolean showFeatured = true;
+    private Drawable menuFeatured = null;
+    private Drawable menuUnFeatured = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+
+        menuFeatured = new IconicsDrawable(ImagesFragment.this.getActivity(), FontAwesome.Icon.faw_star).color(Color.WHITE).actionBarSize();
+        menuUnFeatured = new IconicsDrawable(ImagesFragment.this.getActivity(), FontAwesome.Icon.faw_star_o).color(Color.WHITE).actionBarSize();
+
         super.onCreate(savedInstanceState);
     }
 
@@ -83,6 +91,12 @@ public class ImagesFragment extends Fragment {
     }
 
     private void fetchImages() {
+        //just don't do this
+        if (((MainActivity) getActivity()).menu_featured != null) {
+            ((MainActivity) getActivity()).menu_featured.setIcon(menuUnFeatured);
+        }
+        showFeatured = false;
+
         mImagesProgress.setVisibility(View.VISIBLE);
         mImageRecycler.setVisibility(View.GONE);
         mImagesErrorView.setVisibility(View.GONE);
@@ -94,6 +108,12 @@ public class ImagesFragment extends Fragment {
     }
 
     private void fetchFeaturedImages() {
+        //just don't do this
+        if (((MainActivity) getActivity()).menu_featured != null) {
+            ((MainActivity) getActivity()).menu_featured.setIcon(menuFeatured);
+        }
+        showFeatured = true;
+
         mImagesProgress.setVisibility(View.VISIBLE);
         mImageRecycler.setVisibility(View.GONE);
         mImagesErrorView.setVisibility(View.GONE);
@@ -202,12 +222,8 @@ public class ImagesFragment extends Fragment {
         int id = item.getItemId();
         if (id == R.id.action_featured) {
             if (showFeatured) {
-                item.setIcon(new IconicsDrawable(ImagesFragment.this.getActivity(), FontAwesome.Icon.faw_star_o).color(Color.WHITE).actionBarSize());
-                showFeatured = false;
                 fetchImages();
             } else {
-                item.setIcon(new IconicsDrawable(ImagesFragment.this.getActivity(), FontAwesome.Icon.faw_star).color(Color.WHITE).actionBarSize());
-                showFeatured = true;
                 fetchFeaturedImages();
             }
         } else if (id == R.id.action_shuffle) {
