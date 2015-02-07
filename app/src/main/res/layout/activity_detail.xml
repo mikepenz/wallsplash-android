@@ -70,6 +70,22 @@
             </FrameLayout>
 
             <ImageButton
+                android:id="@+id/activity_detail_fab_download"
+                android:layout_width="@dimen/fab_small"
+                android:layout_height="@dimen/fab_small"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/activity_detail_toolbar"
+                android:layout_marginRight="@dimen/fab_small_margin_right"
+                android:layout_marginTop="@dimen/fab_small_margin_top"
+                android:padding="8dp"
+                android:background="@drawable/animated_ripple"
+                android:elevation="3dp"
+                android:stateListAnimator="@anim/fab_animation"
+                android:transitionName="fab"
+                />
+
+            <ImageButton
                 android:id="@+id/activity_detail_fab_share"
                 android:layout_width="@dimen/fab_small"
                 android:layout_height="@dimen/fab_small"
@@ -80,7 +96,7 @@
                 android:layout_marginTop="@dimen/fab_small_margin_top"
                 android:padding="8dp"
                 android:background="@drawable/animated_ripple"
-                android:elevation="2dp"
+                android:elevation="3dp"
                 android:stateListAnimator="@anim/fab_animation"
                 android:transitionName="fab"
                 />

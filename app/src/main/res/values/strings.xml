@@ -31,7 +31,8 @@
     <string name="error_server_subtitle">The server returned an exception.</string>
     <string name="error_uncommon">WTF?!</string>
     <string name="error_uncommon_subtitle">There was an exception which should not happen!</string>
-
+    <!-- storage exceptions -->
+    <string name="error_no_storage">External Storage not available</string>
 
     <!-- about this app -->
     <string name="aboutLibraries_description_showIcon">true</string>

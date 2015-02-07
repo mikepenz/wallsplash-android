@@ -26,6 +26,7 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.koushikdutta.async.future.FutureCallback;
@@ -50,12 +51,14 @@ public class DetailActivity extends ActionBarActivity {
     private static final int ACTIVITY_CROP = 13451;
     private static final int ACTIVITY_SHARE = 13452;
 
+    private static final int ANIMATION_DURATION_SHORT = 150;
     private static final int ANIMATION_DURATION_MEDIUM = 300;
     private static final int ANIMATION_DURATION_LONG = 450;
     private static final int ANIMATION_DURATION_EXTRA_LONG = 850;
 
     private ImageView mFabButton;
     private ImageView mFabShareButton;
+    private ImageView mFabDownloadButton;
     private DonutProgress mFabProgress;
     private View mTitleContainer;
     private View mTitlesContainer;
@@ -126,6 +129,13 @@ public class DetailActivity extends ActionBarActivity {
         mFabShareButton.setImageDrawable(new IconicsDrawable(this, FontAwesome.Icon.faw_share).color(Color.WHITE).sizeDp(16));
         mFabShareButton.setOnClickListener(onFabShareButtonListener);
 
+        // Fab download button
+        mFabDownloadButton = (ImageView) findViewById(R.id.activity_detail_fab_download);
+        mFabDownloadButton.setScaleX(0);
+        mFabDownloadButton.setScaleY(0);
+        mFabDownloadButton.setImageDrawable(new IconicsDrawable(this, FontAwesome.Icon.faw_download).color(Color.WHITE).sizeDp(16));
+        mFabDownloadButton.setOnClickListener(onFabDownloadButtonListener);
+
         // Title container
         mTitleContainer = findViewById(R.id.activity_detail_title_container);
         Utils.configuredHideYView(mTitleContainer);
@@ -181,9 +191,6 @@ public class DetailActivity extends ActionBarActivity {
                         .progressHandler(progressCallback)
                         .asInputStream();
 
-                //hide the share fab
-                mFabShareButton.animate().translationY(0).setDuration(ANIMATION_DURATION_MEDIUM).start();
-
                 animateStart();
 
                 mFabButton.animate().rotation(360).setDuration(ANIMATION_DURATION_LONG).setListener(new CustomAnimatorListener() {
@@ -196,6 +203,42 @@ public class DetailActivity extends ActionBarActivity {
                     @Override
                     public void onAnimationCancel(Animator animation) {
                         downloadAndSetOrShareImage(false);
+                        super.onAnimationCancel(animation);
+                    }
+                }).start();
+            } else {
+                animateReset(false);
+            }
+        }
+    };
+
+    private View.OnClickListener onFabDownloadButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (future == null) {
+                if (!Utils.isExternalStorageWritable()) {
+                    Toast.makeText(DetailActivity.this, R.string.error_no_storage, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //prepare the call
+                future = Ion.with(DetailActivity.this)
+                        .load(mSelectedImage.getHighResImage(mWallpaperWidth, mWallpaperHeight))
+                        .progressHandler(progressCallback)
+                        .asInputStream();
+
+                animateStart();
+
+                mFabButton.animate().rotation(360).setDuration(ANIMATION_DURATION_LONG).setListener(new CustomAnimatorListener() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        downloadImage();
+                        super.onAnimationEnd(animation);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        downloadImage();
                         super.onAnimationCancel(animation);
                     }
                 }).start();
@@ -296,6 +339,47 @@ public class DetailActivity extends ActionBarActivity {
                     if (e == null && result != null && result.getResult() != null) {
                         try {
                             WallpaperManager.getInstance(DetailActivity.this).setStream(result.getResult());
+
+                            //animate the first elements
+                            animateCompleteFirst(true);
+
+                            success = true;
+                        } catch (Exception ex) {
+                            Log.e("un:splash", ex.toString());
+                        }
+
+                        //animate after complete
+                        animateComplete(success);
+                    } else {
+                        animateReset(true);
+                    }
+                }
+            });
+        }
+    }
+
+    private void downloadImage() {
+        if (future != null) {
+            //set the callback and start downloading
+            future.withResponse().setCallback(new FutureCallback<Response<InputStream>>() {
+                @Override
+                public void onCompleted(Exception e, Response<InputStream> result) {
+                    boolean success = false;
+                    if (e == null && result != null && result.getResult() != null) {
+                        try {
+                            //prepare the file name
+                            String url = mSelectedImage.getUrl();
+                            String fileName = url.substring(url.lastIndexOf('/') + 1, url.length()) + ".jpg";
+                            //create a temporary directory within the cache folder
+                            File dir = Utils.getAlbumStorageDir("wall-splash");
+                            //create the file
+                            File file = new File(dir, fileName);
+                            if (!file.exists()) {
+                                file.createNewFile();
+                            }
+
+                            //copy the image onto this file
+                            Utils.copyInputStreamToFile(result.getResult(), file);
 
                             //animate the first elements
                             animateCompleteFirst(true);
@@ -418,7 +502,17 @@ public class DetailActivity extends ActionBarActivity {
                         .setDuration(ANIMATION_DURATION_MEDIUM * 2)
                         .start();
                 mFabShareButton.animate()
-                        .translationY(Utils.pxFromDp(DetailActivity.this, 64))
+                        .translationX((-1) * Utils.pxFromDp(DetailActivity.this, 58))
+                        .setStartDelay(ANIMATION_DURATION_MEDIUM)
+                        .setDuration(ANIMATION_DURATION_MEDIUM)
+                        .start();
+
+                //animate the download fab
+                Utils.showViewByScale(mFabDownloadButton)
+                        .setDuration(ANIMATION_DURATION_MEDIUM * 2)
+                        .start();
+                mFabDownloadButton.animate()
+                        .translationX((-1) * Utils.pxFromDp(DetailActivity.this, 108))
                         .setStartDelay(ANIMATION_DURATION_MEDIUM)
                         .setDuration(ANIMATION_DURATION_MEDIUM)
                         .start();
@@ -435,6 +529,10 @@ public class DetailActivity extends ActionBarActivity {
     private void animateStart() {
         //reset progress to prevent jumping
         mFabProgress.setProgress(0);
+
+        //hide the share fab
+        mFabShareButton.animate().translationX(0).setDuration(ANIMATION_DURATION_SHORT).start();
+        mFabDownloadButton.animate().translationX(0).setDuration(ANIMATION_DURATION_SHORT).start();
 
         //some nice button animations
         Utils.showViewByScale(mFabProgress).setDuration(ANIMATION_DURATION_MEDIUM).start();
@@ -461,6 +559,12 @@ public class DetailActivity extends ActionBarActivity {
             transition.reverseTransition(ANIMATION_DURATION_LONG);
             mFabShareButton.setTag(null);
         }
+
+        if (mFabDownloadButton.getTag() != null) {
+            TransitionDrawable transition = (TransitionDrawable) mFabDownloadButton.getBackground();
+            transition.reverseTransition(ANIMATION_DURATION_LONG);
+            mFabDownloadButton.setTag(null);
+        }
     }
 
     /**
@@ -483,7 +587,8 @@ public class DetailActivity extends ActionBarActivity {
 
         mFabButton.animate().rotation(360).setDuration(ANIMATION_DURATION_MEDIUM).start();
 
-        mFabShareButton.animate().translationY(Utils.pxFromDp(DetailActivity.this, 64)).setDuration(ANIMATION_DURATION_MEDIUM).start();
+        mFabShareButton.animate().translationX((-1) * Utils.pxFromDp(DetailActivity.this, 58)).setDuration(ANIMATION_DURATION_MEDIUM).start();
+        mFabDownloadButton.animate().translationX((-1) * Utils.pxFromDp(DetailActivity.this, 108)).setDuration(ANIMATION_DURATION_MEDIUM).start();
     }
 
     /**
@@ -506,6 +611,12 @@ public class DetailActivity extends ActionBarActivity {
             transition.startTransition(ANIMATION_DURATION_LONG);
             mFabShareButton.setTag("");
         }
+
+        if (mFabDownloadButton.getTag() == null) {
+            TransitionDrawable transition = (TransitionDrawable) mFabDownloadButton.getBackground();
+            transition.startTransition(ANIMATION_DURATION_LONG);
+            mFabDownloadButton.setTag("");
+        }
     }
 
     /**
@@ -519,7 +630,8 @@ public class DetailActivity extends ActionBarActivity {
         mProgressFabAnimation.cancel();
 
         //show the fab again ;)
-        mFabShareButton.animate().translationY(Utils.pxFromDp(DetailActivity.this, 64)).setDuration(ANIMATION_DURATION_MEDIUM).start();
+        mFabShareButton.animate().translationX((-1) * Utils.pxFromDp(DetailActivity.this, 58)).setDuration(ANIMATION_DURATION_MEDIUM).start();
+        mFabDownloadButton.animate().translationX((-1) * Utils.pxFromDp(DetailActivity.this, 108)).setDuration(ANIMATION_DURATION_MEDIUM).start();
 
         // if we were not successful remove the x again :D
         if (!success) {
@@ -585,9 +697,15 @@ public class DetailActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        //move the share fab below the normal fab (64 because this is the margin top + the half
+
+        mFabDownloadButton.animate()
+                .translationX(0)
+                .setDuration(ANIMATION_DURATION_MEDIUM)
+                .start();
+
+        //move the share fab below the normal fab (58 because this is the margin top + the half
         mFabShareButton.animate()
-                .translationY(0)
+                .translationX(0)
                 .setDuration(ANIMATION_DURATION_MEDIUM)
                 .setListener(new CustomAnimatorListener() {
                     @Override
@@ -596,6 +714,9 @@ public class DetailActivity extends ActionBarActivity {
                         ViewPropertyAnimator hideFabAnimator = Utils.hideViewByScaleXY(mFabButton)
                                 .setDuration(ANIMATION_DURATION_MEDIUM);
 
+                        Utils.hideViewByScaleXY(mFabDownloadButton)
+                                .setDuration(ANIMATION_DURATION_MEDIUM)
+                                .start();
                         Utils.hideViewByScaleXY(mFabShareButton)
                                 .setDuration(ANIMATION_DURATION_MEDIUM)
                                 .start();
