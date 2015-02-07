@@ -105,8 +105,7 @@ public class ImagesFragment extends Fragment {
         showFeatured = false;
 
         if (mImages != null) {
-            mFilteredImages = mApi.filterFeatured(mImages);
-            mImageAdapter = new ImageAdapter(mFilteredImages);
+            mImageAdapter = new ImageAdapter(mImages);
             mImageAdapter.setOnItemClickListener(recyclerRowClickListener);
             mImageRecycler.setAdapter(mImageAdapter);
         } else {
