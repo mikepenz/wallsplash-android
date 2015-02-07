@@ -63,20 +63,27 @@ public class UnsplashApi {
     }
 
 
+    //keep the filtered array so we can reuse it later :D
     private ArrayList<Image> featured = null;
 
     public ArrayList<Image> filterFeatured(ArrayList<Image> images) {
         if (featured == null) {
             ArrayList<Image> list = new ArrayList<Image>(images);
-
             for (Iterator<Image> it = list.iterator(); it.hasNext(); ) {
                 if (it.next().getFeatured() != 1)
                     it.remove();
             }
-
             featured = list;
         }
-
         return featured;
+    }
+
+    public ArrayList<Image> filterCategory(ArrayList<Image> images, int filter) {
+        ArrayList<Image> list = new ArrayList<Image>(images);
+        for (Iterator<Image> it = list.iterator(); it.hasNext(); ) {
+            if ((it.next().getCategory() & filter) != filter)
+                it.remove();
+        }
+        return list;
     }
 }
