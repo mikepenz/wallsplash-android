@@ -55,17 +55,11 @@ public class ImagesFragment extends Fragment {
     private ProgressBar mImagesProgress;
     private ErrorView mImagesErrorView;
 
-    private boolean showFeatured = true;
-    private Drawable menuFeatured = null;
-    private Drawable menuUnFeatured = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-        //get the drawables for the actionItems to save memory
-        menuFeatured = new IconicsDrawable(ImagesFragment.this.getActivity(), FontAwesome.Icon.faw_star).color(Color.WHITE).actionBarSize();
-        menuUnFeatured = new IconicsDrawable(ImagesFragment.this.getActivity(), FontAwesome.Icon.faw_star_o).color(Color.WHITE).actionBarSize();
 
         super.onCreate(savedInstanceState);
     }
@@ -98,12 +92,6 @@ public class ImagesFragment extends Fragment {
     }
 
     private void showAll() {
-        //just don't do this
-        if (((MainActivity) getActivity()).menu_featured != null) {
-            ((MainActivity) getActivity()).menu_featured.setIcon(menuUnFeatured);
-        }
-        showFeatured = false;
-
         if (mImages != null) {
             mImageAdapter = new ImageAdapter(mImages);
             mImageAdapter.setOnItemClickListener(recyclerRowClickListener);
@@ -121,11 +109,6 @@ public class ImagesFragment extends Fragment {
     }
 
     private void showFeatured() {
-        //just don't do this
-        if (((MainActivity) getActivity()).menu_featured != null) {
-            ((MainActivity) getActivity()).menu_featured.setIcon(menuFeatured);
-        }
-        showFeatured = true;
 
         mFilteredImages = mApi.filterFeatured(mImages);
         mImageAdapter = new ImageAdapter(mFilteredImages);
@@ -145,7 +128,6 @@ public class ImagesFragment extends Fragment {
 
         @Override
         public void onCompleted() {
-            ((MainActivity) getActivity()).menu_featured.setVisible(true);
             // Dismiss loading dialog
             mImagesProgress.setVisibility(View.GONE);
             mImageRecycler.setVisibility(View.VISIBLE);
