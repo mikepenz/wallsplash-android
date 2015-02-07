@@ -13,4 +13,12 @@ public class ImageList {
     public void setData(ArrayList<Image> data) {
         this.data = data;
     }
+
+    public ImageList() {
+
+    }
+
+    public ImageList(ArrayList<Image> data) {
+        this.data = data;
+    }
 }
