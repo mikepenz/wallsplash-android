@@ -4,14 +4,11 @@ package com.mikepenz.unsplash.fragments;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -21,8 +18,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.typeface.FontAwesome;
 import com.mikepenz.unsplash.OnItemClickListener;
 import com.mikepenz.unsplash.R;
 import com.mikepenz.unsplash.activities.DetailActivity;
@@ -50,16 +45,33 @@ public class ImagesFragment extends Fragment {
 
     private ImageAdapter mImageAdapter;
     private ArrayList<Image> mImages;
-    private ArrayList<Image> mFilteredImages;
+    private ArrayList<Image> mCurrentImages;
     private RecyclerView mImageRecycler;
     private ProgressBar mImagesProgress;
     private ErrorView mImagesErrorView;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
+        if (ImagesFragment.this.getActivity() instanceof MainActivity) {
+            ((MainActivity) ImagesFragment.this.getActivity()).setOnFilterChangedListener(new MainActivity.OnFilterChangedListener() {
+                @Override
+                public void onFilterChanged(int filter) {
+                    if (mImages != null) {
+                        if (filter == MainActivity.Category.ALL.id) {
+                            showAll();
+                        } else if (filter == MainActivity.Category.FEATURED.id) {
+                            showFeatured();
+                        } else if (filter == MainActivity.Category.LOVED.id) {
+                            //TODO
+                        } else {
+                            showCategory(filter);
+                        }
+                    }
+                }
+            });
+        }
 
         super.onCreate(savedInstanceState);
     }
@@ -81,6 +93,10 @@ public class ImagesFragment extends Fragment {
             }
         });
 
+        mImageAdapter = new ImageAdapter();
+        mImageAdapter.setOnItemClickListener(recyclerRowClickListener);
+        mImageRecycler.setAdapter(mImageAdapter);
+
         showAll();
 
         return rootView;
@@ -93,9 +109,7 @@ public class ImagesFragment extends Fragment {
 
     private void showAll() {
         if (mImages != null) {
-            mImageAdapter = new ImageAdapter(mImages);
-            mImageAdapter.setOnItemClickListener(recyclerRowClickListener);
-            mImageRecycler.setAdapter(mImageAdapter);
+            updateAdapter(mImages);
         } else {
             mImagesProgress.setVisibility(View.VISIBLE);
             mImageRecycler.setVisibility(View.GONE);
@@ -109,21 +123,18 @@ public class ImagesFragment extends Fragment {
     }
 
     private void showFeatured() {
-
-        mFilteredImages = mApi.filterFeatured(mImages);
-        mImageAdapter = new ImageAdapter(mFilteredImages);
-        mImageAdapter.setOnItemClickListener(recyclerRowClickListener);
-        mImageRecycler.setAdapter(mImageAdapter);
+        updateAdapter(mApi.filterFeatured(mImages));
     }
 
+    private void showCategory(int category) {
+        updateAdapter(mApi.filterCategory(mImages, category));
+    }
 
     private Observer<ImageList> observer = new Observer<ImageList>() {
         @Override
         public void onNext(final ImageList images) {
             mImages = images.getData();
-            mImageAdapter = new ImageAdapter(mImages);
-            mImageAdapter.setOnItemClickListener(recyclerRowClickListener);
-            mImageRecycler.setAdapter(mImageAdapter);
+            updateAdapter(mImages);
         }
 
         @Override
@@ -160,9 +171,6 @@ public class ImagesFragment extends Fragment {
                     showAll();
                 }
             });
-
-            //TODO allow to retry if fetch fails
-            Log.d("[DEBUG]", "ImagesFragment onCompleted - ERROR: " + error.getMessage());
         }
     };
 
@@ -171,7 +179,7 @@ public class ImagesFragment extends Fragment {
         @Override
         public void onClick(View v, int position) {
 
-            Image selectedImage = mImages.get(position);
+            Image selectedImage = mCurrentImages.get(position);
 
             Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
             detailIntent.putExtra("position", position);
@@ -206,21 +214,31 @@ public class ImagesFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_featured) {
-            //don't allow to switch images as long as the images aren't ready!
+
+        if (id == R.id.action_shuffle) {
             if (mImages != null) {
-                if (showFeatured) {
-                    showAll();
-                } else {
-                    showFeatured();
-                }
-            }
-        } else if (id == R.id.action_shuffle) {
-            if (mImages != null) {
-                Collections.shuffle(mImages);
-                mImageAdapter.notifyDataSetChanged();
+                //we don't want to shuffle the original list
+                ArrayList<Image> shuffled = new ArrayList<Image>(mImages);
+                Collections.shuffle(shuffled);
+                mImageAdapter.updateData(shuffled);
+                updateAdapter(shuffled);
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * a small helper class to update the adapter
+     *
+     * @param images
+     */
+    private void updateAdapter(ArrayList<Image> images) {
+        mCurrentImages = images;
+        mImageAdapter.updateData(mCurrentImages);
+        /*
+        mImageAdapter = new ImageAdapter(images);
+        mImageAdapter.setOnItemClickListener(recyclerRowClickListener);
+        mImageRecycler.setAdapter(mImageAdapter);
+        */
     }
 }
