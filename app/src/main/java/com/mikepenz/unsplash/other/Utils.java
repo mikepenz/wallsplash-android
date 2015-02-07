@@ -5,6 +5,8 @@ import android.animation.FloatEvaluator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Build;
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.PathInterpolator;
@@ -150,4 +152,31 @@ public class Utils {
         return new Scanner(file, "UTF-8").useDelimiter("\\A").next();
     }
 
+    /**
+     * http://developer.android.com/training/basics/data-storage/files.html
+     *
+     * @param albumName
+     * @return
+     */
+    public static File getAlbumStorageDir(String albumName) {
+        // Get the directory for the user's public pictures directory.
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), albumName);
+        if (!file.mkdirs()) {
+            Log.i("wall-splash", "Directory not created");
+        }
+        return file;
+    }
+
+    /**
+     * http://developer.android.com/training/basics/data-storage/files.html
+     *
+     * @return
+     */
+    public static boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
 }
