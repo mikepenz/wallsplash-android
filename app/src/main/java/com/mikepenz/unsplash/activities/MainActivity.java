@@ -34,6 +34,7 @@ public class MainActivity extends ActionBarActivity {
 
         menu.findItem(R.id.action_open_source).setIcon(new IconicsDrawable(this, FontAwesome.Icon.faw_github).color(Color.WHITE).actionBarSize());
         menu_featured = menu.findItem(R.id.action_featured).setIcon(new IconicsDrawable(this, FontAwesome.Icon.faw_star).color(Color.WHITE).actionBarSize());
+        menu_featured.setVisible(false);
         menu.findItem(R.id.action_shuffle).setIcon(new IconicsDrawable(this, FontAwesome.Icon.faw_random).color(Color.WHITE).actionBarSize());
 
         return true;

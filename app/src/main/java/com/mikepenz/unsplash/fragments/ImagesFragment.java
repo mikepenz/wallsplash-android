@@ -63,9 +63,6 @@ public class ImagesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-        //hide the actionMenuItem so it is not clickable
-        ((MainActivity) getActivity()).menu_featured.setVisible(false);
-
         //get the drawables for the actionItems to save memory
         menuFeatured = new IconicsDrawable(ImagesFragment.this.getActivity(), FontAwesome.Icon.faw_star).color(Color.WHITE).actionBarSize();
         menuUnFeatured = new IconicsDrawable(ImagesFragment.this.getActivity(), FontAwesome.Icon.faw_star_o).color(Color.WHITE).actionBarSize();
