@@ -2,13 +2,24 @@
 <resources>
 
     <string name="app_name">wall:splash</string>
-    <string name="action_featured">Featured</string>
     <string name="action_open_source">Open Source</string>
     <string name="action_shuffle">Shuffle</string>
+
+    <!-- categories -->
+    <string name="category_all">All</string>
+    <string name="category_featured">Featured</string>
+    <string name="category_section_categories">CATEGORIES</string>
+    <string name="category_buildings">Buildings</string>
+    <string name="category_food">Food &amp; Drink</string>
+    <string name="category_nature">Nature</string>
+    <string name="category_objects">Objects</string>
+    <string name="category_people">People</string>
+    <string name="category_technology">Technology</string>
 
     <!-- Images fragments -->
     <string name="loading_images">Loading images\nPlease wait&#8230;</string>
 
+    <!-- Dialog -->
     <string name="dialog_setting_title">Downloading</string>
     <string name="dialog_setting_text">Please wait while the high-res version of your wallpaper is downloading. It will be ready shortly&#8230;</string>
 
