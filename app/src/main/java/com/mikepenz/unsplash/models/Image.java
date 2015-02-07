@@ -3,12 +3,13 @@ package com.mikepenz.unsplash.models;
 import android.support.v7.graphics.Palette;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Image implements Serializable {
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private static final DateFormat sdf = SimpleDateFormat.getDateInstance();
 
     private String color;
     private String image_src;
@@ -79,7 +80,11 @@ public class Image implements Serializable {
     }
 
     public String getReadableDate() {
-        return sdf.format(date);
+        if (date != null) {
+            return sdf.format(date);
+        } else {
+            return "";
+        }
     }
 
     public void setDate(Date date) {
@@ -91,7 +96,11 @@ public class Image implements Serializable {
     }
 
     public String getReadableModified_Date() {
-        return sdf.format(modified_date);
+        if (modified_date != null) {
+            return sdf.format(modified_date);
+        } else {
+            return "";
+        }
     }
 
     public void setModified_date(Date modified_date) {
