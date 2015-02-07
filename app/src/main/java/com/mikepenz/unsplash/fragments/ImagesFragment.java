@@ -50,6 +50,7 @@ public class ImagesFragment extends Fragment {
 
     private ImageAdapter mImageAdapter;
     private ArrayList<Image> mImages;
+    private ArrayList<Image> mFilteredImages;
     private RecyclerView mImageRecycler;
     private ProgressBar mImagesProgress;
     private ErrorView mImagesErrorView;
@@ -62,6 +63,10 @@ public class ImagesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
+        //hide the actionMenuItem so it is not clickable
+        ((MainActivity) getActivity()).menu_featured.setVisible(false);
+
+        //get the drawables for the actionItems to save memory
         menuFeatured = new IconicsDrawable(ImagesFragment.this.getActivity(), FontAwesome.Icon.faw_star).color(Color.WHITE).actionBarSize();
         menuUnFeatured = new IconicsDrawable(ImagesFragment.this.getActivity(), FontAwesome.Icon.faw_star_o).color(Color.WHITE).actionBarSize();
 
@@ -85,43 +90,9 @@ public class ImagesFragment extends Fragment {
             }
         });
 
-        fetchFeaturedImages();
+        showAll();
 
         return rootView;
-    }
-
-    private void fetchImages() {
-        //just don't do this
-        if (((MainActivity) getActivity()).menu_featured != null) {
-            ((MainActivity) getActivity()).menu_featured.setIcon(menuUnFeatured);
-        }
-        showFeatured = false;
-
-        mImagesProgress.setVisibility(View.VISIBLE);
-        mImageRecycler.setVisibility(View.GONE);
-        mImagesErrorView.setVisibility(View.GONE);
-
-        // Load images from API
-        mApi.fetchImages().cache().subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
-    }
-
-    private void fetchFeaturedImages() {
-        //just don't do this
-        if (((MainActivity) getActivity()).menu_featured != null) {
-            ((MainActivity) getActivity()).menu_featured.setIcon(menuFeatured);
-        }
-        showFeatured = true;
-
-        mImagesProgress.setVisibility(View.VISIBLE);
-        mImageRecycler.setVisibility(View.GONE);
-        mImagesErrorView.setVisibility(View.GONE);
-
-        // Load images from API
-        mApi.fetchFeaturedImages().cache().subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
     }
 
     @Override
@@ -129,19 +100,56 @@ public class ImagesFragment extends Fragment {
         super.onResume();
     }
 
+    private void showAll() {
+        //just don't do this
+        if (((MainActivity) getActivity()).menu_featured != null) {
+            ((MainActivity) getActivity()).menu_featured.setIcon(menuUnFeatured);
+        }
+        showFeatured = false;
+
+        if (mImages != null) {
+            mFilteredImages = mApi.filterFeatured(mImages);
+            mImageAdapter = new ImageAdapter(mFilteredImages);
+            mImageAdapter.setOnItemClickListener(recyclerRowClickListener);
+            mImageRecycler.setAdapter(mImageAdapter);
+        } else {
+            mImagesProgress.setVisibility(View.VISIBLE);
+            mImageRecycler.setVisibility(View.GONE);
+            mImagesErrorView.setVisibility(View.GONE);
+
+            // Load images from API
+            mApi.fetchImages().cache().subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(observer);
+        }
+    }
+
+    private void showFeatured() {
+        //just don't do this
+        if (((MainActivity) getActivity()).menu_featured != null) {
+            ((MainActivity) getActivity()).menu_featured.setIcon(menuFeatured);
+        }
+        showFeatured = true;
+
+        mFilteredImages = mApi.filterFeatured(mImages);
+        mImageAdapter = new ImageAdapter(mFilteredImages);
+        mImageAdapter.setOnItemClickListener(recyclerRowClickListener);
+        mImageRecycler.setAdapter(mImageAdapter);
+    }
+
+
     private Observer<ImageList> observer = new Observer<ImageList>() {
         @Override
         public void onNext(final ImageList images) {
             mImages = images.getData();
             mImageAdapter = new ImageAdapter(mImages);
             mImageAdapter.setOnItemClickListener(recyclerRowClickListener);
-
-            // Update adapter
             mImageRecycler.setAdapter(mImageAdapter);
         }
 
         @Override
         public void onCompleted() {
+            ((MainActivity) getActivity()).menu_featured.setVisible(true);
             // Dismiss loading dialog
             mImagesProgress.setVisibility(View.GONE);
             mImageRecycler.setVisibility(View.VISIBLE);
@@ -171,7 +179,7 @@ public class ImagesFragment extends Fragment {
             mImagesErrorView.setOnRetryListener(new RetryListener() {
                 @Override
                 public void onRetry() {
-                    fetchFeaturedImages();
+                    showAll();
                 }
             });
 
@@ -221,10 +229,13 @@ public class ImagesFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_featured) {
-            if (showFeatured) {
-                fetchImages();
-            } else {
-                fetchFeaturedImages();
+            //don't allow to switch images as long as the images aren't ready!
+            if (mImages != null) {
+                if (showFeatured) {
+                    showAll();
+                } else {
+                    showFeatured();
+                }
             }
         } else if (id == R.id.action_shuffle) {
             if (mImages != null) {
