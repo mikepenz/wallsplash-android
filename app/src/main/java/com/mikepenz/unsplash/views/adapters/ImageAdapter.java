@@ -28,7 +28,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
 
     private Context mContext;
 
-    private final ArrayList<Image> mImages;
+    private ArrayList<Image> mImages;
 
     private int mScreenWidth;
 
@@ -41,8 +41,16 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         this.onItemClickListener = onItemClickListener;
     }
 
+    public ImageAdapter() {
+    }
+
     public ImageAdapter(ArrayList<Image> images) {
         this.mImages = images;
+    }
+
+    public void updateData(ArrayList<Image> images) {
+        this.mImages = images;
+        notifyDataSetChanged();
     }
 
     @Override
