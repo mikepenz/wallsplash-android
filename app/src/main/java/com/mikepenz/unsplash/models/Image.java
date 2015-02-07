@@ -32,6 +32,10 @@ public class Image implements Serializable {
         this.color = color;
     }
 
+    public String getUrl() {
+        return image_src;
+    }
+
     public String getHighResImage(int minWidth, int minHeight) {
         String url = image_src + "?q=100&fm=jpg";
 
