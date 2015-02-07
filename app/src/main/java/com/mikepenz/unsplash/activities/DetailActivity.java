@@ -134,7 +134,7 @@ public class DetailActivity extends ActionBarActivity {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.activity_detail_toolbar);
         Bitmap imageCoverBitmap = ImagesFragment.photoCache.get(position);
         //safety check to prevent nullPointer in the palette if the detailActivity was in the background for too long
-        if (imageCoverBitmap == null) {
+        if (imageCoverBitmap == null || imageCoverBitmap.isRecycled()) {
             this.finish();
             return;
         }

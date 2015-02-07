@@ -206,7 +206,7 @@ public class ImagesFragment extends Fragment {
                     ((ViewGroup) coverImage.getParent()).setTransitionGroup(false);
                 }
             }
-            if (coverImage.getDrawingCache() != null) {
+            if (coverImage.getDrawingCache() != null && !coverImage.getDrawingCache().isRecycled()) {
                 photoCache.put(position, coverImage.getDrawingCache());
 
                 // Setup the transition to the detail activity
