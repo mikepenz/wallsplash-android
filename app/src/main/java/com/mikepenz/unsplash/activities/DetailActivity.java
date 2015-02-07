@@ -40,7 +40,7 @@ import com.mikepenz.unsplash.fragments.ImagesFragment;
 import com.mikepenz.unsplash.models.Image;
 import com.mikepenz.unsplash.other.CustomAnimatorListener;
 import com.mikepenz.unsplash.other.CustomTransitionListener;
-import com.mikepenz.unsplash.views.Utils;
+import com.mikepenz.unsplash.other.Utils;
 
 import java.io.File;
 import java.io.InputStream;

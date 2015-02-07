@@ -1,4 +1,4 @@
-package com.mikepenz.unsplash.views;
+package com.mikepenz.unsplash.other;
 
 import android.animation.ArgbEvaluator;
 import android.animation.FloatEvaluator;
@@ -11,8 +11,12 @@ import android.view.animation.PathInterpolator;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Scanner;
 
 @SuppressWarnings("UnnecessaryLocalVariable")
 public class Utils {
@@ -107,4 +111,43 @@ public class Utils {
             e.printStackTrace();
         }
     }
+
+
+    /**
+     * http://stackoverflow.com/questions/3934331/android-how-to-encrypt-a-string
+     *
+     * @param s
+     * @return
+     */
+    public static String md5(String s) {
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(s.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            // Create Hex String
+            StringBuffer hexString = new StringBuffer();
+            for (int i = 0; i < messageDigest.length; i++)
+                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
+     * http://stackoverflow.com/questions/326390/how-to-create-a-java-string-from-the-contents-of-a-file
+     *
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public static String readFile(File file)
+            throws IOException {
+        return new Scanner(file, "UTF-8").useDelimiter("\\A").next();
+    }
+
 }

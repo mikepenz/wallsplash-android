@@ -18,7 +18,7 @@ import com.mikepenz.unsplash.OnItemClickListener;
 import com.mikepenz.unsplash.R;
 import com.mikepenz.unsplash.models.Image;
 import com.mikepenz.unsplash.other.PaletteTransformation;
-import com.mikepenz.unsplash.views.Utils;
+import com.mikepenz.unsplash.other.Utils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
