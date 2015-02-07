@@ -20,7 +20,7 @@ public class Image implements Serializable {
     private int width;
     private int height;
     private int featured;
-    private long category;
+    private int category;
 
     transient private Palette.Swatch swatch;
 
@@ -147,11 +147,11 @@ public class Image implements Serializable {
         this.featured = featured;
     }
 
-    public long getCategory() {
+    public int getCategory() {
         return category;
     }
 
-    public void setCategory(long category) {
+    public void setCategory(int category) {
         this.category = category;
     }
 }
