@@ -49,7 +49,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
@@ -73,6 +73,11 @@ public class MainActivity extends ActionBarActivity {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l, IDrawerItem drawerItem) {
+                        if (drawerItem instanceof PrimaryDrawerItem) {
+                            toolbar.setTitle(((PrimaryDrawerItem) drawerItem).getNameRes());
+                        }
+
+
                         if (onFilterChangedListener != null) {
                             onFilterChangedListener.onFilterChanged(drawerItem.getIdentifier());
                         }
