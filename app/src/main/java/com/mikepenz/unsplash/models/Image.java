@@ -39,12 +39,21 @@ public class Image implements Serializable {
     public String getHighResImage(int minWidth, int minHeight) {
         String url = image_src + "?q=100&fm=jpg";
 
+        //minimize processing costs of unsplash image hosting
+        //try to eliminate the white line on top
+
         if (minWidth > 0 && minHeight > 0) {
             int phoneRatio = minWidth / minHeight;
             if (phoneRatio < getRatio()) {
-                url = url + "&h=" + minHeight;
+                if (minHeight <= 1080) {
+                    //url = url + "&h=" + minHeight;
+                    url = url + "&h=" + 1080;
+                }
             } else {
-                url = url + "&w=" + minWidth;
+                if (minWidth <= 1920) {
+                    //url = url + "&w=" + minWidth;
+                    url = url + "&w=" + 1920;
+                }
             }
         }
 
