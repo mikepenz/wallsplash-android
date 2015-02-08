@@ -235,6 +235,7 @@ public class ImagesFragment extends Fragment {
     private void updateAdapter(ArrayList<Image> images) {
         mCurrentImages = images;
         mImageAdapter.updateData(mCurrentImages);
+        mImageRecycler.scrollToPosition(0);
         /*
         mImageAdapter = new ImageAdapter(images);
         mImageAdapter.setOnItemClickListener(recyclerRowClickListener);
