@@ -134,7 +134,7 @@ public class ImagesFragment extends Fragment {
         @Override
         public void onNext(final ImageList images) {
             mImages = images.getData();
-            updateAdapter(mImages);
+            updateAdapter(mApi.filterFeatured(mImages));
         }
 
         @Override
