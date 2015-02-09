@@ -223,7 +223,7 @@ public class DetailActivity extends ActionBarActivity {
 
                 //prepare the call
                 future = Ion.with(DetailActivity.this)
-                        .load(mSelectedImage.getHighResImage(mWallpaperWidth, mWallpaperHeight))
+                        .load(mSelectedImage.getUrl())
                         .progressHandler(progressCallback)
                         .asInputStream();
 
