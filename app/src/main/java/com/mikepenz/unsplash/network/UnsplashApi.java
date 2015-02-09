@@ -21,10 +21,10 @@ import retrofit.http.GET;
 import rx.Observable;
 
 public class UnsplashApi {
-    private static final String ENDPOINT = "http://wallsplash.lanora.io";
+    public static final String ENDPOINT = "http://wallsplash.lanora.io";
     private final UnsplashService mWebService;
 
-    private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); //2015-01-18 15:48:56
+    public static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); //2015-01-18 15:48:56
 
     public UnsplashApi() {
         Cache cache = null;
@@ -56,6 +56,11 @@ public class UnsplashApi {
     public interface UnsplashService {
         @GET("/pictures")
         Observable<ImageList> listImages();
+    }
+
+    public interface RandomUnsplashService {
+        @GET("/random")
+        Image random();
     }
 
     public Observable<ImageList> fetchImages() {
