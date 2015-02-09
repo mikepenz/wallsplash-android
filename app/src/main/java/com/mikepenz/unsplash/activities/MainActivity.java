@@ -73,13 +73,13 @@ public class MainActivity extends ActionBarActivity {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l, IDrawerItem drawerItem) {
-                        if (drawerItem instanceof PrimaryDrawerItem) {
-                            toolbar.setTitle(((PrimaryDrawerItem) drawerItem).getNameRes());
-                        }
-
-
-                        if (onFilterChangedListener != null) {
-                            onFilterChangedListener.onFilterChanged(drawerItem.getIdentifier());
+                        if (drawerItem != null) {
+                            if (drawerItem instanceof PrimaryDrawerItem) {
+                                toolbar.setTitle(((PrimaryDrawerItem) drawerItem).getNameRes());
+                            }
+                            if (onFilterChangedListener != null) {
+                                onFilterChangedListener.onFilterChanged(drawerItem.getIdentifier());
+                            }
                         }
                     }
                 })
