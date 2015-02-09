@@ -23,6 +23,8 @@
     <string name="dialog_setting_title">Downloading</string>
     <string name="dialog_setting_text">Please wait while the high-res version of your wallpaper is downloading. It will be ready shortly&#8230;</string>
 
+    <!-- Muzei support -->
+    <string name="muzei_description">awesome unsplash images</string>
 
     <!-- network exceptions -->
     <string name="error_network">No connection</string>
