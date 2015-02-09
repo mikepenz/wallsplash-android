@@ -85,7 +85,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         imagesViewHolder.imageDate.setTextColor(mDefaultTextColor);
         imagesViewHolder.imageTextContainer.setBackgroundColor(mDefaultBackgroundColor);
 
-
         Picasso.with(mContext).load(mImages.get(position).getImage_src(mScreenWidth)).transform(PaletteTransformation.instance()).into(imagesViewHolder.imageView, new Callback.EmptyCallback() {
             @Override
             public void onSuccess() {
@@ -103,7 +102,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
                     s = palette.getMutedSwatch();
                 }
 
-                if (s != null) {
+                if (s != null && position >= 0 && position < mImages.size()) {
                     if (mImages.get(position) != null) {
                         mImages.get(position).setSwatch(s);
                     }
