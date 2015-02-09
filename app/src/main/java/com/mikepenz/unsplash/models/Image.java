@@ -43,14 +43,14 @@ public class Image implements Serializable {
         //try to eliminate the white line on top
 
         if (minWidth > 0 && minHeight > 0) {
-            float phoneRatio = minWidth / minHeight;
+            float phoneRatio = (1.0f * minWidth) / minHeight;
             if (phoneRatio < getRatio()) {
-                if (minHeight <= 1080) {
+                if (minHeight < 1080) {
                     //url = url + "&h=" + minHeight;
                     url = url + "&h=" + 1080;
                 }
             } else {
-                if (minWidth <= 1920) {
+                if (minWidth < 1920) {
                     //url = url + "&w=" + minWidth;
                     url = url + "&w=" + 1920;
                 }
