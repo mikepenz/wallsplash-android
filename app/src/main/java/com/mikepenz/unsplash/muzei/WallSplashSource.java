@@ -18,6 +18,7 @@ package com.mikepenz.unsplash.muzei;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import com.google.android.apps.muzei.api.Artwork;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
@@ -65,21 +66,24 @@ public class WallSplashSource extends RemoteMuzeiArtSource {
                 .build();
 
         UnsplashApi.RandomUnsplashService service = restAdapter.create(UnsplashApi.RandomUnsplashService.class);
-        Image image = service.random();
+        try {
+            Image image = service.random();
 
-        if (image == null) {
-            scheduleUpdate(System.currentTimeMillis() + ROTATE_TIME_MILLIS);
-            return;
+            if (image == null) {
+                scheduleUpdate(System.currentTimeMillis() + ROTATE_TIME_MILLIS);
+                return;
+            }
+
+            publishArtwork(new Artwork.Builder()
+                    .title(image.getAuthor())
+                    .byline(image.getReadableModified_Date())
+                    .viewIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(image.getUrl())))
+                    .build());
+        } catch (Exception ex) {
+            Log.e("wallsplash", "WallSplashSource: " + ex.toString());
         }
 
-        publishArtwork(new Artwork.Builder()
-                .title(image.getAuthor())
-                .byline(image.getReadableModified_Date())
-                .imageUri(Uri.parse(image.getUrl()))
-                /*.token(token)*/
-                .viewIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(image.getUrl())))
-                .build());
-
+        //schedule the next update ;)
         scheduleUpdate(System.currentTimeMillis() + ROTATE_TIME_MILLIS);
     }
 }
