@@ -37,7 +37,7 @@ public class Image implements Serializable {
     }
 
     public String getHighResImage(int minWidth, int minHeight) {
-        String url = image_src + "?q=100&fm=jpg";
+        String url = image_src + "?fm=png";
 
         //minimize processing costs of unsplash image hosting
         //try to eliminate the white line on top
