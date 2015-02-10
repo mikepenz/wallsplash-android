@@ -79,6 +79,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         imagesViewHolder.imageAuthor.setText(currentImage.getAuthor());
         imagesViewHolder.imageDate.setText(currentImage.getReadableModified_Date());
         //imagesViewHolder.imageView.setDrawingCacheEnabled(true);
+        imagesViewHolder.imageView.setImageBitmap(null);
 
         //reset colors so we prevent crazy flashes :D
         imagesViewHolder.imageAuthor.setTextColor(mDefaultTextColor);
