@@ -202,14 +202,16 @@ public class ImagesFragment extends Fragment {
                 }
             }
 
-            Bitmap bitmap = ((BitmapDrawable) coverImage.getDrawable()).getBitmap(); //ew
-            if (bitmap != null && !bitmap.isRecycled()) {
-                photoCache.put(position, bitmap);
+            if (coverImage != null && coverImage.getDrawable() != null) {
+                Bitmap bitmap = ((BitmapDrawable) coverImage.getDrawable()).getBitmap(); //ew
+                if (bitmap != null && !bitmap.isRecycled()) {
+                    photoCache.put(position, bitmap);
 
-                // Setup the transition to the detail activity
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), coverImage, "cover");
+                    // Setup the transition to the detail activity
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), coverImage, "cover");
 
-                startActivity(detailIntent, options.toBundle());
+                    startActivity(detailIntent, options.toBundle());
+                }
             }
         }
     };
