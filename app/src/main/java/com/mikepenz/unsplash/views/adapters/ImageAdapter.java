@@ -89,27 +89,30 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
             @Override
             public void onSuccess() {
                 Bitmap bitmap = ((BitmapDrawable) imagesViewHolder.imageView.getDrawable()).getBitmap(); // Ew!
-                Palette palette = PaletteTransformation.getPalette(bitmap);
 
-                Palette.Swatch s = palette.getVibrantSwatch();
-                if (s == null) {
-                    s = palette.getDarkVibrantSwatch();
-                }
-                if (s == null) {
-                    s = palette.getLightVibrantSwatch();
-                }
-                if (s == null) {
-                    s = palette.getMutedSwatch();
-                }
+                if (bitmap != null && !bitmap.isRecycled()) {
+                    Palette palette = PaletteTransformation.getPalette(bitmap);
 
-                if (s != null && position >= 0 && position < mImages.size()) {
-                    if (mImages.get(position) != null) {
-                        mImages.get(position).setSwatch(s);
+                    Palette.Swatch s = palette.getVibrantSwatch();
+                    if (s == null) {
+                        s = palette.getDarkVibrantSwatch();
+                    }
+                    if (s == null) {
+                        s = palette.getLightVibrantSwatch();
+                    }
+                    if (s == null) {
+                        s = palette.getMutedSwatch();
                     }
 
-                    imagesViewHolder.imageAuthor.setTextColor(s.getTitleTextColor());
-                    imagesViewHolder.imageDate.setTextColor(s.getTitleTextColor());
-                    Utils.animateViewColor(imagesViewHolder.imageTextContainer, mDefaultBackgroundColor, s.getRgb());
+                    if (s != null && position >= 0 && position < mImages.size()) {
+                        if (mImages.get(position) != null) {
+                            mImages.get(position).setSwatch(s);
+                        }
+
+                        imagesViewHolder.imageAuthor.setTextColor(s.getTitleTextColor());
+                        imagesViewHolder.imageDate.setTextColor(s.getTitleTextColor());
+                        Utils.animateViewColor(imagesViewHolder.imageTextContainer, mDefaultBackgroundColor, s.getRgb());
+                    }
                 }
 
                 if (Build.VERSION.SDK_INT >= 21) {
@@ -127,8 +130,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
 
         //calculate height of the list-item so we don't have jumps in the view
         DisplayMetrics displaymetrics = mContext.getResources().getDisplayMetrics();
-        Image image = mImages.get(position);
-
         //image.width .... image.height
         //device.width ... device
         int finalHeight = (int) (displaymetrics.widthPixels / mImages.get(position).getRatio());
