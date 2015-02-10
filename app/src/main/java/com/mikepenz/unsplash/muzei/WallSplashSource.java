@@ -37,20 +37,20 @@ public class WallSplashSource extends RemoteMuzeiArtSource {
     private static final int ROTATE_TIME_MILLIS = 3 * 60 * 60 * 1000; // rotate every 3 hours
 
 
-    private final int mWallpaperWidth;
-    private final int mWallpaperHeight;
+    private int mWallpaperWidth = -1;
+    private int mWallpaperHeight = -1;
 
     public WallSplashSource() {
         super(SOURCE_NAME);
-
-        mWallpaperWidth = WallpaperManager.getInstance(this).getDesiredMinimumWidth();
-        mWallpaperHeight = WallpaperManager.getInstance(this).getDesiredMinimumHeight();
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
         setUserCommands(BUILTIN_COMMAND_ID_NEXT_ARTWORK);
+
+        mWallpaperWidth = WallpaperManager.getInstance(this).getDesiredMinimumWidth();
+        mWallpaperHeight = WallpaperManager.getInstance(this).getDesiredMinimumHeight();
     }
 
     @Override
