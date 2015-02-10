@@ -85,6 +85,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         imagesViewHolder.imageDate.setTextColor(mDefaultTextColor);
         imagesViewHolder.imageTextContainer.setBackgroundColor(mDefaultBackgroundColor);
 
+        //cancel any loading images on this view
+        Picasso.with(mContext).cancelRequest(imagesViewHolder.imageView);
+        //load the image
         Picasso.with(mContext).load(mImages.get(position).getImage_src(mScreenWidth)).transform(PaletteTransformation.instance()).into(imagesViewHolder.imageView, new Callback.EmptyCallback() {
             @Override
             public void onSuccess() {
