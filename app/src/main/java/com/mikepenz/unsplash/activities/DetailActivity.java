@@ -6,7 +6,6 @@ import android.app.WallpaperManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
@@ -142,20 +141,23 @@ public class DetailActivity extends ActionBarActivity {
 
         // Define toolbar as the shared element
         final Toolbar toolbar = (Toolbar) findViewById(R.id.activity_detail_toolbar);
+        setSupportActionBar(toolbar);
+
+        //get the imageHeader and set the coverImage
+        final ImageView image = (ImageView) findViewById(R.id.activity_detail_image);
         Bitmap imageCoverBitmap = ImagesFragment.photoCache.get(position);
         //safety check to prevent nullPointer in the palette if the detailActivity was in the background for too long
         if (imageCoverBitmap == null || imageCoverBitmap.isRecycled()) {
             this.finish();
             return;
         }
-        toolbar.setBackground(new BitmapDrawable(getResources(), imageCoverBitmap));
-        setSupportActionBar(toolbar);
+        image.setImageBitmap(imageCoverBitmap);
 
         //override text
         setTitle("");
 
         if (Build.VERSION.SDK_INT >= 21) {
-            toolbar.setTransitionName("cover");
+            image.setTransitionName("cover");
             // Add a listener to get noticed when the transition ends to animate the fab button
             getWindow().getSharedElementEnterTransition().addListener(new CustomTransitionListener() {
                 @Override
@@ -165,7 +167,7 @@ public class DetailActivity extends ActionBarActivity {
                 }
             });
         } else {
-            Utils.showViewByScale(toolbar).setDuration(ANIMATION_DURATION_LONG).start();
+            Utils.showViewByScale(image).setDuration(ANIMATION_DURATION_LONG).start();
             animateActivityStart();
         }
 

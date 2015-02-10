@@ -15,20 +15,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <android.support.v7.widget.Toolbar
                 android:id="@+id/activity_detail_toolbar"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:id="@+id/activity_detail_image"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/tool_bar_top_padding"
-                android:minHeight="?attr/actionBarSize"
-                android:elevation="2dp">
-            </android.support.v7.widget.Toolbar>
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:elevation="2dp"/>
 
             <FrameLayout
                 android:id="@+id/activity_detail_title_container"
                 android:layout_width="match_parent"
                 android:layout_height="128dp"
-                android:layout_below="@id/activity_detail_toolbar"
+                android:layout_below="@id/activity_detail_image"
                 android:background="#00FFFFFF"
                 >
 
@@ -75,7 +80,7 @@
                 android:layout_height="@dimen/fab_small"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/activity_detail_toolbar"
+                android:layout_below="@+id/activity_detail_image"
                 android:layout_marginRight="@dimen/fab_small_margin_right"
                 android:layout_marginTop="@dimen/fab_small_margin_top"
                 android:padding="8dp"
@@ -91,7 +96,7 @@
                 android:layout_height="@dimen/fab_small"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/activity_detail_toolbar"
+                android:layout_below="@+id/activity_detail_image"
                 android:layout_marginRight="@dimen/fab_small_margin_right"
                 android:layout_marginTop="@dimen/fab_small_margin_top"
                 android:padding="8dp"
@@ -110,7 +115,7 @@
                 android:layout_height="@dimen/fab_progress"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/activity_detail_toolbar"
+                android:layout_below="@+id/activity_detail_image"
                 android:layout_marginRight="@dimen/fab_progress_margin_right"
                 android:layout_marginTop="@dimen/fab_progress_margin_top"
                 android:padding="8dp"
@@ -123,7 +128,7 @@
                 android:layout_height="@dimen/fab_normal"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/activity_detail_toolbar"
+                android:layout_below="@+id/activity_detail_image"
                 android:layout_marginRight="@dimen/fab_normal_margin_right"
                 android:layout_marginTop="@dimen/fab_normal_margin_top"
                 android:padding="8dp"

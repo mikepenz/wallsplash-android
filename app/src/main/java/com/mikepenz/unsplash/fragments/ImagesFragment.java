@@ -4,6 +4,7 @@ package com.mikepenz.unsplash.fragments;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -200,8 +201,10 @@ public class ImagesFragment extends Fragment {
                     ((ViewGroup) coverImage.getParent()).setTransitionGroup(false);
                 }
             }
-            if (coverImage.getDrawingCache() != null && !coverImage.getDrawingCache().isRecycled()) {
-                photoCache.put(position, coverImage.getDrawingCache());
+
+            Bitmap bitmap = ((BitmapDrawable) coverImage.getDrawable()).getBitmap(); //ew
+            if (bitmap != null && !bitmap.isRecycled()) {
+                photoCache.put(position, bitmap);
 
                 // Setup the transition to the detail activity
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), coverImage, "cover");
