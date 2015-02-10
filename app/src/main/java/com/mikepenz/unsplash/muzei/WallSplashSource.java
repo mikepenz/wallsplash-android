@@ -16,6 +16,7 @@
 
 package com.mikepenz.unsplash.muzei;
 
+import android.app.WallpaperManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
@@ -35,8 +36,15 @@ public class WallSplashSource extends RemoteMuzeiArtSource {
 
     private static final int ROTATE_TIME_MILLIS = 3 * 60 * 60 * 1000; // rotate every 3 hours
 
+
+    private final int mWallpaperWidth;
+    private final int mWallpaperHeight;
+
     public WallSplashSource() {
         super(SOURCE_NAME);
+
+        mWallpaperWidth = WallpaperManager.getInstance(this).getDesiredMinimumWidth();
+        mWallpaperHeight = WallpaperManager.getInstance(this).getDesiredMinimumHeight();
     }
 
     @Override
@@ -75,6 +83,7 @@ public class WallSplashSource extends RemoteMuzeiArtSource {
             }
 
             publishArtwork(new Artwork.Builder()
+                    .imageUri(Uri.parse(image.getHighResImage(mWallpaperWidth, mWallpaperHeight)))
                     .title(image.getAuthor())
                     .byline(image.getReadableModified_Date())
                     .viewIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(image.getUrl())))
