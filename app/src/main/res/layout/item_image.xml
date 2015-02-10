@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:adjustViewBounds="true"
             android:transitionName="imageCover"
             android:scaleType="fitXY"
             android:background="@color/image_without_palette"/>

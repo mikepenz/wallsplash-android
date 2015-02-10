@@ -124,10 +124,15 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
             }
         });
 
+
         //calculate height of the list-item so we don't have jumps in the view
         DisplayMetrics displaymetrics = mContext.getResources().getDisplayMetrics();
-        imagesViewHolder.imageView.setMinimumHeight((int) (displaymetrics.widthPixels / mImages.get(position).getRatio()));
-        imagesViewHolder.imageView.setMaxHeight((int) (displaymetrics.widthPixels / mImages.get(position).getRatio()));
+        Image image = mImages.get(position);
+
+        //image.width .... image.height
+        //device.width ... device
+        int finalHeight = (int) (displaymetrics.widthPixels / mImages.get(position).getRatio());
+        imagesViewHolder.imageView.setMinimumHeight(finalHeight);
     }
 
     @Override
