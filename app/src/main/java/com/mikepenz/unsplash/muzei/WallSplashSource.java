@@ -52,10 +52,11 @@ public class WallSplashSource extends RemoteMuzeiArtSource {
                 .setErrorHandler(new ErrorHandler() {
                     @Override
                     public Throwable handleError(RetrofitError retrofitError) {
-                        int statusCode = retrofitError.getResponse().getStatus();
-                        if (retrofitError.getKind() == RetrofitError.Kind.NETWORK
-                                || (500 <= statusCode && statusCode < 600)) {
-                            return new RetryException();
+                        if (retrofitError != null && retrofitError.getResponse() != null && retrofitError.getKind() != null) {
+                            int statusCode = retrofitError.getResponse().getStatus();
+                            if (retrofitError.getKind() == RetrofitError.Kind.NETWORK || (500 <= statusCode && statusCode < 600)) {
+                                return new RetryException();
+                            }
                         }
                         scheduleUpdate(System.currentTimeMillis() + ROTATE_TIME_MILLIS);
                         return retrofitError;
