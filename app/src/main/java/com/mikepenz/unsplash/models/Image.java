@@ -60,7 +60,7 @@ public class Image implements Serializable {
         return url;
     }
 
-    public String getImage_src(int screenWidth) {
+    public String getImageSrc(int screenWidth) {
         return image_src + "?q=75&w=720&fit=max&fm=jpg";
 
         /*
@@ -76,7 +76,7 @@ public class Image implements Serializable {
         */
     }
 
-    public void setImage_src(String image_src) {
+    public void setImageSrc(String image_src) {
         this.image_src = image_src;
     }
 

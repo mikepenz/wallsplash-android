@@ -88,7 +88,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         //cancel any loading images on this view
         Picasso.with(mContext).cancelRequest(imagesViewHolder.imageView);
         //load the image
-        Picasso.with(mContext).load(mImages.get(position).getImage_src(mScreenWidth)).transform(PaletteTransformation.instance()).into(imagesViewHolder.imageView, new Callback.EmptyCallback() {
+        Picasso.with(mContext).load(mImages.get(position).getImageSrc(mScreenWidth)).transform(PaletteTransformation.instance()).into(imagesViewHolder.imageView, new Callback.EmptyCallback() {
             @Override
             public void onSuccess() {
                 Bitmap bitmap = ((BitmapDrawable) imagesViewHolder.imageView.getDrawable()).getBitmap(); // Ew!
