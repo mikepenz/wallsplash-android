@@ -59,15 +59,15 @@ public class MainActivity extends ActionBarActivity {
                 .withToolbar(toolbar)
                 .withHeader(R.layout.header)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.category_all).withIdentifier(Category.ALL.id),
-                        new PrimaryDrawerItem().withName(R.string.category_featured).withIdentifier(Category.FEATURED.id),
+                        new PrimaryDrawerItem().withName(R.string.category_all).withIdentifier(Category.ALL.id).withIcon(FontAwesome.Icon.faw_image),
+                        new PrimaryDrawerItem().withName(R.string.category_featured).withIdentifier(Category.FEATURED.id).withIcon(FontAwesome.Icon.faw_star),
                         new SectionDrawerItem().withName(R.string.category_section_categories),
-                        new PrimaryDrawerItem().withName(R.string.category_buildings).withIdentifier(Category.BUILDINGS.id),
-                        new PrimaryDrawerItem().withName(R.string.category_food).withIdentifier(Category.FOOD.id),
-                        new PrimaryDrawerItem().withName(R.string.category_nature).withIdentifier(Category.NATURE.id),
-                        new PrimaryDrawerItem().withName(R.string.category_objects).withIdentifier(Category.OBJECTS.id),
-                        new PrimaryDrawerItem().withName(R.string.category_people).withIdentifier(Category.PEOPLE.id),
-                        new PrimaryDrawerItem().withName(R.string.category_technology).withIdentifier(Category.TECHNOLOGY.id)
+                        new PrimaryDrawerItem().withName(R.string.category_buildings).withIdentifier(Category.BUILDINGS.id).withIcon(FontAwesome.Icon.faw_building),
+                        new PrimaryDrawerItem().withName(R.string.category_food).withIdentifier(Category.FOOD.id).withIcon(FontAwesome.Icon.faw_glass),
+                        new PrimaryDrawerItem().withName(R.string.category_nature).withIdentifier(Category.NATURE.id).withIcon(FontAwesome.Icon.faw_globe),
+                        new PrimaryDrawerItem().withName(R.string.category_objects).withIdentifier(Category.OBJECTS.id).withIcon(FontAwesome.Icon.faw_book),
+                        new PrimaryDrawerItem().withName(R.string.category_people).withIdentifier(Category.PEOPLE.id).withIcon(FontAwesome.Icon.faw_user),
+                        new PrimaryDrawerItem().withName(R.string.category_technology).withIdentifier(Category.TECHNOLOGY.id).withIcon(FontAwesome.Icon.faw_lightbulb_o)
                 )
                 .withSelectedItem(1)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
