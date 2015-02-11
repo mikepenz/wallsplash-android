@@ -27,9 +27,9 @@ public class MainActivity extends ActionBarActivity {
         BUILDINGS(1),
         FOOD(2),
         NATURE(4),
-        OBJECTS(8),
-        PEOPLE(16),
-        TECHNOLOGY(32);
+        PEOPLE(8),
+        TECHNOLOGY(16),
+        OBJECTS(32);
 
         public int id;
 
