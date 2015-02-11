@@ -76,7 +76,7 @@ dependencies {
     compile('com.mikepenz.aboutlibraries:library:4.5.2@aar') {
         transitive = true
     }
-    compile('com.mikepenz.materialdrawer:library:0.7.3-SNAPSHOT@aar') {
+    compile('com.mikepenz.materialdrawer:library:0.7.4-SNAPSHOT@aar') {
         transitive = true
     }
 }
