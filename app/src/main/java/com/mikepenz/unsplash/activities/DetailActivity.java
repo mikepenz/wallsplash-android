@@ -736,22 +736,23 @@ public class DetailActivity extends ActionBarActivity {
 
                             @Override
                             public void onAnimationEnd(Animator animation) {
-
-                                ViewPropertyAnimator hideFabAnimator = Utils.hideViewByScaleY(mTitleContainer);
-                                hideFabAnimator.setListener(new CustomAnimatorListener() {
-
-                                    @Override
-                                    public void onAnimationEnd(Animator animation) {
-
-                                        super.onAnimationEnd(animation);
-                                        coolBack();
-                                    }
-                                });
+                                try {
+                                    ViewPropertyAnimator hideFabAnimator = Utils.hideViewByScaleY(mTitleContainer);
+                                    hideFabAnimator.setListener(new CustomAnimatorListener() {
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            super.onAnimationEnd(animation);
+                                            coolBack();
+                                        }
+                                    });
+                                } catch (Exception ex) {
+                                    super.onAnimationEnd(animation);
+                                    coolBack();
+                                }
                             }
                         });
 
                         hideFabAnimator.start();
-
                         super.onAnimationEnd(animation);
                     }
                 })
