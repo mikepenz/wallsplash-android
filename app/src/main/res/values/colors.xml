@@ -38,7 +38,7 @@
     <color name="material_drawer_secondary_text">#DEDEDE</color>
     <color name="material_drawer_hint_text">#ABABAB</color>
     <color name="material_drawer_contrast_text">#000</color>
-    <color name="material_drawer_divider">#555555</color>
+    <color name="material_drawer_divider">#232323</color>
     <color name="material_drawer_selected">#232323</color>
 
     <!-- AboutLibraries DARK colors -->
