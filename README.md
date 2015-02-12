@@ -51,11 +51,11 @@ Thanks [Saul MM](https://github.com/saulmm) for the basic structure of [OpenLibr
 
     Copyright 2015 Mike Penz
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+    Licensed under the CreativeCommons Attribution-NonCommercial-ShareAlike 
+    4.0 International License. You may not use this file except in compliance 
+    with the License. You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+       http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
