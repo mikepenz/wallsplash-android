@@ -32,9 +32,12 @@ A quick preview video can be found @[YouTube](https://www.youtube.com/watch?v=98
 
 #Restrictions
 
-You can use this project for any app you like, with the following restrictions:
-* It has to be free
-* You have to give credits
+See the license section for a detailed information about the used license and allowed / disallowed thing.
+
+In short:
+* You can modify / change / and reshare this (ShareAlike)
+* You are allowed to used it in any free application (NonCommercial)
+* You have to give credits (Attribution)
 * You are not allowed to use the included API as image source
 
 #Credits
