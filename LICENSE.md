@@ -31,15 +31,12 @@ By exercising the Licensed Rights (defined below), You accept and agree to be bo
     2.  Term. The term of this Public License is specified in Section [6(a)](#s6a).
     3.  Media and formats; technical modifications allowed. The Licensor authorizes You to exercise the Licensed Rights in all media and formats whether now known or hereafter created, and to make technical modifications necessary to do so. The Licensor waives and/or agrees not to assert any right or authority to forbid You from making technical modifications necessary to exercise the Licensed Rights, including technical modifications necessary to circumvent Effective Technological Measures. For purposes of this Public License, simply making modifications authorized by this Section [2(a)(4)](#s2a4) never produces Adapted Material.
     4.  Downstream recipients.
-						<div class="para">
 
                 1.  Offer from the Licensor – Licensed Material. Every recipient of the Licensed Material automatically receives an  offer from the Licensor to exercise the Licensed Rights under the terms and conditions of this Public License.
         2.  Additional offer from the Licensor – Adapted Material. Every recipient of Adapted Material from You automatically receives an  offer from the Licensor to exercise the Licensed Rights in the Adapted Material under the conditions of the Adapter’s License You apply.
         3.  No downstream restrictions. You may not offer or impose any additional or different terms or  conditions on, or apply any Effective Technological Measures to, the Licensed Material if doing so restricts exercise of the Licensed Rights by any recipient of the Licensed Material.
-						</div>
 
-        						<li id="s2a6"><span style="text-decoration: underline;">No endorsement</span>. Nothing in this Public License constitutes or may be construed as permission to assert or imply that You are, or that Your use of the Licensed Material is, connected with, or sponsored, endorsed, or granted official status by, the Licensor or others designated to receive attribution as provided in Section [3(a)(1)(A)(i)](#s3a1Ai).
-					<li id="s2b">
+        						No endorsement. Nothing in this Public License constitutes or may be construed as permission to assert or imply that You are, or that Your use of the Licensed Material is, connected with, or sponsored, endorsed, or granted official status by, the Licensor or others designated to receive attribution as provided in Section [3(a)(1)(A)(i)](#s3a1Ai).
 
     **Other rights**.
 
@@ -61,7 +58,7 @@ Your exercise of the Licensed Rights is expressly made subject to the following 
             2.  a copyright notice;
             3.  a notice that refers to this Public License;4.  a notice that refers to the disclaimer of warranties;
             5.  a URI or hyperlink to the Licensed Material to the extent reasonably practicable;
-							<li id="s3a1B">indicate if You modified the Licensed Material and retain an indication of any previous modifications; and
+							indicate if You modified the Licensed Material and retain an indication of any previous modifications; and
         2.  indicate the Licensed Material is licensed under this Public License,and include the text of, or the URI or hyperlink to, this PublicLicense.
     2.  You may satisfy the conditions in Section [3(a)(1)](#s3a1) in any reasonable manner based on the medium, means, and context in which You Share the Licensed Material. For example, it may be reasonable to satisfy the conditions by providing a URI or hyperlink to a resource that includes the required information.
     3.  If requested by the Licensor, You must remove any of the information required by Section [3(a)(1)(A)](#s3a1A) to the extent reasonably practicable.
