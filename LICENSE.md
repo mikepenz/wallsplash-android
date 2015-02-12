@@ -27,7 +27,7 @@ By exercising the Licensed Rights (defined below), You accept and agree to be bo
 
                 1.  reproduce and Share the Licensed Material, in whole or in part, for NonCommercial purposes only; and
         2.  produce, reproduce, and Share Adapted Material for NonCommercial purposes only.
-						<li id="s2a2"><span style="text-decoration: underline;">Exceptions and Limitations</span>. For the avoidance of doubt, where Exceptions and Limitations apply to Your use, this Public License does not apply, and You do not need to comply with its terms and conditions.
+						Exceptions and Limitations. For the avoidance of doubt, where Exceptions and Limitations apply to Your use, this Public License does not apply, and You do not need to comply with its terms and conditions.
     2.  Term. The term of this Public License is specified in Section [6(a)](#s6a).
     3.  Media and formats; technical modifications allowed. The Licensor authorizes You to exercise the Licensed Rights in all media and formats whether now known or hereafter created, and to make technical modifications necessary to do so. The Licensor waives and/or agrees not to assert any right or authority to forbid You from making technical modifications necessary to exercise the Licensed Rights, including technical modifications necessary to circumvent Effective Technological Measures. For purposes of this Public License, simply making modifications authorized by this Section [2(a)(4)](#s2a4) never produces Adapted Material.
     4.  Downstream recipients.
