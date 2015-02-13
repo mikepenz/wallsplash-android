@@ -37,10 +37,9 @@ See the license section for a detailed information about the used license and al
 * You can modify / change / and reshare this (ShareAlike)
 * You are allowed to used it in any free application (NonCommercial)
     * Unless otherwise granted
-    * Contact me if you want to use it within an paid application [mikepenz@gmail.com](mikepenz@gmail.com)]
+    * Contact me if you want to use it within an paid application [mikepenz@gmail.com](mikepenz@gmail.com)
 * You have to give credits (Attribution)
 * You are not allowed to use the included API as image source
-* 
 
 #Credits
 
@@ -49,7 +48,7 @@ Thanks [Saul MM](https://github.com/saulmm) for the basic structure of [OpenLibr
 
 #Developed By
 
-* Mike Penz - http://mikepenz.com - <penz@tundem.com>
+* Mike Penz - http://mikepenz.com - <mike@lanora.com>
 
 
 #License
