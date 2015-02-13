@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">wall:splash</string>
+    <string name="action_open_source">Open Source</string>
+    <string name="action_shuffle">Перемешать</string>
+
+    <!-- categories -->
+    <string name="category_all">Все</string>
+    <string name="category_featured">Рекомендуемые</string>
+    <string name="category_section_categories">КАТЕГОРИИ</string>
+    <string name="category_buildings">Здания и сооружения</string>
+    <string name="category_food">Еда и напитки</string>
+    <string name="category_nature">Природа</string>
+    <string name="category_objects">Объекты</string>
+    <string name="category_people">Люди</string>
+    <string name="category_technology">Технологии</string>
+
+    <!-- Images fragments -->
+    <string name="loading_images">Загрузка изображений\nПожалуйста, подождите&#8230;</string>
+
+    <!-- Dialog -->
+    <string name="dialog_setting_title">Скачивание</string>
+    <string name="dialog_setting_text">Пожалуйста, подождите. Идет загрузка обоев&#8230;</string>
+
+    <!-- Muzei support -->
+    <string name="muzei_description">awesome unsplash images</string>
+
+    <!-- network exceptions -->
+    <string name="error_network">Нет соединения</string>
+    <string name="error_network_subtitle">Кажется, вы не подключены к сети.</string>
+    <string name="error_server">Server Exception</string>
+    <string name="error_server_subtitle">The server returned an exception.</string>
+    <string name="error_uncommon">WTF?!</string>
+    <string name="error_uncommon_subtitle">There was an exception which should not happen!</string>
+    <!-- storage exceptions -->
+    <string name="error_no_storage">Недостаточно памяти/отсутствует карта памяти</string>
+
+    <!-- about this app -->
+    <string name="aboutLibraries_description_showIcon">true</string>
+    <string name="aboutLibraries_description_showVersion">true</string>
+    <string name="aboutLibraries_description_text">
+        <![CDATA[
+        <b>wall:splash</b> by <a href="mikepenz.com">Mike Penz</a> – это неофициальный клиент для <a href="https://unsplash.com">unsplash</a>, сервиса с бесплатными фотографиями в высоком разрешении от <a href="https://pickcrew.com/">Crew</a>
+        <br/>
+        <br/>
+        Приложение основано на библиотеке <a href="https://github.com/saulmm/OpenLibra-Material">OpenLibra-Material</a>
+        (репозиторий на Github от <a href="https://plus.google.com/u/0/+SaulMolineroMalvido/posts">Saul MM</a>)
+        <br/>
+        <br/>
+        Приложение и API создал <a href="mikepenz.com">Mike Penz</a>
+        ]]>
+    </string>
+</resources>
