@@ -673,9 +673,6 @@ public class DetailActivity extends ActionBarActivity {
         }
         //getWindow().setNavigationBarColor(vibrantSwatch.getRgb());
 
-        //TextView summaryTitle = (TextView) findViewById(R.id.activity_detail_summary_title);
-        //summaryTitle.setTextColor(vibrantSwatch.getRgb());
-
         TextView titleTV = (TextView) mTitleContainer.findViewById(R.id.activity_detail_title);
         titleTV.setTextColor(titleTextColor);
         titleTV.setText(mSelectedImage.getAuthor());
@@ -688,63 +685,92 @@ public class DetailActivity extends ActionBarActivity {
                 .setTextColor(titleTextColor);
     }
 
+
     @Override
     public void onBackPressed() {
         mFabDownloadButton.animate()
                 .translationX(0)
                 .setDuration(ANIMATION_DURATION_MEDIUM)
+                .setListener(animationFinishListener1)
                 .start();
+
 
         //move the share fab below the normal fab (58 because this is the margin top + the half
         mFabShareButton.animate()
                 .translationX(0)
                 .setDuration(ANIMATION_DURATION_MEDIUM)
-                .setListener(new CustomAnimatorListener() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        //create the fab animation and hide fabProgress animation, set an delay so those will hide after the shareFab is below the main fab
-                        ViewPropertyAnimator hideFabAnimator = Utils.hideViewByScaleXY(mFabButton)
-                                .setDuration(ANIMATION_DURATION_MEDIUM);
-
-                        Utils.hideViewByScaleXY(mFabDownloadButton)
-                                .setDuration(ANIMATION_DURATION_MEDIUM)
-                                .start();
-                        Utils.hideViewByScaleXY(mFabShareButton)
-                                .setDuration(ANIMATION_DURATION_MEDIUM)
-                                .start();
-                        Utils.hideViewByScaleXY(mFabProgress)
-                                .setDuration(ANIMATION_DURATION_MEDIUM)
-                                .start();
-
-
-                        //add listener so we can react after the animation is finished
-                        hideFabAnimator.setListener(new CustomAnimatorListener() {
-
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                try {
-                                    ViewPropertyAnimator hideFabAnimator = Utils.hideViewByScaleY(mTitleContainer);
-                                    hideFabAnimator.setListener(new CustomAnimatorListener() {
-                                        @Override
-                                        public void onAnimationEnd(Animator animation) {
-                                            super.onAnimationEnd(animation);
-                                            coolBack();
-                                        }
-                                    });
-                                } catch (Exception ex) {
-                                    super.onAnimationEnd(animation);
-                                    coolBack();
-                                }
-                            }
-                        });
-
-                        hideFabAnimator.start();
-                        super.onAnimationEnd(animation);
-                    }
-                })
+                .setListener(animationFinishListener1)
                 .start();
     }
 
+    private CustomAnimatorListener animationFinishListener1 = new CustomAnimatorListener() {
+        private int animateFinish1 = 0;
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationEnd(animation);
+            process();
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+            super.onAnimationCancel(animation);
+            process();
+        }
+
+        private void process() {
+            animateFinish1 = animateFinish1 + 1;
+            if (animateFinish1 == 2) {
+                //create the fab animation and hide fabProgress animation, set an delay so those will hide after the shareFab is below the main fab
+                Utils.hideViewByScaleXY(mFabDownloadButton)
+                        .setDuration(ANIMATION_DURATION_MEDIUM)
+                        .setListener(animationFinishListener2)
+                        .start();
+                Utils.hideViewByScaleXY(mFabShareButton)
+                        .setDuration(ANIMATION_DURATION_MEDIUM)
+                        .setListener(animationFinishListener2)
+                        .start();
+                Utils.hideViewByScaleXY(mFabProgress)
+                        .setDuration(ANIMATION_DURATION_MEDIUM)
+                        .setListener(animationFinishListener2)
+                        .start();
+                Utils.hideViewByScaleXY(mFabButton)
+                        .setDuration(ANIMATION_DURATION_MEDIUM)
+                        .setListener(animationFinishListener2)
+                        .start();
+            }
+        }
+    };
+
+    private CustomAnimatorListener animationFinishListener2 = new CustomAnimatorListener() {
+        private int animateFinish2 = 0;
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationEnd(animation);
+            process();
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+            super.onAnimationCancel(animation);
+            process();
+        }
+
+        private void process() {
+            animateFinish2 = animateFinish2 + 1;
+            if (animateFinish2 == 4) {
+                ViewPropertyAnimator hideFabAnimator = Utils.hideViewByScaleY(mTitleContainer);
+                hideFabAnimator.setListener(new CustomAnimatorListener() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        coolBack();
+                    }
+                });
+            }
+        }
+    };
 
     /**
      *
@@ -753,6 +779,7 @@ public class DetailActivity extends ActionBarActivity {
         try {
             super.onBackPressed();
         } catch (Exception e) {
+            // ew;
         }
     }
 }
