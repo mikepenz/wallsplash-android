@@ -2,6 +2,8 @@ package com.mikepenz.unsplash.models;
 
 import android.support.v7.graphics.Palette;
 
+import com.mikepenz.unsplash.other.Utils;
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -61,7 +63,7 @@ public class Image implements Serializable {
     }
 
     public String getImageSrc(int screenWidth) {
-        return image_src + "?q=75&w=720&fit=max&fm=jpg";
+        return image_src + "?q=75&fm=jpg&w=" + Utils.optimalImageWidth(screenWidth);
 
         /*
         wait with this one for now. i don't want to bring up the generation quota of unsplash
