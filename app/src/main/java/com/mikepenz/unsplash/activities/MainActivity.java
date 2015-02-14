@@ -17,6 +17,8 @@ import com.mikepenz.materialdrawer.model.IDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.unsplash.R;
+import com.mikepenz.unsplash.models.ImageList;
+import com.mikepenz.unsplash.network.UnsplashApi;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -38,6 +40,8 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    public Drawer.Result result;
+
     private OnFilterChangedListener onFilterChangedListener;
 
     public void setOnFilterChangedListener(OnFilterChangedListener onFilterChangedListener) {
@@ -54,7 +58,7 @@ public class MainActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
 
 
-        Drawer.Result result = new Drawer()
+        result = new Drawer()
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .withHeader(R.layout.header)
@@ -87,6 +91,23 @@ public class MainActivity extends ActionBarActivity {
 
         //disable scrollbar :D it's ugly
         result.getListView().setVerticalScrollBarEnabled(false);
+    }
+
+    /**
+     * @param images
+     */
+    public void setCategoryCount(ImageList images) {
+        if (result.getDrawerItems() != null && result.getDrawerItems().size() == 9 && images != null && images.getData() != null) {
+            result.updateBadge(images.getData().size() + "", 0);
+            result.updateBadge(UnsplashApi.countFeatured(images.getData()) + "", 1);
+
+            result.updateBadge(UnsplashApi.countCategory(images.getData(), Category.BUILDINGS.id) + "", 3);
+            result.updateBadge(UnsplashApi.countCategory(images.getData(), Category.FOOD.id) + "", 4);
+            result.updateBadge(UnsplashApi.countCategory(images.getData(), Category.NATURE.id) + "", 5);
+            result.updateBadge(UnsplashApi.countCategory(images.getData(), Category.OBJECTS.id) + "", 6);
+            result.updateBadge(UnsplashApi.countCategory(images.getData(), Category.PEOPLE.id) + "", 7);
+            result.updateBadge(UnsplashApi.countCategory(images.getData(), Category.TECHNOLOGY.id) + "", 8);
+        }
     }
 
     @Override

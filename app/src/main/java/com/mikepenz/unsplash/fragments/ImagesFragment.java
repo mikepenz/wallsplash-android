@@ -136,6 +136,11 @@ public class ImagesFragment extends Fragment {
         public void onNext(final ImageList images) {
             mImages = images.getData();
             updateAdapter(mApi.filterFeatured(mImages));
+
+
+            if (ImagesFragment.this.getActivity() instanceof MainActivity) {
+                ((MainActivity) ImagesFragment.this.getActivity()).setCategoryCount(images);
+            }
         }
 
         @Override
