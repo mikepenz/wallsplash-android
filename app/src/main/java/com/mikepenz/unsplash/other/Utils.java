@@ -83,10 +83,42 @@ public class Utils {
         return propertyAnimator;
     }
 
+
+    /**
+     * calculate the optimal width for the image
+     *
+     * @param screenWidth
+     * @return
+     */
+    public static int optimalImageWidth(int screenWidth) {
+        int preOptimalWidth = screenWidth / 2;
+
+        if (preOptimalWidth >= 720) {
+            return 720;
+        } else if (preOptimalWidth >= 540) {
+            return 540;
+        } else if (preOptimalWidth >= 360) {
+            return 360;
+        } else {
+            return 360;
+        }
+    }
+
+
+    /**
+     * @param context
+     * @param px
+     * @return
+     */
     public static float dpFromPx(Context context, float px) {
         return px / context.getResources().getDisplayMetrics().density;
     }
 
+    /**
+     * @param context
+     * @param dp
+     * @return
+     */
     public static float pxFromDp(Context context, float dp) {
         return dp * context.getResources().getDisplayMetrics().density;
     }
