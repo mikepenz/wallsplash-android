@@ -75,20 +75,42 @@ public class UnsplashApi {
         if (featured == null) {
             ArrayList<Image> list = new ArrayList<Image>(images);
             for (Iterator<Image> it = list.iterator(); it.hasNext(); ) {
-                if (it.next().getFeatured() != 1)
+                if (it.next().getFeatured() != 1) {
                     it.remove();
+                }
             }
             featured = list;
         }
         return featured;
     }
 
+    public static int countFeatured(ArrayList<Image> images) {
+        int count = 0;
+        for (Image image : images) {
+            if (image.getFeatured() == 1) {
+                count = count + 1;
+            }
+        }
+        return count;
+    }
+
     public ArrayList<Image> filterCategory(ArrayList<Image> images, int filter) {
         ArrayList<Image> list = new ArrayList<Image>(images);
         for (Iterator<Image> it = list.iterator(); it.hasNext(); ) {
-            if ((it.next().getCategory() & filter) != filter)
+            if ((it.next().getCategory() & filter) != filter) {
                 it.remove();
+            }
         }
         return list;
+    }
+
+    public static int countCategory(ArrayList<Image> images, int filter) {
+        int count = 0;
+        for (Image image : images) {
+            if ((image.getCategory() & filter) == filter) {
+                count = count + 1;
+            }
+        }
+        return count;
     }
 }
