@@ -40,6 +40,7 @@ import com.mikepenz.unsplash.fragments.ImagesFragment;
 import com.mikepenz.unsplash.models.Image;
 import com.mikepenz.unsplash.other.CustomAnimatorListener;
 import com.mikepenz.unsplash.other.CustomTransitionListener;
+import com.mikepenz.unsplash.other.PaletteTransformation;
 import com.mikepenz.unsplash.other.Utils;
 
 import java.io.File;
@@ -179,7 +180,23 @@ public class DetailActivity extends ActionBarActivity {
             setColors(swatch_title_text_color, swatch_rgb);
         } else {
             // Generate palette colors
-            Palette.generateAsync(imageCoverBitmap, paletteListener);
+            Palette palette = PaletteTransformation.getPalette(imageCoverBitmap);
+            if (palette != null) {
+                Palette.Swatch s = palette.getVibrantSwatch();
+                if (s == null) {
+                    s = palette.getDarkVibrantSwatch();
+                }
+                if (s == null) {
+                    s = palette.getLightVibrantSwatch();
+                }
+                if (s == null) {
+                    s = palette.getMutedSwatch();
+                }
+
+                if (s != null) {
+                    setColors(s.getTitleTextColor(), s.getRgb());
+                }
+            }
         }
     }
 
@@ -671,35 +688,8 @@ public class DetailActivity extends ActionBarActivity {
                 .setTextColor(titleTextColor);
     }
 
-    /**
-     *
-     */
-    private Palette.PaletteAsyncListener paletteListener = new Palette.PaletteAsyncListener() {
-
-        @Override
-        public void onGenerated(Palette palette) {
-
-            Palette.Swatch s = palette.getVibrantSwatch();
-            if (s == null) {
-                s = palette.getDarkVibrantSwatch();
-            }
-            if (s == null) {
-                s = palette.getLightVibrantSwatch();
-            }
-            if (s == null) {
-                s = palette.getMutedSwatch();
-            }
-
-            if (s != null) {
-                setColors(s.getTitleTextColor(), s.getRgb());
-            }
-        }
-    };
-
-
     @Override
     public void onBackPressed() {
-
         mFabDownloadButton.animate()
                 .translationX(0)
                 .setDuration(ANIMATION_DURATION_MEDIUM)
@@ -726,10 +716,6 @@ public class DetailActivity extends ActionBarActivity {
                                 .setDuration(ANIMATION_DURATION_MEDIUM)
                                 .start();
 
-                        /*
-                        mTitlesContainer.startAnimation(AnimationUtils.loadAnimation(DetailActivity.this, R.anim.alpha_off));
-                        mTitlesContainer.setVisibility(View.INVISIBLE);
-                        */
 
                         //add listener so we can react after the animation is finished
                         hideFabAnimator.setListener(new CustomAnimatorListener() {
@@ -759,6 +745,7 @@ public class DetailActivity extends ActionBarActivity {
                 .start();
     }
 
+
     /**
      *
      */
@@ -766,7 +753,6 @@ public class DetailActivity extends ActionBarActivity {
         try {
             super.onBackPressed();
         } catch (Exception e) {
-            // TODO: workaround
         }
     }
 }
