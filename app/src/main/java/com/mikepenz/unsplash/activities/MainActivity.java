@@ -13,9 +13,10 @@ import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.typeface.FontAwesome;
 import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.model.IDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 import com.mikepenz.unsplash.R;
 import com.mikepenz.unsplash.models.ImageList;
 import com.mikepenz.unsplash.network.UnsplashApi;
@@ -78,8 +79,8 @@ public class MainActivity extends ActionBarActivity {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l, IDrawerItem drawerItem) {
                         if (drawerItem != null) {
-                            if (drawerItem instanceof PrimaryDrawerItem) {
-                                toolbar.setTitle(((PrimaryDrawerItem) drawerItem).getNameRes());
+                            if (drawerItem instanceof Nameable) {
+                                toolbar.setTitle(((Nameable) drawerItem).getNameRes());
                             }
                             if (onFilterChangedListener != null) {
                                 onFilterChangedListener.onFilterChanged(drawerItem.getIdentifier());
