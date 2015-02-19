@@ -128,7 +128,7 @@ public class MainActivity extends ActionBarActivity {
             new Libs.Builder()
                     .withFields(R.string.class.getFields())
                     .withActivityTitle(getString(R.string.action_open_source))
-                    .withActivityTheme(R.style.AboutTheme)
+                    .withActivityTheme(R.style.MaterialDrawerTheme_ActionBar)
                     .withLibraries("rxJava", "rxAndroid")
                     .start(this);
 

@@ -30,16 +30,22 @@
     <color name="error_view_text_light">#ffffffff</color>
     <color name="error_view_text_dark">#DEDEDE</color>
 
-
     <!-- MaterialDrawer DARK colors -->
+    <color name="material_drawer_primary">@color/primary</color>
+    <color name="material_drawer_primary_dark">@color/primary_dark</color>
+    <color name="material_drawer_primary_light">@color/primary_light</color>
+    <color name="material_drawer_accent">@color/accent</color>
     <color name="material_drawer_background">#303030</color>
+    <!-- Material DEFAULT text / items colors -->
     <color name="material_drawer_icons">#000</color>
     <color name="material_drawer_primary_text">#FFF</color>
     <color name="material_drawer_secondary_text">#DEDEDE</color>
     <color name="material_drawer_hint_text">#ABABAB</color>
     <color name="material_drawer_contrast_text">#000</color>
     <color name="material_drawer_divider">#232323</color>
+    <!-- Material DEFAULT drawer colors -->
     <color name="material_drawer_selected">#232323</color>
+    <color name="material_drawer_selected_text">@color/accent</color>
 
     <!-- AboutLibraries DARK colors -->
     <color name="theme_window_background">#303030</color>

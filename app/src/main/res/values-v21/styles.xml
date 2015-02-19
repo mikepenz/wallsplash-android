@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AboutTheme" parent="BaseTheme">
-        <!-- Enable the ActionBar because the AboutLibraries library still uses an ActionBar -->
-        <item name="windowActionBar">true</item>
-    </style>
-
-    <style name="AppTheme" parent="BaseTheme">
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowTranslucentStatus">true</item>
-
+    <style name="AppTheme" parent="MaterialDrawerTheme.TranslucentStatus">
         <!-- improve animations -->
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
@@ -18,7 +9,7 @@
         <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
     </style>
 
-    <style name="DetailActivityTheme" parent="AppTheme">
+    <style name="AppTheme.DetailActivity" parent="MaterialDrawerTheme.TranslucentStatus">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>

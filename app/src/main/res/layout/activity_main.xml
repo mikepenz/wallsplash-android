@@ -4,24 +4,27 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/activity_main_toolbar"
+    <RelativeLayout
+        android:id="@+id/activity_main_toolbar_container"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:minHeight="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:paddingTop="@dimen/tool_bar_top_padding"
-        android:elevation="4dp"/>
+        android:paddingTop="@dimen/tool_bar_top_padding">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/activity_main_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"/>
+    </RelativeLayout>
 
     <fragment android:name="com.mikepenz.unsplash.fragments.ImagesFragment"
               android:id="@+id/ly_last_images_fragment"
               android:layout_gravity="center"
               android:layout_height="match_parent"
-              android:layout_width="match_parent"
-        />
+              android:layout_width="match_parent"/>
 
 </LinearLayout>
 
