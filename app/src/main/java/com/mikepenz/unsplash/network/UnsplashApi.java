@@ -51,13 +51,9 @@ public class UnsplashApi {
                     @Override
                     public Object fromBody(TypedInput body, Type type) throws ConversionException {
                         try {
-                            Object o = LoganSquare.parse(body.in(), type.getClass().newInstance().getClass());
+                            Object o = LoganSquare.parse(body.in(), ImageList.class);
                             return o;
                         } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (InstantiationException e) {
-                            e.printStackTrace();
-                        } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }
                         return null;
