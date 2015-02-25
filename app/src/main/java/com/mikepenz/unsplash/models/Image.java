@@ -2,6 +2,8 @@ package com.mikepenz.unsplash.models;
 
 import android.support.v7.graphics.Palette;
 
+import com.bluelinelabs.logansquare.annotation.JsonField;
+import com.bluelinelabs.logansquare.annotation.JsonObject;
 import com.mikepenz.unsplash.other.Utils;
 
 import java.io.Serializable;
@@ -9,19 +11,29 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@JsonObject
 public class Image implements Serializable {
 
     private static final DateFormat sdf = SimpleDateFormat.getDateInstance();
-
+    @JsonField
     private String color;
+    @JsonField
     private String image_src;
+    @JsonField
     private String author;
+    @JsonField
     private Date date;
+    @JsonField
     private Date modified_date;
+    @JsonField
     private float ratio;
+    @JsonField
     private int width;
+    @JsonField
     private int height;
+    @JsonField
     private int featured;
+    @JsonField
     private int category;
 
     transient private Palette.Swatch swatch;
@@ -140,6 +152,14 @@ public class Image implements Serializable {
 
     public int getHeight() {
         return height;
+    }
+
+    public String getImage_src() {
+        return image_src;
+    }
+
+    public void setImage_src(String image_src) {
+        this.image_src = image_src;
     }
 
     public void setHeight(int height) {

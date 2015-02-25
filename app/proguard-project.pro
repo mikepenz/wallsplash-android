@@ -76,6 +76,10 @@
 
 -keep class com.github.** { *; }
 
+-keep class com.bluelinelabs.logansquare.** { *; }
+-keep @com.bluelinelabs.logansquare.annotation.JsonObject class *
+-keep class **$$JsonObjectMapper { *; }
+
 # Application classes that will be serialized/deserialized over Gson
 # or have been blown up by ProGuard in the past
 

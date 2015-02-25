@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
 //wrap with try and catch so the build is working even if the signing stuff is missing
 try {
     apply from: '../../../signing.gradle'
@@ -76,7 +78,10 @@ dependencies {
     compile('com.mikepenz.aboutlibraries:library:4.5.2@aar') {
         transitive = true
     }
-    compile('com.mikepenz.materialdrawer:library:0.9.8-SNAPSHOT@aar') {
+    compile('com.mikepenz.materialdrawer:library:1.0.0@aar') {
         transitive = true
     }
+
+    apt 'com.bluelinelabs:logansquare-compiler:1.0.6'
+    compile 'com.bluelinelabs:logansquare:1.0.6'
 }

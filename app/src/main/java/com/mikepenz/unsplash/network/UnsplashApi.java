@@ -1,6 +1,7 @@
 package com.mikepenz.unsplash.network;
 
 
+import com.bluelinelabs.logansquare.LoganSquare;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mikepenz.unsplash.CustomApplication;
@@ -10,14 +11,19 @@ import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
-import retrofit.converter.GsonConverter;
+import retrofit.converter.ConversionException;
+import retrofit.converter.Converter;
 import retrofit.http.GET;
+import retrofit.mime.TypedInput;
+import retrofit.mime.TypedOutput;
 import rx.Observable;
 
 public class UnsplashApi {
@@ -41,7 +47,28 @@ public class UnsplashApi {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(ENDPOINT)
                 .setClient(new OkClient(okHttpClient))
-                .setConverter(new GsonConverter(gson))
+                .setConverter(new Converter() {
+                    @Override
+                    public Object fromBody(TypedInput body, Type type) throws ConversionException {
+                        try {
+                            Object o = LoganSquare.parse(body.in(), type.getClass().newInstance().getClass());
+                            return o;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (InstantiationException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+
+                    @Override
+
+                    public TypedOutput toBody(Object object) {
+                        return null;
+                    }
+                })
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
