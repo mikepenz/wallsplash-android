@@ -7,23 +7,20 @@ import com.google.gson.GsonBuilder;
 import com.mikepenz.unsplash.CustomApplication;
 import com.mikepenz.unsplash.models.Image;
 import com.mikepenz.unsplash.models.ImageList;
+import com.mikepenz.unsplash.other.logansquare.DateConverter;
+import com.mikepenz.unsplash.other.logansquare.LoganSquareConverter;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
-import retrofit.converter.ConversionException;
-import retrofit.converter.Converter;
 import retrofit.http.GET;
-import retrofit.mime.TypedInput;
-import retrofit.mime.TypedOutput;
 import rx.Observable;
 
 public class UnsplashApi {
@@ -36,6 +33,9 @@ public class UnsplashApi {
         Cache cache = null;
         OkHttpClient okHttpClient = null;
 
+        //register global date type converter
+        LoganSquare.registerTypeConverter(Date.class, new DateConverter());
+
         try {
             File cacheDir = new File(CustomApplication.getContext().getCacheDir().getPath(), "pictures.json");
             cache = new Cache(cacheDir, 10 * 1024 * 1024);
@@ -47,24 +47,7 @@ public class UnsplashApi {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(ENDPOINT)
                 .setClient(new OkClient(okHttpClient))
-                .setConverter(new Converter() {
-                    @Override
-                    public Object fromBody(TypedInput body, Type type) throws ConversionException {
-                        try {
-                            Object o = LoganSquare.parse(body.in(), ImageList.class);
-                            return o;
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        return null;
-                    }
-
-                    @Override
-
-                    public TypedOutput toBody(Object object) {
-                        return null;
-                    }
-                })
+                .setConverter(new LoganSquareConverter())
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
