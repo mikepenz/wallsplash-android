@@ -13,8 +13,8 @@ android {
         applicationId "com.mikepenz.unsplash"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 184
-        versionName "1.8.4"
+        versionCode 185
+        versionName "1.8.5"
     }
     buildTypes {
         debug {
@@ -72,11 +72,11 @@ dependencies {
 
     compile 'com.google.android.apps.muzei:muzei-api:+'
 
-    compile 'com.mikepenz.iconics:library:0.7.1@aar'
-    compile('com.mikepenz.aboutlibraries:library:4.5.2@aar') {
+    compile 'com.mikepenz.iconics:library:0.7.5@aar'
+    compile('com.mikepenz.aboutlibraries:library:4.5.8@aar') {
         transitive = true
     }
-    compile('com.mikepenz.materialdrawer:library:0.9.8-SNAPSHOT@aar') {
+    compile('com.mikepenz.materialdrawer:library:1.0.2@aar') {
         transitive = true
     }
 }
