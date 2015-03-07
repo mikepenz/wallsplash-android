@@ -213,6 +213,7 @@ public class DetailActivity extends ActionBarActivity {
             Snackbar.with(getApplicationContext())
                     .text(R.string.help_try_long_click)
                     .actionLabel(R.string.help_try_long_click_ok)
+                    .actionColorResource(R.color.accent)
                     .actionListener(new ActionClickListener() {
                         @Override
                         public void onActionClicked(Snackbar snackbar) {
