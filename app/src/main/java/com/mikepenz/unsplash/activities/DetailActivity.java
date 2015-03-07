@@ -3,7 +3,9 @@ package com.mikepenz.unsplash.activities;
 import android.animation.Animator;
 import android.annotation.TargetApi;
 import android.app.WallpaperManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -11,10 +13,13 @@ import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.transition.Transition;
 import android.util.Log;
 import android.view.View;
@@ -36,12 +41,15 @@ import com.koushikdutta.ion.future.ResponseFuture;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.typeface.FontAwesome;
 import com.mikepenz.unsplash.R;
+import com.mikepenz.unsplash.fragments.DirectoryChooserFragment;
 import com.mikepenz.unsplash.fragments.ImagesFragment;
 import com.mikepenz.unsplash.models.Image;
 import com.mikepenz.unsplash.other.CustomAnimatorListener;
 import com.mikepenz.unsplash.other.CustomTransitionListener;
 import com.mikepenz.unsplash.other.PaletteTransformation;
 import com.mikepenz.unsplash.other.Utils;
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.listeners.ActionClickListener;
 
 import java.io.File;
 import java.io.InputStream;
@@ -135,6 +143,7 @@ public class DetailActivity extends ActionBarActivity {
         mFabDownloadButton.setScaleY(0);
         mFabDownloadButton.setImageDrawable(new IconicsDrawable(this, FontAwesome.Icon.faw_download).color(Color.WHITE).sizeDp(16));
         mFabDownloadButton.setOnClickListener(onFabDownloadButtonListener);
+        mFabDownloadButton.setOnLongClickListener(onFabDownloadButtonLongListener);
 
         // Title container
         mTitleContainer = findViewById(R.id.activity_detail_title_container);
@@ -198,6 +207,20 @@ public class DetailActivity extends ActionBarActivity {
                 }
             }
         }
+
+        final SharedPreferences sp = getSharedPreferences("wall-splash", Context.MODE_PRIVATE);
+        if (!sp.getBoolean("help-understand", false)) {
+            Snackbar.with(getApplicationContext())
+                    .text(R.string.help_try_long_click)
+                    .actionLabel(R.string.help_try_long_click_ok)
+                    .actionListener(new ActionClickListener() {
+                        @Override
+                        public void onActionClicked(Snackbar snackbar) {
+                            sp.edit().putBoolean("help-understand", true).apply();
+                        }
+                    })
+                    .show(this);
+        }
     }
 
     private View.OnClickListener onFabShareButtonListener = new View.OnClickListener() {
@@ -251,13 +274,13 @@ public class DetailActivity extends ActionBarActivity {
                 mFabButton.animate().rotation(360).setDuration(ANIMATION_DURATION_LONG).setListener(new CustomAnimatorListener() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        downloadImage();
+                        downloadImage(null);
                         super.onAnimationEnd(animation);
                     }
 
                     @Override
                     public void onAnimationCancel(Animator animation) {
-                        downloadImage();
+                        downloadImage(null);
                         super.onAnimationCancel(animation);
                     }
                 }).start();
@@ -266,6 +289,59 @@ public class DetailActivity extends ActionBarActivity {
             }
         }
     };
+
+    private View.OnLongClickListener onFabDownloadButtonLongListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            if (future == null) {
+                if (!Utils.isExternalStorageWritable()) {
+                    Toast.makeText(DetailActivity.this, R.string.error_no_storage, Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+
+
+                final DirectoryChooserFragment df = DirectoryChooserFragment.newInstance("wall-splash", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath());
+                df.setDirectoryChooserListener(new DirectoryChooserFragment.OnFragmentInteractionListener() {
+                    @Override
+                    public void onSelectDirectory(@NonNull final String path) {
+                        //prepare the call
+                        future = Ion.with(DetailActivity.this)
+                                .load(mSelectedImage.getUrl())
+                                .progressHandler(progressCallback)
+                                .asInputStream();
+
+                        animateStart();
+
+                        mFabButton.animate().rotation(360).setDuration(ANIMATION_DURATION_LONG).setListener(new CustomAnimatorListener() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                downloadImage(path);
+                                super.onAnimationEnd(animation);
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+                                downloadImage(path);
+                                super.onAnimationCancel(animation);
+                            }
+                        }).start();
+                        df.dismiss();
+                    }
+
+                    @Override
+                    public void onCancelChooser() {
+                        df.dismiss();
+                    }
+                });
+                df.show(getSupportFragmentManager(), "MyDF");
+            } else {
+                animateReset(false);
+            }
+
+            return false;
+        }
+    };
+
 
     private View.OnClickListener onFabButtonListener = new View.OnClickListener() {
         @Override
@@ -377,7 +453,7 @@ public class DetailActivity extends ActionBarActivity {
         }
     }
 
-    private void downloadImage() {
+    private void downloadImage(final String customLocation) {
         if (future != null) {
             //set the callback and start downloading
             future.withResponse().setCallback(new FutureCallback<Response<InputStream>>() {
@@ -389,8 +465,14 @@ public class DetailActivity extends ActionBarActivity {
                             //prepare the file name
                             String url = mSelectedImage.getUrl();
                             String fileName = url.substring(url.lastIndexOf('/') + 1, url.length()) + ".jpg";
-                            //create a temporary directory within the cache folder
-                            File dir = Utils.getAlbumStorageDir("wall-splash");
+
+                            File dir;
+                            if (TextUtils.isEmpty(customLocation)) {
+                                //create a temporary directory within the cache folder
+                                dir = Utils.getAlbumStorageDir("wall-splash");
+                            } else {
+                                dir = new File(customLocation);
+                            }
                             //create the file
                             File file = new File(dir, fileName);
                             if (!file.exists()) {
@@ -720,7 +802,7 @@ public class DetailActivity extends ActionBarActivity {
 
         private void process() {
             animateFinish1 = animateFinish1 + 1;
-            if (animateFinish1 == 2) {
+            if (animateFinish1 >= 2) {
                 //create the fab animation and hide fabProgress animation, set an delay so those will hide after the shareFab is below the main fab
                 Utils.hideViewByScaleXY(mFabDownloadButton)
                         .setDuration(ANIMATION_DURATION_MEDIUM)
@@ -759,7 +841,7 @@ public class DetailActivity extends ActionBarActivity {
 
         private void process() {
             animateFinish2 = animateFinish2 + 1;
-            if (animateFinish2 == 4) {
+            if (animateFinish2 >= 4) {
                 ViewPropertyAnimator hideFabAnimator = Utils.hideViewByScaleY(mTitleContainer);
                 hideFabAnimator.setListener(new CustomAnimatorListener() {
                     @Override
