@@ -35,7 +35,7 @@ public class MainActivity extends ActionBarActivity {
         TECHNOLOGY(16),
         OBJECTS(32);
 
-        public int id;
+        public final int id;
 
         private Category(int id) {
             this.id = id;
