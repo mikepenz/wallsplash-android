@@ -48,7 +48,7 @@ Thanks [Saul MM](https://github.com/saulmm) for the basic structure of [OpenLibr
 
 #Developed By
 
-* Mike Penz - http://mikepenz.com - <mike@lanora.com>
+* Mike Penz - http://mikepenz.com - <mike@lanora.io>
 
 
 #License
