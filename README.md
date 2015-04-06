@@ -47,7 +47,7 @@ See the license section for a detailed information about the used license and al
 - [Unsplash](https://unsplash.com) (Free (do whatever you want) high-resolution photos) is a service by [crew](https://pickcrew.com/)
 
 #Developed By
-* Mike Penz - http://mikepenz.com - <mike@wallsplashapp.com>
+* Mike Penz - http://mikepenz.com - <inbox@wallsplashapp.com>
 
 #License
 
