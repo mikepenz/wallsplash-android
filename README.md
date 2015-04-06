@@ -1,10 +1,10 @@
-#wall:splash for Android
-**wall:splash** is the cutting edge wallpaper app for your device!
+#[Wallsplash] for Android
+**[Wallsplash]** is the cutting edge wallpaper app for your device!
 
-**wall:splash** uses **Unsplash** as image source, which already features over **2000 images**.
+**[Wallsplash]** uses **Unsplash** and other platforms as image source, which already features over **2500 images**.
 
 The current version includes following features:
-* over 2000 images
+* over 2500 images
 * browse the images
 * material design
 * clean and minimalistic
@@ -12,19 +12,23 @@ The current version includes following features:
 * set the wallpaper with a single click
 * set and crop the wallpaper with a long click
 
-This application was designed with the new Material Design principles in mind. It gives you a perfectly fluid user flow with simple and fresh animations. It also unleashes the full power of Android Lollipop by providing bright colors fetched out of each single wallpaper.
+This application was designed with the new material design principles in mind. It gives you a perfectly fluid user flow with simple and fresh animations. It also unleashes the full power of Android Lollipop by providing bright colors fetched out of each single wallpaper.
 
-[**Unsplash**](https://unsplash.com) (Free (do whatever you want) high-resolution photos) is a service by [crew](https://pickcrew.com/)
-
+#Socialize
+Stay tuned for updates and follow wallsplash on twitter and facebook!
+- @[Twitter](http://twitter.com/wallsplashapp)
+- @[Facebook](http://facebook.com/wallsplashapp)
 
 #Download
-@[Google Play Store](https://play.google.com/store/apps/details?id=com.mikepenz.unsplash)
-
+@[Google Play Store](http://wallsplashapp.com/getit)
 
 #Screenshots
-![Image](https://raw.githubusercontent.com/mikepenz/unsplash-android/master/DEV/screenshots/screenshot1_small.png)
-![Image](https://raw.githubusercontent.com/mikepenz/unsplash-android/master/DEV/screenshots/screenshot2_small.png)
-
+![Image](http://wallsplashapp.com/images/screenshots/1.png)
+![Image](http://wallsplashapp.com/images/screenshots/2.png)
+![Image](http://wallsplashapp.com/images/screenshots/3.png)
+![Image](http://wallsplashapp.com/images/screenshots/4.png)
+![Image](http://wallsplashapp.com/images/screenshots/5.png)
+![Image](http://wallsplashapp.com/images/screenshots/6.png)
 
 #Preview
 
@@ -43,13 +47,11 @@ See the license section for a detailed information about the used license and al
 
 #Credits
 
-Thanks [Saul MM](https://github.com/saulmm) for the basic structure of [OpenLibra-Material](https://github.com/saulmm/OpenLibra-Material) which is the base (i think just 10% are of the original code is in tact :D) for this project.
-
+- Thanks [Saul MM](https://github.com/saulmm) for the basic structure of [OpenLibra-Material](https://github.com/saulmm/OpenLibra-Material) which is the base (i think just 10% are of the original code is in tact :D) for this project.
+- [Unsplash](https://unsplash.com) (Free (do whatever you want) high-resolution photos) is a service by [crew](https://pickcrew.com/)
 
 #Developed By
-
-* Mike Penz - http://mikepenz.com - <mike@lanora.io>
-
+* Mike Penz - http://mikepenz.com - <mike@wallsplashapp.com>
 
 #License
 
@@ -66,3 +68,5 @@ Thanks [Saul MM](https://github.com/saulmm) for the basic structure of [OpenLibr
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+    
+[Wallsplash]:http://wallsplashapp.com
