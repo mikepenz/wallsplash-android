@@ -24,10 +24,6 @@ Stay tuned for updates and follow wallsplash on twitter and facebook!
 
 #Screenshots
 ![Image](http://wallsplashapp.com/images/screenshots/1.png)
-![Image](http://wallsplashapp.com/images/screenshots/2.png)
-![Image](http://wallsplashapp.com/images/screenshots/3.png)
-![Image](http://wallsplashapp.com/images/screenshots/4.png)
-![Image](http://wallsplashapp.com/images/screenshots/5.png)
 ![Image](http://wallsplashapp.com/images/screenshots/6.png)
 
 #Preview
