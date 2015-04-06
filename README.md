@@ -14,12 +14,12 @@ The current version includes following features:
 
 This application was designed with the new material design principles in mind. It gives you a perfectly fluid user flow with simple and fresh animations. It also unleashes the full power of Android Lollipop by providing bright colors fetched out of each single wallpaper.
 
-#Socialize
+#[Socialize](http://twitter.com/wallsplashapp)
 Stay tuned for updates and follow wallsplash on twitter and facebook!
 - @[Twitter](http://twitter.com/wallsplashapp)
 - @[Facebook](http://facebook.com/wallsplashapp)
 
-#Download
+#[Download](http://wallsplashapp.com/getit)
 @[Google Play Store](http://wallsplashapp.com/getit)
 
 #Screenshots
