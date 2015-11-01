@@ -2,18 +2,19 @@ package com.mikepenz.unsplash.activities;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 
-import com.mikepenz.aboutlibraries.Libs;
+import com.mikepenz.aboutlibraries.LibsBuilder;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.typeface.FontAwesome;
 import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.holder.StringHolder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -23,7 +24,7 @@ import com.mikepenz.unsplash.models.ImageList;
 import com.mikepenz.unsplash.network.UnsplashApi;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
     public enum Category {
         ALL(1000),
         FEATURED(1001),
@@ -42,7 +43,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public Drawer.Result result;
+    public Drawer result;
 
     private OnFilterChangedListener onFilterChangedListener;
 
@@ -59,7 +60,7 @@ public class MainActivity extends ActionBarActivity {
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
-        result = new Drawer()
+        result = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .withHeader(R.layout.header)
@@ -75,22 +76,25 @@ public class MainActivity extends ActionBarActivity {
                         new PrimaryDrawerItem().withName(R.string.category_technology).withIdentifier(Category.TECHNOLOGY.id).withIcon(GoogleMaterial.Icon.gmd_local_see)
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+
                     @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l, IDrawerItem drawerItem) {
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if (drawerItem != null) {
                             if (drawerItem instanceof Nameable) {
-                                toolbar.setTitle(((Nameable) drawerItem).getNameRes());
+                                toolbar.setTitle(((Nameable) drawerItem).getName().getText(MainActivity.this));
                             }
                             if (onFilterChangedListener != null) {
                                 onFilterChangedListener.onFilterChanged(drawerItem.getIdentifier());
                             }
                         }
+
+                        return false;
                     }
                 })
                 .build();
 
         //disable scrollbar :D it's ugly
-        result.getListView().setVerticalScrollBarEnabled(false);
+        result.getRecyclerView().setVerticalScrollBarEnabled(false);
     }
 
     /**
@@ -98,15 +102,15 @@ public class MainActivity extends ActionBarActivity {
      */
     public void setCategoryCount(ImageList images) {
         if (result.getDrawerItems() != null && result.getDrawerItems().size() == 9 && images != null && images.getData() != null) {
-            result.updateBadge(images.getData().size() + "", 0);
-            result.updateBadge(UnsplashApi.countFeatured(images.getData()) + "", 1);
+            result.updateBadge(Category.ALL.id, new StringHolder(images.getData().size() + ""));
+            result.updateBadge(Category.FEATURED.id, new StringHolder(UnsplashApi.countFeatured(images.getData()) + ""));
 
-            result.updateBadge(UnsplashApi.countCategory(images.getData(), Category.BUILDINGS.id) + "", 3);
-            result.updateBadge(UnsplashApi.countCategory(images.getData(), Category.FOOD.id) + "", 4);
-            result.updateBadge(UnsplashApi.countCategory(images.getData(), Category.NATURE.id) + "", 5);
-            result.updateBadge(UnsplashApi.countCategory(images.getData(), Category.OBJECTS.id) + "", 6);
-            result.updateBadge(UnsplashApi.countCategory(images.getData(), Category.PEOPLE.id) + "", 7);
-            result.updateBadge(UnsplashApi.countCategory(images.getData(), Category.TECHNOLOGY.id) + "", 8);
+            result.updateBadge(Category.BUILDINGS.id, new StringHolder(UnsplashApi.countCategory(images.getData(), Category.BUILDINGS.id) + ""));
+            result.updateBadge(Category.FOOD.id, new StringHolder(UnsplashApi.countCategory(images.getData(), Category.FOOD.id) + ""));
+            result.updateBadge(Category.NATURE.id, new StringHolder(UnsplashApi.countCategory(images.getData(), Category.NATURE.id) + ""));
+            result.updateBadge(Category.OBJECTS.id, new StringHolder(UnsplashApi.countCategory(images.getData(), Category.OBJECTS.id) + ""));
+            result.updateBadge(Category.PEOPLE.id, new StringHolder(UnsplashApi.countCategory(images.getData(), Category.PEOPLE.id) + ""));
+            result.updateBadge(Category.TECHNOLOGY.id, new StringHolder(UnsplashApi.countCategory(images.getData(), Category.TECHNOLOGY.id) + ""));
         }
     }
 
@@ -115,8 +119,8 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        menu.findItem(R.id.action_open_source).setIcon(new IconicsDrawable(this, FontAwesome.Icon.faw_github).color(Color.WHITE).actionBarSize());
-        menu.findItem(R.id.action_shuffle).setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_shuffle).paddingDp(1).color(Color.WHITE).actionBarSize());
+        menu.findItem(R.id.action_open_source).setIcon(new IconicsDrawable(this, FontAwesome.Icon.faw_github).color(Color.WHITE).actionBar());
+        menu.findItem(R.id.action_shuffle).setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_shuffle).paddingDp(1).color(Color.WHITE).actionBar());
 
         return true;
     }
@@ -125,10 +129,10 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_open_source) {
-            new Libs.Builder()
+            new LibsBuilder()
                     .withFields(R.string.class.getFields())
                     .withActivityTitle(getString(R.string.action_open_source))
-                    .withActivityTheme(R.style.MaterialDrawerTheme_ActionBar)
+                    .withActivityTheme(R.style.MaterialDrawerTheme)
                     .withLibraries("rxJava", "rxAndroid")
                     .start(this);
 

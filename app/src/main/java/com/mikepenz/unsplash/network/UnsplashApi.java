@@ -21,7 +21,7 @@ import retrofit.http.GET;
 import rx.Observable;
 
 public class UnsplashApi {
-    public static final String ENDPOINT = "http://wallsplash.lanora.io";
+    public static final String ENDPOINT = "http://lanora.eu/projects/wallsplash/";
     private final UnsplashService mWebService;
 
     public static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); //2015-01-18 15:48:56
