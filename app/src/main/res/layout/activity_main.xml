@@ -1,30 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/activity_main_toolbar_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/activity_main_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:paddingTop="@dimen/tool_bar_top_padding">
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/activity_main_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:elevation="4dp"/>
-    </RelativeLayout>
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <fragment android:name="com.mikepenz.unsplash.fragments.ImagesFragment"
-              android:id="@+id/ly_last_images_fragment"
-              android:layout_gravity="center"
-              android:layout_height="match_parent"
-              android:layout_width="match_parent"/>
+    <fragment
+        android:id="@+id/ly_last_images_fragment"
+        android:name="com.mikepenz.unsplash.fragments.ImagesFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center" />
 
 </LinearLayout>
 

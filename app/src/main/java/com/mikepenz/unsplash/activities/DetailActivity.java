@@ -16,7 +16,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -38,8 +38,8 @@ import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.ProgressCallback;
 import com.koushikdutta.ion.Response;
 import com.koushikdutta.ion.future.ResponseFuture;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.typeface.FontAwesome;
 import com.mikepenz.unsplash.R;
 import com.mikepenz.unsplash.fragments.DirectoryChooserFragment;
 import com.mikepenz.unsplash.fragments.ImagesFragment;
@@ -55,7 +55,7 @@ import java.io.File;
 import java.io.InputStream;
 
 
-public class DetailActivity extends ActionBarActivity {
+public class DetailActivity extends AppCompatActivity {
     private static final int ACTIVITY_CROP = 13451;
     private static final int ACTIVITY_SHARE = 13452;
 
