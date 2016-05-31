@@ -106,8 +106,8 @@ public class DetailActivity extends AppCompatActivity {
         final int position = getIntent().getIntExtra("position", 0);
         mSelectedImage = (Image) getIntent().getSerializableExtra("selected_image");
 
-        mDrawablePhoto = new IconicsDrawable(this, FontAwesome.Icon.faw_photo).color(Color.WHITE).sizeDp(24);
-        mDrawableClose = new IconicsDrawable(this, FontAwesome.Icon.faw_close).color(Color.WHITE).sizeDp(24);
+        mDrawablePhoto = new IconicsDrawable(this, FontAwesome.Icon.faw_camera).color(Color.WHITE).sizeDp(24);
+        mDrawableClose = new IconicsDrawable(this, FontAwesome.Icon.faw_times).color(Color.WHITE).sizeDp(24);
         mDrawableSuccess = new IconicsDrawable(this, FontAwesome.Icon.faw_check).color(Color.WHITE).sizeDp(24);
         mDrawableError = new IconicsDrawable(this, FontAwesome.Icon.faw_exclamation).color(Color.WHITE).sizeDp(24);
 

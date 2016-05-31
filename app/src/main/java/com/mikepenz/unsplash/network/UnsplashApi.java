@@ -94,7 +94,7 @@ public class UnsplashApi {
         return count;
     }
 
-    public ArrayList<Image> filterCategory(ArrayList<Image> images, int filter) {
+    public ArrayList<Image> filterCategory(ArrayList<Image> images, long filter) {
         ArrayList<Image> list = new ArrayList<Image>(images);
         for (Iterator<Image> it = list.iterator(); it.hasNext(); ) {
             if ((it.next().getCategory() & filter) != filter) {
@@ -104,7 +104,7 @@ public class UnsplashApi {
         return list;
     }
 
-    public static int countCategory(ArrayList<Image> images, int filter) {
+    public static int countCategory(ArrayList<Image> images, long filter) {
         int count = 0;
         for (Image image : images) {
             if ((image.getCategory() & filter) == filter) {
