@@ -7,7 +7,7 @@ try {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "com.mikepenz.unsplash"
@@ -54,18 +54,21 @@ android {
 }
 
 dependencies {
-    compile 'com.koushikdutta.ion:ion:2.1.6'
+    compile 'com.koushikdutta.ion:ion:2.1.7'
 
-    compile 'com.android.support:palette-v7:23.1.0'
-    compile 'com.android.support:appcompat-v7:23.1.0'
-    compile 'com.android.support:cardview-v7:23.1.0'
-    compile 'com.android.support:recyclerview-v7:23.1.0'
+    compile 'com.android.support:palette-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:cardview-v7:23.4.0'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
 
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.5.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'io.reactivex:rxandroid:1.0.1'
+
+    //rxJava
+    compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'io.reactivex:rxjava:1.1.5'
 
     compile 'com.nispok:snackbar:2.11.0'
     compile 'com.gu:option:1.3'
@@ -75,13 +78,13 @@ dependencies {
 
     compile 'com.google.android.apps.muzei:muzei-api:+'
 
-    compile('com.mikepenz:aboutlibraries:5.2.6@aar') {
+    compile('com.mikepenz:aboutlibraries:5.6.7@aar') {
         transitive = true
     }
-    compile('com.mikepenz:materialdrawer:4.4.4@aar') {
+    compile('com.mikepenz:materialdrawer:5.2.8@aar') {
         transitive = true
     }
-    compile 'com.mikepenz:iconics-core:1.7.9@aar'
-    compile 'com.mikepenz:google-material-typeface:1.2.0.1@aar'
-    compile 'com.mikepenz:fontawesome-typeface:4.4.0.1@aar'
+    compile 'com.mikepenz:iconics-core:2.6.0@aar'
+    compile 'com.mikepenz:google-material-typeface:2.2.0.1.original@aar'
+    compile 'com.mikepenz:fontawesome-typeface:4.6.0.1@aar'
 }

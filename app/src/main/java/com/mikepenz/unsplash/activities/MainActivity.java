@@ -142,6 +142,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public interface OnFilterChangedListener {
-        public void onFilterChanged(int filter);
+        public void onFilterChanged(long filter);
     }
 }

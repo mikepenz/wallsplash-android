@@ -58,7 +58,7 @@ public class ImagesFragment extends Fragment {
         if (ImagesFragment.this.getActivity() instanceof MainActivity) {
             ((MainActivity) ImagesFragment.this.getActivity()).setOnFilterChangedListener(new MainActivity.OnFilterChangedListener() {
                 @Override
-                public void onFilterChanged(int filter) {
+                public void onFilterChanged(long filter) {
                     if (mImages != null) {
                         if (filter == MainActivity.Category.ALL.id) {
                             showAll();
@@ -127,7 +127,7 @@ public class ImagesFragment extends Fragment {
         updateAdapter(mApi.filterFeatured(mImages));
     }
 
-    private void showCategory(int category) {
+    private void showCategory(long category) {
         updateAdapter(mApi.filterCategory(mImages, category));
     }
 
