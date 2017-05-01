@@ -1,4 +1,4 @@
-#[Wallsplash] for Android
+# [Wallsplash] for Android
 **[Wallsplash]** is the cutting edge wallpaper app for your device!
 
 **[Wallsplash]** uses **Unsplash** and other platforms as image source, which already features over **2500 images**.
@@ -14,23 +14,23 @@ The current version includes following features:
 
 This application was designed with the new material design principles in mind. It gives you a perfectly fluid user flow with simple and fresh animations. It also unleashes the full power of Android Lollipop by providing bright colors fetched out of each single wallpaper.
 
-#[Socialize](http://twitter.com/wallsplashapp)
+# [Socialize](http://twitter.com/wallsplashapp)
 Stay tuned for updates and follow wallsplash on twitter and facebook!
 - @[Twitter](http://twitter.com/wallsplashapp)
 - @[Facebook](http://facebook.com/wallsplashapp)
 
-#[Download](http://wallsplashapp.com/getit)
+# [Download](http://wallsplashapp.com/getit)
 @[Google Play Store](http://wallsplashapp.com/getit)
 
-#Screenshots
+# Screenshots
 ![Image](http://wallsplashapp.com/images/screenshots/1.png)
 ![Image](http://wallsplashapp.com/images/screenshots/6.png)
 
-#Preview
+# Preview
 
 A quick preview video can be found @[YouTube](https://www.youtube.com/watch?v=98-bArYkfAI)
 
-#Restrictions
+# Restrictions
 
 See the license section for a detailed information about the used license and allowed / disallowed thing.
 
@@ -41,18 +41,18 @@ See the license section for a detailed information about the used license and al
 * You have to give credits (Attribution)
 * You are not allowed to use the included API as image source
 
-#Credits
+# Credits
 
 - Thanks [Saul MM](https://github.com/saulmm) for the basic structure of [OpenLibra-Material](https://github.com/saulmm/OpenLibra-Material) which is the base (i think just 10% are of the original code is in tact :D) for this project.
 - [Unsplash](https://unsplash.com) (Free (do whatever you want) high-resolution photos) is a service by [crew](https://pickcrew.com/)
 
-#Developed By
+# Developed By
 
 * Mike Penz 
  * [mikepenz.com](http://mikepenz.com) - <mikepenz@gmail.com>
  * [paypal.me/mikepenz](http://paypal.me/mikepenz)
 
-#License
+# License
 
     Copyright 2015 Mike Penz
 
